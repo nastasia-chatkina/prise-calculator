@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CHATKINA.DESIGN — Bento Price Workspace v2.3</title>
+    <title>CHATKINA.DESIGN — Bento Price Workspace v2.4</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Space Grotesk для кода/тех-стиля и Urbanist для элегантных интерфейсов -->
@@ -41,21 +41,21 @@
         
         .dark {
             /* Темная матовая Obsidian & Brand тема */
-            --bg-main: #09090b; /* Обсидиановый черный */
-            --bg-card: #12121a; /* Глубокий графит */
-            --bg-sidebar: #16161f; /* Темно-серый bento-фон */
+            --bg-main: #28304d; /* Глубокий благородный темно-синий */
+            --bg-card: #1d243c; /* Темно-графитовые карточки */
+            --bg-sidebar: #151a2d; /* Темная bento-подложка */
             --text-main: #f9f9fb; /* Белый */
-            --text-muted: #9ca3af; /* Серый */
-            --border-color: #22222e; /* Контрастная темная рамка */
+            --text-muted: #94a3b8; /* Серый */
+            --border-color: #384260; /* Контрастная темная рамка */
             --primary-blue: #3b4bfb; /* Ярко-синий */
             --accent-pink: #feafce; /* Нежно-розовый */
-            --input-bg: #09090b;
-            --table-header-bg: #16161f;
+            --input-bg: #151a2d;
+            --table-header-bg: #151a2d;
             --table-row-hover: rgba(254, 175, 206, 0.04);
             
-            --tooltip-bg: #16161f;
+            --tooltip-bg: #151a2d;
             --tooltip-text: #f9f9fb;
-            --tooltip-border: #22222e;
+            --tooltip-border: #384260;
             --tooltip-shadow: rgba(0, 0, 0, 0.5);
         }
 
@@ -168,7 +168,7 @@
                     <h1 class="text-2xl md:text-3xl font-display font-extrabold tracking-tight">
                         <span class="text-primary-blue">CHATKINA</span><span class="text-accent-pink bg-slate-900 px-2.5 py-0.5 rounded-lg ml-1 font-tech text-base md:text-lg">.DESIGN</span>
                     </h1>
-                    <p class="text-[10px] text-text-muted font-tech tracking-widest uppercase mt-1">Bento Proposal System v2.3</p>
+                    <p class="text-[10px] text-text-muted font-tech tracking-widest uppercase mt-1">Bento Proposal System v2.4</p>
                 </div>
             </div>
             
@@ -190,10 +190,10 @@
     </header>
 
     <!-- MAIN INTERFACE -->
-    <main class="flex-1 max-w-[1600px] w-full mx-auto p-4 md:p-6 pt-2 flex gap-6 overflow-hidden">
+    <main class="flex-1 max-w-[1600px] w-full mx-auto p-4 md:p-6 pt-2 flex flex-col lg:flex-row gap-6 overflow-hidden">
         
         <!-- SIDEBAR: BENTO FILTER MODULE -->
-        <aside class="w-80 flex flex-col gap-4 overflow-y-auto hidden lg:flex flex-shrink-0">
+        <aside class="w-full lg:w-80 flex flex-col gap-4 overflow-y-auto lg:flex-shrink-0">
             <!-- Search Module -->
             <div class="bento-card p-5 bg-bg-card">
                 <h3 class="text-xs font-tech uppercase tracking-wider text-text-muted mb-3">Поиск по базе</h3>
@@ -204,7 +204,7 @@
             </div>
 
             <!-- Category Filters Module -->
-            <div class="bento-card p-5 bg-bg-card flex-1 flex flex-col overflow-hidden">
+            <div class="bento-card p-5 bg-bg-card flex-1 flex flex-col overflow-hidden hidden lg:flex">
                 <h3 class="text-xs font-tech uppercase tracking-wider text-text-muted mb-3">Разделы первого уровня</h3>
                 <nav class="flex-1 overflow-y-auto space-y-1.5 pr-1" id="category-filters">
                     <!-- Будет сгенерировано JS -->
@@ -212,7 +212,7 @@
             </div>
 
             <!-- Fast info guide module -->
-            <div class="bento-card p-5 bg-bg-card bg-gradient-to-br from-primary-blue/5 to-transparent">
+            <div class="bento-card p-5 bg-bg-card bg-gradient-to-br from-primary-blue/5 to-transparent hidden lg:block">
                 <h4 class="text-xs font-tech text-text-main mb-2"><i class="fa-solid fa-bolt text-primary-blue mr-1"></i> Конфигуратор</h4>
                 <p class="text-xs text-text-muted leading-relaxed">Дважды кликните на ячейку с <strong>Часами</strong> или <strong>Ставкой</strong> в таблице, чтобы пересчитать ее базовые тарифы в реальном времени.</p>
             </div>
@@ -345,7 +345,7 @@
         </div>
     </div>
 
-    <!-- RIGHT DRAWER: CALCULATOR PROPOSAL BUILDER (Completely restructured to scroll as a single unified container) -->
+    <!-- RIGHT DRAWER: CALCULATOR PROPOSAL BUILDER (Completely restructured to scroll items with inputs, while locking sum to bottom) -->
     <div id="calculator-drawer" class="fixed right-0 top-0 bottom-0 w-full sm:w-[600px] bg-bg-card border-l border-border-color shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col h-[100dvh] overflow-hidden">
         
         <!-- Fixed Header -->
@@ -357,11 +357,22 @@
             <button onclick="toggleCalculatorDrawer()" class="text-text-muted hover:text-text-main transition-all text-xl"><i class="fa-solid fa-xmark"></i></button>
         </div>
 
-        <!-- Single unified scroll area holding inputs, items list, financial sum and actions -->
+        <!-- Scrollable Middle Section: holding Dynamic Items first, and Client Inputs second -->
         <div class="flex-1 overflow-y-auto p-6 space-y-6">
             
-            <!-- Inputs block -->
+            <!-- Dynamic Selected List Container (Occupies the top, stretches freely) -->
             <div class="space-y-4">
+                <div class="flex items-center justify-between border-b border-border-color pb-2">
+                    <h4 class="text-xs font-tech text-text-muted uppercase tracking-wider">Выбранные услуги</h4>
+                    <span class="text-xs bg-primary-blue/15 text-primary-blue border border-primary-blue/20 px-2 py-0.5 rounded-full font-tech font-bold" id="selected-badge-count">0</span>
+                </div>
+                <div id="selected-items-container" class="space-y-4">
+                    <!-- Смета пуста по умолчанию -->
+                </div>
+            </div>
+
+            <!-- Client & Project Inputs block (Relocated here underneath the services) -->
+            <div class="space-y-4 pt-6 border-t border-border-color/60">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="text-[10px] font-tech uppercase text-text-muted block mb-1">Имя / Компания клиента:</label>
@@ -378,42 +389,33 @@
                     <label class="text-[10px] font-tech uppercase text-text-muted block mb-1">Комментарии к предложению:</label>
                     <textarea id="client-comments" rows="3" placeholder="Особые условия, дедлайны или технические нюансы..." class="w-full bg-input-bg border border-border-color rounded-xl py-2.5 px-3.5 text-sm text-text-main focus:outline-none focus:border-primary-blue resize-none"></textarea>
                 </div>
-
-                <div class="flex items-center justify-between border-b border-border-color pb-2">
-                    <h4 class="text-xs font-tech text-text-muted uppercase tracking-wider">Выбранные услуги</h4>
-                    <span class="text-xs bg-primary-blue/15 text-primary-blue border border-primary-blue/20 px-2 py-0.5 rounded-full font-tech font-bold" id="selected-badge-count">0</span>
-                </div>
-            </div>
-
-            <!-- Dynamic Selected List Container (No internal nested scrollbar - stretches freely!) -->
-            <div id="selected-items-container" class="space-y-4">
-                <!-- Смета пуста по умолчанию -->
-            </div>
-
-            <!-- Financial Summary & Actions (Built right inside the single scroll block so it is easy to scroll to) -->
-            <div class="border-t border-border-color/60 pt-6 space-y-4">
-                <div class="bg-bg-sidebar p-4 rounded-2xl border border-border-color space-y-3">
-                    <div class="flex justify-between items-center text-sm font-tech">
-                        <span class="text-text-muted">Общее расчетное время:</span>
-                        <span class="text-text-main font-bold text-base" id="total-hours">0 ч</span>
-                    </div>
-                    <div class="flex justify-between items-center text-base border-t border-border-color/60 pt-3">
-                        <span class="text-text-main font-tech font-bold">Итоговая смета:</span>
-                        <span class="text-2xl font-display font-extrabold text-text-main" id="total-price">0 ₽</span>
-                    </div>
-                </div>
-
-                <div class="flex flex-col gap-3">
-                    <button onclick="printProposal()" class="w-full py-3.5 bg-primary-blue hover:opacity-90 text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 font-tech shadow-md">
-                        <i class="fa-solid fa-print text-accent-pink"></i> Печать КП / PDF ↗
-                    </button>
-                    <button onclick="clearSmeta()" class="w-full py-3.5 bg-bg-card border border-border-color text-text-main hover:bg-bg-sidebar font-tech font-semibold rounded-xl text-sm transition-all flex items-center justify-center">
-                        Очистить смету
-                    </button>
-                </div>
             </div>
 
         </div>
+
+        <!-- Sticky Bottom Section: locked to screen boundary so totals and prints are always instantly visible -->
+        <div class="border-t border-border-color/60 p-6 bg-bg-card space-y-4 flex-shrink-0">
+            <div class="bg-bg-sidebar p-4 rounded-2xl border border-border-color space-y-3">
+                <div class="flex justify-between items-center text-sm font-tech">
+                    <span class="text-text-muted">Общее расчетное время:</span>
+                    <span class="text-text-main font-bold text-base" id="total-hours">0 ч</span>
+                </div>
+                <div class="flex justify-between items-center text-base border-t border-border-color/60 pt-3">
+                    <span class="text-text-main font-tech font-bold">Итоговая смета:</span>
+                    <span class="text-2xl font-display font-extrabold text-text-main" id="total-price">0 ₽</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <button onclick="printProposal()" class="w-full py-3.5 bg-primary-blue hover:opacity-90 text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 font-tech shadow-md">
+                    <i class="fa-solid fa-print text-accent-pink"></i> Печать КП / PDF ↗
+                </button>
+                <button onclick="clearSmeta()" class="w-full py-3 bg-bg-card border border-border-color text-text-main hover:bg-bg-sidebar font-tech font-semibold rounded-xl text-sm transition-all flex items-center justify-center">
+                    Очистить смету
+                </button>
+            </div>
+        </div>
+
     </div>
 
     <!-- FLOATING INTERACTIVE HOVER TOOLTIP -->
@@ -435,7 +437,7 @@
             { id: 6, category: "Брендинг", subcategory: "Элементы Логотипа", name: "Подбор, кастомизация и верстка шрифтовой части (Название + дескриптор)", hours: 2, rate: 1500, desc: "Разработка текстового начертания названия компании и дескриптора деятельности.", s: "Выбор шрифта из библиотек, кернинг и базовая верстка.", m: "Кастомизация букв: изменение пластики, углов, вырезов под знак.", c: "Полноценный шрифтовой логотип (логомарка) ручной отрисовки с нуля." },
             { id: 7, category: "Брендинг", subcategory: "Элементы Логотипа", name: "Разработка цветовых схем и правил их сочетания", hours: 1, rate: 1500, desc: "Проектирование основной и дополнительной цветовой палитры компании.", s: "2 основных фирменных цвета для печати и экрана.", m: "Полная гамма из 4-5 оттенков с кодировками CMYK/RGB/HEX/Pantone.", c: "Сложные правила цветового кодирования для разных суббрендов/линеек." },
             { id: 8, category: "Брендинг", subcategory: "Элементы Логотипа", name: "Разработка корпоративной шрифтовой системы (подбор шрифтовых пар)", hours: 3, rate: 1500, desc: "Определение официальных шрифтовых гарнитур бренда для печати, веб-сайтов и рекламы.", s: "Подбор одного бесплатного заголовка и основного текстового шрифта.", m: "Разработка правил применения шрифтовых пар для заголовков, таблиц и веба.", c: "Аудит шрифтовых лицензий, подбор уникальных платных гарнитур-заменителей." },
-            { id: 9, category: "Брендинг", subcategory: "Элементы Логотипа", name: "Сборка финального комбинированного логотипа во всех компоновках", hours: 0.5, rate: 1500, desc: "Компоновка знака и шрифтовой части во всех базовых пространственных положениях.", s: "Горизонтальная и вертикальная версия логотипа.", m: "Все виды адаптации: для иконки, инверсия, монохром, суббренды.", c: "Полная модульная сетка сборки со всеми возможными сочетаниями." },
+            { id: 9, category: "Брендинг", subcategory: "Элементы Логотипа", name: "Сборка финального комбинированного логотипа во всех компоновках", hours: 0.5, rate: 1500, desc: "Компоновка знака и шрифтовой части во всех базовых пространственных положениях.", s: "Горизонтальная и вертикальная версия логотипа.", m: "Все виды адаптации: для иконки, инверсия, монохром, суббдеры.", c: "Полная модульная сетка сборки со всеми возможными сочетаниями." },
             { id: 10, category: "Брендинг", subcategory: "Элементы Логотипа", name: "Техническая чистка векторов, подготовка геометрии сетки и охранных зон", hours: 1, rate: 1500, desc: "Профессиональная подготовка векторного файла к сложным видам печати.", s: "Удаление лишних опорных точек в Adobe Illustrator.", m: "Проверка замкнутости контуров, слияние слоев, расчет охранных зон.", c: "Математически точное выстраивание сетки знака, идеальная геометрия." },
             { id: 11, category: "Брендинг", subcategory: "Элементы Логотипа", name: "Экспорт и подготовка файлов к сдаче во всех форматах", hours: 0.5, rate: 1500, desc: "Формирование финального рабочего пакета файлов логотипа для клиента.", s: "Экспорт в форматы AI, PNG, PDF.", m: "Разбивка по папкам: RGB, CMYK, вектор, растр без фона, фавикон.", c: "Архивация со шрифтами, векторными исходниками и инструкцией по печати." },
             { id: 12, category: "Брендинг", subcategory: "Элементы Логотипа", name: "Редизайн без смены концепта", hours: 1, rate: 1500, desc: "Осовременивание логотипа с жестким сохранением старой узнаваемости.", s: "Чистка старого вектора, замена устаревшего шрифта на новый схожий.", m: "Коррекция пропорций, толщины линий, обновление цветовой гаммы.", c: "Тотальный пересчет геометрии логотипа без изменения ключевой метафоры." },
@@ -495,7 +497,7 @@
             { id: 54, category: "Полиграфия, упаковка и мерч", subcategory: "Календарная продукция", name: "Календарь / плакатный", hours: 1.5, rate: 1500, desc: "Календарь на одном листе А1/А2.", s: "Сетка года + логотип на однотонном фоне.", m: "Календарь с использованием фирменного паттерна, фото и слогана.", c: "Масштабный постер, где сетка дат вписана в сложную графику." },
             { id: 55, category: "Полиграфия, упаковка и мерч", subcategory: "Календарная продукция", name: "Календарь / домик (шалаш)", hours: 1.5, rate: 1500, desc: "Настольный календарь в форме призмы без пружины.", s: "Сетка по 6 месяцев на каждой стороне поверх фирменного цвета.", m: "Индивидуальный дизайн сеток с иконками праздников.", c: "Календарь с вырубным замком или интерактивными элементами." },
             { id: 56, category: "Полиграфия, упаковка и мерч", subcategory: "Календарная продукция", name: "Календарь / Перекидной домик", hours: 3.5, rate: 1500, desc: "Настольный домик на пружине с перекидными листами.", s: "Сетка года на перекидных листах, логотип на картонной ножке.", m: "Уникальный дизайн каждого из 12 листов, верстка mini-текстов.", c: "Дизайн листов со сложным фотоколлажем или ИИ-артом." },
-            { id: 57, category: "Полиграфия, упаковка и мерч", subcategory: "Календарная продукция", name: "Календарь / карманный (2 стороны)", hours: 1, rate: 1500, desc: "Компактиный карманный календарь.", s: "Лицо — логотип на фоне, оборот — стандартная сетка года.", m: "Интеграция фирменной инфографики, линейки на лицевой стороне.", c: "Подготовка макета под пластик со скруглением углов." },
+            { id: 57, category: "Полиграфия, упаковка и мерч", subcategory: "Календарная продукция", name: "Календарь / карманный (2 стороны)", hours: 1, rate: 1500, desc: "Компактный карманный календарь.", s: "Лицо — логотип на фоне, оборот — стандартная сетка года.", m: "Интеграция фирменной инфографики, линейки на лицевой стороне.", c: "Подготовка макета под пластик со скруглением углов." },
             { id: 58, category: "Полиграфия, упаковка и мерч", subcategory: "Календарная продукция", name: "Календарь / Вырубной (Фигурный)", hours: 3, rate: 1500, desc: "Календари нестандартной геометрической формы.", s: "Размещение сетки на стандартной форме (овал, звезда).", m: "Дизайн в виде силуэта товара компании (например, машины).", c: "Проектирование сложного штампа вырубки с объемной сборкой." },
             { id: 59, category: "Полиграфия, упаковка и мерч", subcategory: "Календарная продукция", name: "Календарь / вечный", hours: 3.5, rate: 1500, desc: "Календарь со сдвижными элементами из дерева или пластика.", s: "Брендирование готовой заготовки логотипом.", m: "Разработка шкал дат и месяцев под лазерную гравировку.", c: "Проектирование конструкции вечного календаря с нуля." },
 
@@ -503,10 +505,10 @@
             { id: 60, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Тейбл-тент / Меню-холдер (в подставке)", hours: 1.5, rate: 1500, desc: "Рекламный вкладыш в подставку на столы.", s: "Текст акции крупно на красивом фирменном фоне.", m: "Верстка сложного предложения, легкая ретушь фото блюда.", c: "Создание сочного коллажа с ИИ-окружением блюда." },
             { id: 61, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Костер / Birdekel (подставка под бокалы)", hours: 1, rate: 1500, desc: "Дизайн подставки под напитки.", s: "Размещение логотипа строго по центру круга/квадрата.", m: "Креативный дизайн со слоганом, графическими элементами.", c: "Серия костеров в единой стилистики с уникальной графикой." },
             { id: 62, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Фирменный сахар в стиках (дизайн упаковки)", hours: 1, rate: 1500, desc: "Дизайн бумажной упаковки порционного сахара.", s: "Логотип на белом или крафтовом фоне стика.", m: "Серия стиков с интересными фразами бренда и узорами.", c: "Разработка паттерна, pre-press под флексопечать." },
-            { id: 63, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Фирменный mini-шоколад/мыло (дизайн обертки)", hours: 1.5, rate: 1500, desc: "Этикетка обертки порционного шоколада.", s: "Логотип на лицевой стороне, контакты сзади по готовому шаблону.", m: "Верстка состава, штрихкодов, декоративных узоров.", c: "Комплексный дизайн подарочного набора mini-шоколадок." },
+            { id: 63, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Фирменный mini-шоколад/мыло (дизайн обертки)", hours: 1.5, rate: 1500, desc: "Этикетка обертки порционного шоколада.", s: "Логотип на лицевой стороне, контакты сзади по готовому шаблону.", m: "Верстка состава, штрихкодов, декоративных узоров.", c: "Комплексный дизайн поарочного набора mini-шоколадок." },
             { id: 64, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Брендированный стаканчик (развертка под конус)", hours: 2.5, rate: 1500, desc: "Круговой макет запечатки одноразового стакана.", s: "Размещение логотипа в центре зоны видимости.", m: "Сложная круговая развертка с паттерном, иконками соцсетей.", c: "Креативная развертка с вырубным манжетом (капхолдером)." },
             { id: 65, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Фирменный пергамент / подложка", hours: 1.5, rate: 1500, desc: "Подложка на подносы или упаковочная бумага.", s: "Размножение логотипа по сетке в 1 цвет (паттерн).", m: "Журнальный дизайн: кроссворды, факты о заведении на подложке.", c: "Креативный паттерн со сложной ИИ-графикой под печать в 3 цвета." },
-            { id: 66, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Коробка для фастфуда (по готовому крою)", hours: 2.5, rate: 1500, desc: "Дизайн упаковки стритфуда по готовому крою.", s: "Фирменный цвет и логотип на верхней грани.", m: "Запечатка всей поверхности коробки, добавление инфографики.", c: "Дизайн упаковки с ИИ-персонажем, pre-press под пищевой картон." },
+            { id: 66, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Коробка для фастфуда (по готовому крою)", hours: 2.5, rate: 1500, desc: "Дизайн упаковки стритфуда по готовому крою.", s: "Фирменный цвет and логотип на верхней грани.", m: "Запечатка всей поверхности коробки, добавление инфографики.", c: "Дизайн упаковки с ИИ-персонажем, pre-press под пищевой картон." },
             { id: 67, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Коробка для пиццы (по готовому крою)", hours: 2, rate: 1500, desc: "Дизайн плоской картонной коробки по готовому крою.", s: "Печать в 1-2 цвета на крышке (логотип, слоган).", m: "Полноцветный дизайн всей площади коробки с паттернами.", c: "Интерактивная крышка с ребусом, комиксом или настольной игрой." },
             { id: 68, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Дорхенгер (Doorhanger) — табличка на ручку", hours: 2, rate: 1500, desc: "Информационная вешалка на дверную ручку.", s: "Текст (например, 'Не беспокоить') + логотип на стандартной форме.", m: "Рекламный двухсторонний оффер с акционными плашками.", c: "Креативный вырубной дорхенгер сложной формы с иллюстрациями." },
             { id: 69, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Меню-борд / Меню-плейсмат (одностраничное)", hours: 3, rate: 1500, desc: "Одностраничное меню-салфетка.", s: "Чистая верстка названий блюд и цен в колонки (без фото).", m: "Стильные разделители категорий, выделение топ-блюд.", c: "Сложный дизайн плейсмата со сложной сеткой и ИИ-графикой." },
@@ -559,7 +561,7 @@
             { id: 108, category: "Наружная реклама", subcategory: "Оформление витрин и точек продаж", name: "Дизайн полноцветного оформления витрины", hours: 2.5, rate: 1500, desc: "Широкоформатная печать на виниловой пленке для стекол.", s: "Верстка прямоугольного рекламного плаката на перфопленке.", m: "Сложный фотоколлаж, совмещение печати и плоттерного реза.", c: "Интеграция ИИ-артов, создание эффекта объема в витрине." },
 
             // НАРУЖНАЯ РЕКЛАМА - МОБИЛЬНЫЕ
-            { id: 109, category: "Наружная реклама", subcategory: "Мобильные и выносные конструкции", name: "Штендер классический (двусторонний «домик»)", hours: 1.5, rate: 1500, desc: "Выносная металлическая реклама-домик у входа.", s: "Крупный логотип, стрелка, список услуг и телефон.", m: "Дизайн с использованием паттернов, интеграция QR-кода на прайс.", c: "Фигурный кастомный штендер с вырубной шапкой." },
+            { id: 109, category: "Наружная реклама", subcategory: "Мобильные и выносные конструкции", name: "Штендер классический (двусторонний «домик» у входа)", hours: 1.5, rate: 1500, desc: "Выносная металлическая реклама-домик у входа.", s: "Крупный логотип, стрелка, список услуг и телефон.", m: "Дизайн с использованием паттернов, интеграция QR-кода на прайс.", c: "Фигурный кастомный штендер с вырубной шапкой." },
             { id: 110, category: "Наружная реклама", subcategory: "Мобильные и выносные конструкции", name: "Роллап (Roll-up) мобильный стенд", hours: 2, rate: 1500, desc: "Выставочный раздвижной стенд 85х200 см.", s: "Логотип сверху, УТП по центру, контакты снизу.", m: "Оформитель с инфографикой, обработка фото спикера/товара.", c: "Сложный рекламный дизайн под серию из нескольких роллапов." },
             { id: 111, category: "Наружная реклама", subcategory: "Мобильные и выносные конструкции", name: "Пресс-волл (Press-wall) / Фотозона", hours: 2, rate: 1500, desc: "Большой баннерный стенд для фотосессий на праздниках.", s: "Шахматная сетка логотипов спонсоров на белом фоне.", m: "Яркая тематическая фотозона с градиентами и графикой.", c: "Создание фотозоны с интеграцией ИИ-артов и 3D-бутафорией." },
             { id: 112, category: "Наружная реклама", subcategory: "Мобильные и выносные конструкции", name: "Флаг-виндер (флаг-парус / флаг-перо)", hours: 1.5, rate: 1500, desc: "Тканевые флаги на уличные промо-акции.", s: "Крупное вертикальное нанесение логотипа на фирменном цвете.", m: "Верстка по лекалу, интеграция бесшовного паттерна.", c: "Сложный дизайн купола с двусторонней печатью." },
@@ -711,7 +713,7 @@
             renderTable();
         }
 
-        // TOOLTIP ENGINE: Limited exactly to hovering over service name link
+        // CUSTOM HOVER TOOLTIP ENGINE (Limited exactly to hovering over service name link)
         const tooltipEl = document.getElementById('service-tooltip');
 
         function showTooltip(e, id) {
@@ -803,7 +805,7 @@
 
                 const tr = document.createElement('tr');
                 tr.id = `row-${item.id}`;
-                // Highlight row in brighter pink when selected
+                // Highlight row in brighter pink when selected (#feafce/15)
                 tr.className = `hover:bg-table-row-hover text-sm border-b border-border-color/40 border-l-4 transition-all ${isChecked ? 'bg-[#feafce]/15 dark:bg-[#feafce]/5 border-l-accent-pink' : 'border-l-transparent'}`;
                 
                 tr.innerHTML = `
@@ -1137,7 +1139,7 @@
                         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #111115; padding: 40px; }
                         .header { display: flex; justify-content: space-between; border-b: 2px solid #111115; padding-bottom: 20px; margin-bottom: 30px; }
                         .title { font-size: 24px; font-weight: bold; }
-                        .client-info { margin-bottom: 30px; background-color: #f9f9fb; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; }
+                        .client-info { margin-bottom: 30px; background-color: #f9f9fb; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; }
                         .comments-block { margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; font-style: italic; color: #475569; font-size: 14px; }
                         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
                         th, td { border-bottom: 1px solid #e2e8f0; padding: 12px; text-align: left; vertical-align: top; }
@@ -1153,13 +1155,13 @@
                             <div class="title" style="text-transform: uppercase; font-family: 'Space Grotesk', sans-serif;">Коммерческое предложение</div>
                             <div style="color: #6b7280; font-size: 14px; margin-top: 5px;">Разработчик / Дизайнер — CHATKINA.DESIGN</div>
                         </div>
-                        <div style="text-align: right; font-size: 14px; color: #6b7280;">Дата: ${date}</div>
+                        <div style="text-align: right; font-size: 14px; color: #6b7280;">Дата: ` + date + `</div>
                     </div>
                     
                     <div class="client-info">
-                        <strong>Получатель:</strong> ${clientName}<br>
-                        <strong>Проект:</strong> ${projectTitle}
-                        ${clientComments ? `<div class="comments-block"><strong>Комментарии к сметным задачам:</strong><br>${clientComments.replace(/\n/g, '<br>')}</div>` : ''}
+                        <strong>Получатель:</strong> ` + clientName + `<br>
+                        <strong>Проект:</strong> ` + projectTitle + `
+                        ` + (clientComments ? '<div class="comments-block"><strong>Комментарии к сметным задачам:</strong><br>' + clientComments.replace(/\n/g, '<br>') + '</div>' : '') + `
                     </div>
 
                     <h3>Смета проекта:</h3>
@@ -1208,13 +1210,13 @@
                 proposalHTML += `
                     <tr>
                         <td>
-                            <strong>${service.name}</strong>
-                            <div class="item-desc"><strong>Техрегламент:</strong> ${complexityDetail}</div>
+                            <strong>` + service.name + `</strong>
+                            <div class="item-desc"><strong>Техрегламент:</strong> ` + complexityDetail + `</div>
                         </td>
-                        <td>${complexityName}</td>
-                        <td style="text-align: center;">${itemTime.toFixed(1)} ч</td>
-                        <td style="text-align: center;">${item.qty} шт</td>
-                        <td style="text-align: right;">${Math.round(cost).toLocaleString('ru-RU')} ₽</td>
+                        <td>` + complexityName + `</td>
+                        <td style="text-align: center;">` + itemTime.toFixed(1) + ` ч</td>
+                        <td style="text-align: center;">` + item.qty + ` шт</td>
+                        <td style="text-align: right;">` + Math.round(cost).toLocaleString('ru-RU') + ` ₽</td>
                     </tr>
                 `;
             });
@@ -1224,8 +1226,8 @@
                     </table>
 
                     <div class="total">
-                        Общее время реализации: <span class="highlight-text">${totalHours.toFixed(1)} ч</span><br>
-                        <span style="font-size: 22px; color: #111115; display: block; margin-top: 10px;">Итоговая стоимость: ${Math.round(totalPrice).toLocaleString('ru-RU')} ₽</span>
+                        Общее время реализации: <span class="highlight-text">` + totalHours.toFixed(1) + ` ч</span><br>
+                        <span style="font-size: 22px; color: #111115; display: block; margin-top: 10px;">Итоговая стоимость: ` + Math.round(totalPrice).toLocaleString('ru-RU') + ` ₽</span>
                     </div>
                 </body>
                 </html>
