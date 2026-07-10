@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>CHATKINA.DESIGN — Bento Proposal System v2.5</title>
+    <title>CHATKINA.DESIGN — Bento Proposal System v2.6</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Space Grotesk, Urbanist, Manrope и пиксельный Silkscreen -->
@@ -15,17 +15,17 @@
     
     <style>
         :root {
-            /* Светлая Stark White & Brand Blue-Pink тема */
-            --bg-main: #e4e4e4; 
+            /* Светлая Stark White & Brand Blue-Pink тема (Осветлена в два раза) */
+            --bg-main: #f4f4f6; 
             --bg-card: #ffffff; 
-            --bg-sidebar: #f8fafc; 
+            --bg-sidebar: #fcfcfd; 
             --text-main: #111115; 
             --text-muted: #64748b; 
             --border-color: #cbd5e1; 
             --primary-blue: #182aeb; 
             --accent-pink: #feafce; 
             --input-bg: #ffffff;
-            --table-header-bg: #f1f5f9;
+            --table-header-bg: #f8fafc;
             --table-row-hover: rgba(254, 175, 206, 0.08);
             
             --tooltip-bg: #ffffff;
@@ -41,21 +41,21 @@
         
         .dark {
             /* Темная матовая Obsidian & Brand тема */
-            --bg-main: #0a0a0f; 
-            --bg-card: #15151f; 
-            --bg-sidebar: #0f0f16; 
+            --bg-main: #1d2238; 
+            --bg-card: #28304d; 
+            --bg-sidebar: #20273f; 
             --text-main: #f9f9fb; 
             --text-muted: #94a3b8; 
-            --border-color: #272733; 
+            --border-color: #3b4566; 
             --primary-blue: #3b4bfb; 
             --accent-pink: #feafce; 
-            --input-bg: #0f0f16;
-            --table-header-bg: #0f0f16;
+            --input-bg: #20273f;
+            --table-header-bg: #20273f;
             --table-row-hover: rgba(254, 175, 206, 0.06);
             
-            --tooltip-bg: #15151f;
+            --tooltip-bg: #28304d;
             --tooltip-text: #f9f9fb;
-            --tooltip-border: #272733;
+            --tooltip-border: #3b4566;
             --tooltip-shadow: rgba(0, 0, 0, 0.5);
         }
 
@@ -167,16 +167,16 @@
 
     <!-- HEADER (Sticky & Unified Alignment, Optimized Tablet Widths) -->
     <header class="sticky top-0 z-40 w-full px-4 md:px-6 pt-4 md:pt-6 pb-2 bg-bg-main/90 backdrop-blur-md">
-        <div class="max-w-[1600px] mx-auto bento-card p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-bg-card">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-xl bg-primary-blue flex items-center justify-center text-white font-bold text-2xl shadow-sm flex-shrink-0">
+        <div class="max-w-[1600px] mx-auto bento-card p-3 md:p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-bg-card">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 md:w-11 md:h-11 rounded-xl bg-primary-blue flex items-center justify-center text-white font-bold text-xl md:text-2xl shadow-sm flex-shrink-0">
                     <span class="font-tech text-accent-pink">↗</span>
                 </div>
                 <div>
-                    <h1 class="text-2xl md:text-3xl font-pixel tracking-tight whitespace-nowrap">
+                    <h1 class="text-xl md:text-2xl lg:text-3xl font-pixel tracking-tight whitespace-nowrap">
                         <span class="text-primary-blue">CHATKINA</span><span class="text-accent-pink">.DESIGN</span>
                     </h1>
-                    <p class="text-[10px] text-text-muted font-tech tracking-widest uppercase mt-1">Bento Proposal System v2.5</p>
+                    <p class="text-[9px] md:text-[10px] text-text-muted font-tech tracking-widest uppercase mt-0.5">Bento Proposal System v2.6</p>
                 </div>
             </div>
             
@@ -372,7 +372,7 @@
         <div class="flex-1 overflow-y-auto p-4 sm:p-6 flex flex-col gap-5 sm:gap-6 min-h-0">
             
             <!-- CLIENT INPUTS BLOCK (Top on Desktop/Tablet, bottom on Mobile) -->
-            <div class="space-y-4 pb-4 border-b border-border-color/60">
+            <div class="space-y-4 pb-4 border-b border-border-color/60 order-2 md:order-1">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="text-[10px] font-bold uppercase text-text-muted block mb-1">Имя / Компания клиента:</label>
@@ -392,7 +392,7 @@
             </div>
 
             <!-- CHATKINA SELECTED SERVICES BLOCK -->
-            <div class="space-y-4">
+            <div class="space-y-4 order-1 md:order-2">
                 <div class="flex items-center justify-between border-b border-border-color pb-2">
                     <h4 class="text-xs font-bold text-text-muted uppercase tracking-wider">Выбранные услуги</h4>
                     <span class="text-xs bg-primary-blue/15 text-primary-blue border border-primary-blue/20 px-2 py-0.5 rounded-full font-tech font-bold" id="selected-badge-count">0</span>
@@ -541,7 +541,7 @@
             { id: 82, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Брендированная ручка/карандаш", hours: 0.5, rate: 1500, desc: "Промо-канцелярия для выставок.", s: "Логотип или сайт на клипе/корпусе в один цвет.", m: "Тампопечать в 2 цвета, гравировка на металле.", c: "Индивидуальный дизайн ручки по круговому макету запечатки." },
             { id: 83, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Брендированный бейдж", hours: 1, rate: 1500, desc: "Дизайн карты идентификации сотрудника.", s: "Имя, должность and логотип по строгой сетке.", m: "Оригинальный бейдж с вырубными окнами или кастомной формой.", c: "Премиальный металлический бейдж с гравировкой." },
             { id: 84, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Брендированный ланьярд (лента для бейджа)", hours: 1, rate: 1500, desc: "Лента для бейджа с шаговым нанесением.", s: "Шаблонное повторение логотипа на ленте в один цвет.", m: "Дизайн ленты с бесшовным паттерном, расчет шага печати.", c: "Двусторонняя печать с перекрестным узором." },
-            { id: 85, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Вобблер рекламный (стоппер на гибкой ножке)", hours: 1.5, rate: 1500, desc: "POS-материал на гибкой пластиковой ножке.", s: "Круклый вобблер с ценой и логотипом по центру.", m: "Фигурная вырубка (в форме продукта), сочный коллаж.", c: "Креативный 3D-вобблер со складывающимися деталями." },
+            { id: 85, category: "Полиграфия, упаковка and мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Вобблер рекламный (стоппер на гибкой ножке)", hours: 1.5, rate: 1500, desc: "POS-материал на гибкой пластиковой ножке.", s: "Круклый вобблер с ценой и логотипом по центру.", m: "Фигурная вырубка (в форме продукта), сочный коллаж.", c: "Креативный 3D-вобблер со складывающимися деталями." },
             { id: 86, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Шелфтокер (длинная рекламная полоса)", hours: 1.5, rate: 1500, desc: "Рекламный разделитель товаров на полках магазинов.", s: "Верстка бренда и слогана на длинной полосе по размерам.", m: "Проектирование конструкции с загибами и ценниками.", c: "Креативный шелфтокер с выносными вырубными элементами." },
             { id: 87, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Фирменная флешка / USB-накопитель", hours: 1, rate: 1500, desc: "Дизайн нанесения на USB-накопитель.", s: "Логотип на защитном колпачке или корпусе.", m: "Флешка-визитка под полную УФ-печать (две стороны).", c: "Разработка макета кастомного резинового корпуса флешки." },
             { id: 88, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Фирменный повербанк (Power Bank)", hours: 1, rate: 1500, desc: "Брендирование внешнего аккумулятора.", s: "Нанесение логотипа по центру плоской грани.", m: "Макет полной запечатки лицевой стороны паттерном.", c: "Совмещение УФ-печати и лазерной гравировки светодиодов." },
@@ -552,7 +552,7 @@
             { id: 95, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Фирменная зажигалка", hours: 0.5, rate: 1500, desc: "Промо-зажигалки для промо-акций.", s: "Посадка логотипа на узорчатый пластиковый корпус.", m: "Двусторонний принт с паттерном или забавным слоганом.", c: "Макет лазерной гравировки на металлических зажигалках Zippo." },
             { id: 96, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Брелок (пластик, металл, дерево, кожа)", hours: 1, rate: 1500, desc: "Дизайн сувенирного брелока.", s: "Размещение логотипа на стандартной круглой заготовке.", m: "Двусторонний брелок с тиснением на коже или гравировкой.", c: "Фигурный кастомный брелок из акрила, лазерная резка." },
 
-            // НАРУЖНАЯ РЕКЛАМА - БРЕНДИРОВАНИЕ ТРАНСПОРТА
+            // НАРУЖНАЯ РЕКЛАМА - БРЕНДИРОВАНИЕ ТРАНСПОРТA
             { id: 97, category: "Наружная реклама", subcategory: "Брендирование транспорта", name: "Брендирование легкового автомобиля", hours: 3, rate: 1500, desc: "Разработка макета оклейки легкового автомобиля.", s: "Посадка логотипа и контактов на двери по вектору кузова.", m: "Динамическая графика (полосы, паттерны), перетекающая по кузову.", c: "Полная оклейка винилом с 3D-графикой и препрессом." },
             { id: 98, category: "Наружная реклама", subcategory: "Брендирование транспорта", name: "Брендирование коммерческого транспорта / фургонов / газелей", hours: 3.5, rate: 1500, desc: "Реклама на будках фургонов и Газелей.", s: "Логотип и оффер крупно на плоской грани фургона.", m: "Полноцветный макет, интеграция фото товаров, учет заклепок.", c: "Креативная реклама на всей площади тента/будки с ИИ-артом." },
             { id: 99, category: "Наружная реклама", subcategory: "Брендирование транспорта", name: "Брендирование пассажирского транспорта (автобусы)", hours: 5, rate: 1500, desc: "Масштабная реклама на бортах городского транспорта.", s: "Размещение логотипа и слогана на боках автобуса.", m: "Интеграция графики с учетом остекления (перфопленка).", c: "Имиджевый макет полной оклейки с препрессом файлов 1:1." },
@@ -575,7 +575,7 @@
             { id: 110, category: "Наружная реклама", subcategory: "Мобильные и выносные конструкции", name: "Роллап (Roll-up) мобильный стенд", hours: 2, rate: 1500, desc: "Выставочный раздвижной стенд 85х200 см.", s: "Логотип сверху, УТП по центру, контакты снизу.", m: "Оформитель с инфографикой, обработка фото спикера/товара.", c: "Сложный рекламный дизайн под серию из нескольких роллапов." },
             { id: 111, category: "Наружная реклама", subcategory: "Мобильные и выносные конструкции", name: "Пресс-волл (Press-wall) / Фотозона", hours: 2, rate: 1500, desc: "Большой баннерный стенд для фотосессий на праздниках.", s: "Шахматная сетка логотипов спонсоров на белом фоне.", m: "Яркая тематическая фотозона с градиентами и графикой.", c: "Создание фотозоны с интеграцией ИИ-артов и 3D-бутафорией." },
             { id: 112, category: "Наружная реклама", subcategory: "Мобильные и выносные конструкции", name: "Флаг-виндер (флаг-парус / флаг-перо)", hours: 1.5, rate: 1500, desc: "Тканевые флаги на уличные промо-акции.", s: "Крупное вертикальное нанесение логотипа на фирменном цвете.", m: "Верстка по лекалу, интеграция бесшовного паттерна.", c: "Сложный дизайн купола с двусторонней печатью." },
-            { id: 113, category: "Наружная реклама", subcategory: "Мобильные и выносные конструкции", name: "Тротуарная / уличная навигация", hours: 1, rate: 1500, desc: "Навигация в виде износостойких наклеек на асфальт.", s: "Векторный след ноги или простая стрелка с текстом.", m: "Яркая наклейка с 3D-эффектом объема стрелки.", c: "Сложная иллюстрированная навигация-квест на асфальте." },
+            { id: 113, category: "Наружная реклама", subcategory: "Мобильные и выносные конструкции", name: "Тротуарная / уличная навигация", hours: 1, rate: 1500, desc: "Навигация в виде износостойких наклеек на асфальт.", s: "Векторный след ноги или простая стрелка с текстом.", m: "Яркая наклейка с 3D-эффектном объема стрелки.", c: "Сложная иллюстрированная навигация-квест на асфальте." },
 
             // НАРУЖНАЯ РЕКЛАМА - ИНТЕРЬЕРНАЯ НАВИГАЦИЯ
             { id: 114, category: "Наружная реклама", subcategory: "Интерьерное брендирование (Indoor)", name: "Логотип на зону ресепшн / Интерьерная вывеска", hours: 2, rate: 1500, desc: "Знак компании на стену в офис.", s: "Контуры букв для резки из одного материала (акрил/дерево).", m: "Проектирование многослойной вывески со скрытым крепежом.", c: "Светодиодная контражурная вывеска, комбинирование фактур." },
@@ -631,7 +631,7 @@
 
         // Theme and State Manager
         function initTheme() {
-            const savedTheme = localStorage.getItem('bento-theme-v2.5') || 'light';
+            const savedTheme = localStorage.getItem('bento-theme-v2.6') || 'light';
             if (savedTheme === 'dark') {
                 document.documentElement.classList.add('dark');
                 document.getElementById('theme-icon').className = "fa-solid fa-sun text-lg text-accent-pink";
@@ -645,11 +645,11 @@
             const isDark = document.documentElement.classList.contains('dark');
             if (isDark) {
                 document.documentElement.classList.remove('dark');
-                localStorage.setItem('bento-theme-v2.5', 'light');
+                localStorage.setItem('bento-theme-v2.6', 'light');
                 document.getElementById('theme-icon').className = "fa-solid fa-moon text-lg text-primary-blue";
             } else {
                 document.documentElement.classList.add('dark');
-                localStorage.setItem('bento-theme-v2.5', 'dark');
+                localStorage.setItem('bento-theme-v2.6', 'dark');
                 document.getElementById('theme-icon').className = "fa-solid fa-sun text-lg text-accent-pink";
             }
         }
@@ -791,11 +791,11 @@
             const activeSearch = searchQuery || searchQueryMobile;
 
             let filtered = servicesData;
-            if (selectedCategory !== 'all') {
-                filtered = filtered.filter(item => item.category === selectedCategory);
-            }
+            // GLOBAL SEARCH LOGIC: If search query is active, search across the entire database bypassing selected category
             if (activeSearch) {
                 filtered = filtered.filter(item => item.name.toLowerCase().includes(activeSearch));
+            } else if (selectedCategory !== 'all') {
+                filtered = filtered.filter(item => item.category === selectedCategory);
             }
 
             let lastSubcategory = '';
@@ -863,7 +863,7 @@
                 `;
                 tbody.appendChild(tr);
 
-                // --- 2. MOBILE CARD (Restructured layout with inner tables) ---
+                // --- 2. MOBILE CARD (Restructured layout without horizontal scroll) ---
                 const card = document.createElement('div');
                 card.id = `mobile-card-${item.id}`;
                 card.className = `bento-card p-4 space-y-3 bg-bg-card border transition-all ${isChecked ? 'bg-[#feafce]/15 dark:bg-[#feafce]/5 border-accent-pink' : 'border-border-color'}`;
@@ -1190,7 +1190,7 @@
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "Прайс-лист_CHATKINA_Bento_v2.5.csv");
+            link.setAttribute("download", "Прайс-лист_CHATKINA_Bento_v2.6.csv");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
