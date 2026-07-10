@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="ru" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHATKINA.DESIGN — Bento Price Workspace v2.2</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Space Grotesk для кода/тех-стиля и Urbanist для элегантных интерфейсов -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Urbanist:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Светлая Stark White & Brand Blue-Pink тема */
+            --bg-main: #e4e4e4; /* Очищенный ровный светло-серый */
+            --bg-card: #ffffff; /* Абсолютно белый */
+            --bg-sidebar: #f8fafc; /* Светлая подложка */
+            --text-main: #111115; /* Глубокий черный */
+            --text-muted: #64748b; /* Серый */
+            --border-color: #cbd5e1; /* Нежная рамка */
+            --primary-blue: #182aeb; /* Ярко-синий электрик */
+            --accent-pink: #feafce; /* Нежно-розовый */
+            --input-bg: #ffffff;
+            --table-header-bg: #f1f5f9;
+            --table-row-hover: rgba(24, 42, 235, 0.03);
+            
+            --tooltip-bg: #ffffff;
+            --tooltip-text: #111115;
+            --tooltip-border: #cbd5e1;
+            --tooltip-shadow: rgba(0, 0, 0, 0.08);
+        }
+        
+        .dark {
+            /* Темная матовая Obsidian & Brand тема */
+            --bg-main: #09090b; /* Обсидиановый черный */
+            --bg-card: #12121a; /* Глубокий графит */
+            --bg-sidebar: #16161f; /* Темно-серый bento-фон */
+            --text-main: #f9f9fb; /* Белый */
+            --text-muted: #9ca3af; /* Серый */
+            --border-color: #22222e; /* Контрастная темная рамка */
+            --primary-blue: #3b4bfb; /* Ярко-синий */
+            --accent-pink: #feafce; /* Нежно-розовый */
+            --input-bg: #09090b;
+            --table-header-bg: #16161f;
+            --table-row-hover: rgba(59, 75, 251, 0.05);
+            
+            --tooltip-bg: #16161f;
+            --tooltip-text: #f9f9fb;
+            --tooltip-border: #22222e;
+            --tooltip-shadow: rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+        .font-tech {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .font-display {
+            font-family: 'Urbanist', sans-serif;
+        }
+
+        /* Bento Card Custom Styling */
+        .bento-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .bento-card:hover {
+            border-color: var(--primary-blue);
+            box-shadow: 0 8px 30px rgba(24, 42, 235, 0.04);
+        }
+
+        /* Custom Hover Tooltip */
+        #service-tooltip {
+            background-color: var(--tooltip-bg);
+            border: 1px solid var(--tooltip-border);
+            color: var(--tooltip-text);
+            box-shadow: 0 10px 30px var(--tooltip-shadow);
+            backdrop-filter: blur(8px);
+            transition: opacity 0.15s ease;
+        }
+
+        /* Segmented Pill Toggles */
+        .segmented-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .segmented-btn.active {
+            background-color: var(--primary-blue);
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-blue);
+        }
+    </style>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'bg-main': 'var(--bg-main)',
+                        'bg-card': 'var(--bg-card)',
+                        'bg-sidebar': 'var(--bg-sidebar)',
+                        'text-main': 'var(--text-main)',
+                        'text-muted': 'var(--text-muted)',
+                        'border-color': 'var(--border-color)',
+                        'primary-blue': 'var(--primary-blue)',
+                        'accent-pink': 'var(--accent-pink)',
+                        'input-bg': 'var(--input-bg)',
+                        'table-header-bg': 'var(--table-header-bg)',
+                        'table-row-hover': 'var(--table-row-hover)',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col antialiased bg-bg-main text-text-main transition-colors duration-300">
+
+    <!-- HEADER (Aligned to exactly max-w-[1600px] and made sticky) -->
+    <header class="sticky top-0 z-40 w-full px-4 md:px-6 pt-4 md:pt-6 pb-2 bg-bg-main/90 backdrop-blur-md">
+        <div class="max-w-[1600px] mx-auto bento-card p-4 flex flex-wrap items-center justify-between gap-4 bg-bg-card">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-primary-blue flex items-center justify-center text-white font-bold text-2xl shadow-sm">
+                    <span class="font-tech text-accent-pink">↗</span>
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-display font-extrabold tracking-tight">
+                        <span class="text-primary-blue">CHATKINA</span><span class="text-accent-pink bg-slate-900 px-2.5 py-0.5 rounded-lg ml-1 font-tech text-base md:text-lg">.DESIGN</span>
+                    </h1>
+                    <p class="text-[10px] text-text-muted font-tech tracking-widest uppercase mt-1">Bento Proposal System v2.2</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <!-- Theme Toggle -->
+                <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl border border-border-color bg-bg-card hover:bg-bg-sidebar text-text-main transition-all flex items-center justify-center" title="Переключить тему">
+                    <i id="theme-icon" class="fa-solid fa-moon text-lg text-primary-blue"></i>
+                </button>
+                <button onclick="exportToCSV()" class="px-4 py-2.5 rounded-xl border border-border-color hover:border-primary-blue text-text-main font-tech text-sm transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-file-excel"></i> Экспорт .CSV
+                </button>
+                <button onclick="toggleCalculatorDrawer()" class="px-5 py-2.5 rounded-xl bg-primary-blue hover:opacity-90 text-white font-bold text-sm transition-all flex items-center gap-2 shadow-sm font-tech">
+                    <i class="fa-solid fa-receipt text-accent-pink"></i> Посмотреть смету (<span id="cart-count">0</span>) ↗
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN INTERFACE -->
+    <main class="flex-1 max-w-[1600px] w-full mx-auto p-4 md:p-6 pt-2 flex gap-6 overflow-hidden">
+        
+        <!-- SIDEBAR: BENTO FILTER MODULE -->
+        <aside class="w-80 flex flex-col gap-4 overflow-y-auto hidden lg:flex flex-shrink-0">
+            <!-- Search Module -->
+            <div class="bento-card p-5 bg-bg-card">
+                <h3 class="text-xs font-tech uppercase tracking-wider text-text-muted mb-3">Поиск по базе</h3>
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-text-muted"></i>
+                    <input type="text" id="search-input" onkeyup="filterServices()" placeholder="Услуга..." class="w-full bg-input-bg border border-border-color rounded-xl py-2.5 pl-10 pr-4 text-sm text-text-main focus:outline-none focus:border-primary-blue transition-all">
+                </div>
+            </div>
+
+            <!-- Category Filters Module -->
+            <div class="bento-card p-5 bg-bg-card flex-1 flex flex-col overflow-hidden">
+                <h3 class="text-xs font-tech uppercase tracking-wider text-text-muted mb-3">Разделы первого уровня</h3>
+                <nav class="flex-1 overflow-y-auto space-y-1.5 pr-1" id="category-filters">
+                    <!-- Будет сгенерировано JS -->
+                </nav>
+            </div>
+
+            <!-- Fast info guide module -->
+            <div class="bento-card p-5 bg-bg-card bg-gradient-to-br from-primary-blue/5 to-transparent">
+                <h4 class="text-xs font-tech text-text-main mb-2"><i class="fa-solid fa-bolt text-primary-blue mr-1"></i> Конфигуратор</h4>
+                <p class="text-xs text-text-muted leading-relaxed">Дважды кликните на ячейку с <strong>Часами</strong> или <strong>Ставкой</strong> в таблице, чтобы пересчитать ее базовые тарифы в реальном времени.</p>
+            </div>
+        </aside>
+
+        <!-- DATA VIEWER CONTAINER -->
+        <section class="flex-1 bento-card bg-bg-card flex flex-col overflow-hidden">
+            <!-- Mobile Filters (Top bar) -->
+            <div class="p-4 border-b border-border-color bg-bg-sidebar/50 flex lg:hidden gap-3 items-center justify-between">
+                <input type="text" id="search-input-mobile" onkeyup="filterServicesMobile()" placeholder="Поиск услуги..." class="bg-input-bg border border-border-color rounded-xl py-2 px-3 text-sm text-text-main focus:outline-none focus:border-primary-blue flex-1">
+                <select id="category-select-mobile" onchange="selectCategoryMobile(this.value)" class="bg-input-bg border border-border-color rounded-xl py-2 px-3 text-sm text-text-main focus:outline-none focus:border-primary-blue">
+                    <option value="all">Все разделы</option>
+                </select>
+            </div>
+
+            <!-- Bento Spreadsheet Grid -->
+            <div class="flex-1 overflow-auto relative">
+                <table class="w-full text-left border-collapse min-w-[1000px]">
+                    <thead>
+                        <tr class="bg-table-header-bg border-b border-border-color text-text-muted text-xs font-tech uppercase tracking-wider sticky top-0 z-10">
+                            <th class="py-4 px-5 w-14 text-center">Выбрать</th>
+                            <th class="py-4 px-5">Раздел / Услуга</th>
+                            <th class="py-4 px-5 w-24 text-center">Часы</th>
+                            <th class="py-4 px-5 w-32 text-right">Ставка (₽)</th>
+                            <th class="py-4 px-5 w-32 text-right text-emerald-500 bg-emerald-500/5">Простой (1х)</th>
+                            <th class="py-4 px-5 w-32 text-right text-amber-500 bg-amber-500/5">Средний (2.5х)</th>
+                            <th class="py-4 px-5 w-32 text-right text-rose-500 bg-rose-500/5">Сложный (5х)</th>
+                            <th class="py-4 px-5 w-20 text-center">Инфо</th>
+                        </tr>
+                    </thead>
+                    <tbody id="services-tbody" class="divide-y divide-border-color/60">
+                        <!-- Сетка услуг будет генерироваться JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- RIGHT DRAWER: DETAILED VIEW OF SELECTED SERVICE -->
+    <div id="details-drawer" class="fixed right-0 top-0 bottom-0 w-full sm:w-[500px] bg-bg-card border-l border-border-color shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="p-6 border-b border-border-color flex items-center justify-between bg-bg-sidebar">
+            <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-accent-pink animate-pulse"></span>
+                <h3 class="font-tech text-text-main tracking-wider text-xs">Регламенты и ТЗ услуги</h3>
+            </div>
+            <button onclick="closeDetailsDrawer()" class="text-text-muted hover:text-text-main transition-all text-xl"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="p-6 flex-1 overflow-y-auto space-y-6">
+            <div>
+                <span class="text-xs font-tech text-text-muted block mb-1" id="drawer-category">РАЗДЕЛ</span>
+                <h2 class="text-xl font-bold font-display text-text-main leading-snug" id="drawer-title">Название услуги</h2>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-bg-sidebar border border-border-color space-y-3 font-tech">
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-text-muted">Базовое время:</span>
+                    <strong class="text-text-main text-base" id="drawer-hours">3 часа</strong>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-text-muted">Базовая ставка часа:</span>
+                    <strong class="text-white bg-primary-blue px-2 py-0.5 rounded text-sm" id="drawer-rate">1 500 ₽/ч</strong>
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <h4 class="text-sm font-bold text-text-main font-tech">Описание услуги:</h4>
+                <p class="text-sm text-text-muted leading-relaxed" id="drawer-desc">Описание будет подгружено сюда.</p>
+            </div>
+
+            <hr class="border-border-color">
+
+            <div class="space-y-6">
+                <h4 class="text-sm font-bold text-text-main font-tech"><i class="fa-solid fa-layer-group text-primary-blue mr-1.5"></i> Регламент по уровням сложности:</h4>
+                
+                <!-- Простой -->
+                <div class="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/10 space-y-3">
+                    <div class="flex items-center gap-2 text-emerald-500 font-bold text-sm">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Простой дизайн (Базовые часы)</span>
+                    </div>
+                    <p class="text-xs text-text-muted leading-relaxed" id="drawer-simple-desc">Что входит в простой...</p>
+                    
+                    <!-- Рёберная заглушка под изображение простого примера -->
+                    <div class="relative w-full aspect-video rounded-xl bg-emerald-500/10 overflow-hidden border border-emerald-500/20 group">
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-emerald-600/70 p-4 text-center">
+                            <i class="fa-regular fa-image text-2xl mb-1.5 transition-transform group-hover:scale-110 duration-300"></i>
+                            <span class="text-[10px] font-tech uppercase tracking-wider">Пример простого макета</span>
+                        </div>
+                        <img src="" onerror="this.style.display='none'" class="absolute inset-0 w-full h-full object-cover rounded-xl" id="img-simple-placeholder">
+                    </div>
+                </div>
+
+                <!-- Средний -->
+                <div class="p-4 rounded-xl bg-amber-500/5 border border-amber-500/10 space-y-3">
+                    <div class="flex items-center gap-2 text-amber-500 font-bold text-sm">
+                        <i class="fa-solid fa-circle-half-stroke"></i>
+                        <span>Средний дизайн (Коэффициент 2.5х)</span>
+                    </div>
+                    <p class="text-xs text-text-muted leading-relaxed" id="drawer-medium-desc">Что входит в средний...</p>
+                    
+                    <!-- Рёберная заглушка под изображение среднего примера -->
+                    <div class="relative w-full aspect-video rounded-xl bg-amber-500/10 overflow-hidden border border-amber-500/20 group">
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-amber-600/70 p-4 text-center">
+                            <i class="fa-regular fa-image text-2xl mb-1.5 transition-transform group-hover:scale-110 duration-300"></i>
+                            <span class="text-[10px] font-tech uppercase tracking-wider">Пример среднего макета</span>
+                        </div>
+                        <img src="" onerror="this.style.display='none'" class="absolute inset-0 w-full h-full object-cover rounded-xl" id="img-medium-placeholder">
+                    </div>
+                </div>
+
+                <!-- Сложный -->
+                <div class="p-4 rounded-xl bg-rose-500/5 border border-rose-500/10 space-y-3">
+                    <div class="flex items-center gap-2 text-rose-500 font-bold text-sm">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span>Сложный дизайн (Коэффициент 5.0х)</span>
+                    </div>
+                    <p class="text-xs text-text-muted leading-relaxed" id="drawer-complex-desc">Что входит в сложный...</p>
+                    
+                    <!-- Рёберная заглушка под изображение сложного примера -->
+                    <div class="relative w-full aspect-video rounded-xl bg-rose-500/10 overflow-hidden border border-rose-500/20 group">
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-rose-600/70 p-4 text-center">
+                            <i class="fa-regular fa-image text-2xl mb-1.5 transition-transform group-hover:scale-110 duration-300"></i>
+                            <span class="text-[10px] font-tech uppercase tracking-wider">Пример сложного макета</span>
+                        </div>
+                        <img src="" onerror="this.style.display='none'" class="absolute inset-0 w-full h-full object-cover rounded-xl" id="img-complex-placeholder">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT DRAWER: CALCULATOR PROPOSAL BUILDER -->
+    <div id="calculator-drawer" class="fixed right-0 top-0 bottom-0 w-full sm:w-[600px] bg-bg-card border-l border-border-color shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="p-6 border-b border-border-color flex items-center justify-between bg-bg-sidebar">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-receipt text-primary-blue text-lg"></i>
+                <h3 class="font-tech text-text-main tracking-wider text-xs">Конструктор коммерческого предложения</h3>
+            </div>
+            <button onclick="toggleCalculatorDrawer()" class="text-text-muted hover:text-text-main transition-all text-xl"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <!-- Inputs Form Module -->
+        <div class="p-6 pb-2 space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="text-[10px] font-tech uppercase text-text-muted block mb-1">Имя / Компания клиента:</label>
+                    <input type="text" id="client-name" placeholder="ООО Вектор" class="w-full bg-input-bg border border-border-color rounded-xl py-2 px-3.5 text-sm text-text-main focus:outline-none focus:border-primary-blue">
+                </div>
+                <div>
+                    <label class="text-[10px] font-tech uppercase text-text-muted block mb-1">Название проекта:</label>
+                    <input type="text" id="project-title" placeholder="Редизайн бренда" class="w-full bg-input-bg border border-border-color rounded-xl py-2 px-3.5 text-sm text-text-main focus:outline-none focus:border-primary-blue">
+                </div>
+            </div>
+
+            <!-- Responsive 3-line Comment Textarea -->
+            <div>
+                <label class="text-[10px] font-tech uppercase text-text-muted block mb-1">Комментарии к предложению:</label>
+                <textarea id="client-comments" rows="3" placeholder="Особые условия, дедлайны или технические нюансы..." class="w-full bg-input-bg border border-border-color rounded-xl py-2 px-3.5 text-sm text-text-main focus:outline-none focus:border-primary-blue resize-none"></textarea>
+            </div>
+
+            <div class="flex items-center justify-between border-b border-border-color pb-2">
+                <h4 class="text-xs font-tech text-text-muted uppercase tracking-wider">Выбранные услуги</h4>
+                <span class="text-xs bg-primary-blue/15 text-primary-blue border border-primary-blue/20 px-2 py-0.5 rounded-full font-tech font-bold" id="selected-badge-count">0</span>
+            </div>
+        </div>
+
+        <!-- Dynamic Selected List Container (Spans maximum available space) -->
+        <div id="selected-items-container" class="flex-1 overflow-y-auto px-6 py-2 space-y-3">
+            <p class="text-sm text-text-muted text-center py-10 font-tech">Смета пуста. Выберите нужные услуги галочками в таблице слева!</p>
+        </div>
+
+        <!-- Sticky Financial Summary & Actions at the absolute bottom -->
+        <div class="p-6 border-t border-border-color bg-bg-sidebar space-y-4">
+            <div class="bg-bg-card p-5 rounded-2xl border border-border-color space-y-3">
+                <div class="flex justify-between items-center text-sm font-tech">
+                    <span class="text-text-muted">Общее расчетное время:</span>
+                    <span class="text-text-main font-bold text-base" id="total-hours">0 ч</span>
+                </div>
+                <div class="flex justify-between items-center text-base border-t border-border-color/60 pt-3">
+                    <span class="text-text-main font-tech font-bold">Итоговая смета:</span>
+                    <span class="text-2xl font-display font-extrabold text-text-main" id="total-price">0 ₽</span>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="printProposal()" class="flex-1 py-3.5 bg-primary-blue hover:opacity-90 text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 font-tech shadow-md">
+                    <i class="fa-solid fa-print text-accent-pink"></i> Печать КП / Сгенерировать PDF ↗
+                </button>
+                <button onclick="clearSmeta()" class="py-3.5 px-5 bg-bg-card border border-border-color text-text-main hover:bg-bg-sidebar font-tech font-semibold rounded-xl text-sm transition-all flex items-center justify-center">
+                    Очистить
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLOATING INTERACTIVE HOVER TOOLTIP -->
+    <div id="service-tooltip" class="fixed hidden pointer-events-none z-[100] max-w-sm rounded-2xl p-4 transition-all duration-150">
+        <!-- Будет динамически наполняться JS -->
+    </div>
+
+    <!-- MAIN DATA OBJECT & ENGINE -->
+    <script>
+        const servicesData = [
+            // БРЕНДИНГ - АНАЛИТИКА И КОНЦЕПЦИЯ
+            { id: 1, category: "Брендинг", subcategory: "Аналитика и концепция", name: "Брифинг, интервью и аналитика ниши", hours: 3, rate: 1000, desc: "Сбор требований бизнеса, проведение глубинного интервью и анализ текущих коммерческих задач.", s: "Устное интервью по структурированному брифу и составление резюме задач проекта.", m: "Сквозной разбор продукта с декомпозицией сильных сторон бренда и описанием аудитории.", c: "Глубокая маркетинговая распаковка бренда, аудит ценностей и разработка позиционирования." },
+            { id: 2, category: "Брендинг", subcategory: "Аналитика и концепция", name: "Анализ визуальной среды 3-5 главных конкурентов", hours: 4, rate: 1000, desc: "Исследование графических приёмов, сильных и слабых сторон визуальной коммуникации конкурентов в нише.", s: "Сбор скриншотов логотипов и фирменных стилей прямых конкурентов.", m: "Визуальный аудит по 5 ключевым критериям с поиском точек отстройки.", c: "Построение интерактивной карты позиционирования и тренд-анализ ниши." },
+            { id: 3, category: "Брендинг", subcategory: "Аналитика и концепция", name: "Разработка мудборда и метафоры бренда (направление стиля)", hours: 3, rate: 1000, desc: "Определение визуального тона будущего бренда, поиск ассоциативных рядов и стилей.", s: "Один мудборд-коллаж по настроению и палитре из открытых референсов.", m: "Два разных направления стиля с обоснованием шрифтов и цветов.", c: "Разработка концептуальной смысловой метафоры бренда с 3D-мокапами." },
+            { id: 4, category: "Брендинг", subcategory: "Аналитика и концепция", name: "Аудит текущего визуала (при редизайне)", hours: 4, rate: 1000, desc: "Критическая оценка старой айдентики на предмет технических, эстетических и стратегических ошибок.", s: "Текстовые тезисы об ошибках логотипа и верстки основных носителей.", m: "Полный разбор проблем текущего фирменного стиля с дизайн-аудитом.", c: "Инженерная и маркетинговая оценка с планом бесшовной модернизации." },
+            
+            // БРЕНДИНГ - ЭЛЕМЕНТЫ ЛОГОТИПА
+            { id: 5, category: "Брендинг", subcategory: "Элементы Логотипа", name: "Отрисовка/поиск уникального фирменного знака (Чистая графика/геометрия)", hours: 4, rate: 1500, desc: "Проектирование центральной графической эмблемы или монограммы бренда.", s: "Простой геометрический знак без кастомных микродеталей.", m: "Оригинальная метафорическая графика, выверенная по пропорциям.", c: "Кастомная художественная графика, изометрия или геральдический знак." },
+            { id: 6, category: "Брендинг", subcategory: "Элементы Логотипа", name: "Подбор, кастомизация и верстка шрифтовой части (Название + дескриптор)", hours: 2, rate: 1500, desc: "Разработка текстового начертания названия компании и дескриптора деятельности.", s: "Выбор шрифта из библиотек, кернинг и базовая верстка.", m: "Кастомизация букв: изменение пластики, углов, вырезов под знак.", c: "Полноценный шрифтовой логотип (логомарка) ручной отрисовки с нуля." },
+            { id: 7, category: "Брендинг", subcategory: "Элементы Логотипа", name: "Разработка цветовых схем и правил их сочетания", hours: 1, rate: 1500, desc: "Проектирование основной и дополнительной цветовой палитры компании.", s: "2 основных фирменных цвета для печати и экрана.", m: "Полная гамма из 4-5 оттенков с кодировками CMYK/RGB/HEX/Pantone.", c: "Сложные правила цветового кодирования для разных суббрендов/линеек." },
+            { id: 8, category: "Брендинг", subcategory: "Элементы Логотипа", name: "Разработка корпоративной шрифтовой системы (подбор шрифтовых пар)", hours: 3, rate: 1500, desc: "Определение официальных шрифтовых гарнитур бренда для печати, веб-сайтов и рекламы.", s: "Подбор одного бесплатного заголовка и основного текстового шрифта.", m: "Разработка правил применения шрифтовых пар для заголовков, таблиц и веба.", c: "Аудит шрифтовых лицензий, подбор уникальных платных гарнитур-заменителей." },
+            { id: 9, category: "Брендинг", subcategory: "Элементы Логотипа", name: "Сборка финального комбинированного логотипа во всех компоновках", hours: 0.5, rate: 1500, desc: "Компоновка знака и шрифтовой части во всех базовых пространственных положениях.", s: "Горизонтальная и вертикальная версия логотипа.", m: "Все виды адаптации: для иконки, инверсия, монохром, суббренды.", c: "Полная модульная сетка сборки со всеми возможными сочетаниями." },
+            { id: 10, category: "Брендинг", subcategory: "Элементы Логотипа", name: "Техническая чистка векторов, подготовка геометрии сетки и охранных зон", hours: 1, rate: 1500, desc: "Профессиональная подготовка векторного файла к сложным видам печати.", s: "Удаление лишних опорных точек в Adobe Illustrator.", m: "Проверка замкнутости контуров, слияние слоев, расчет охранных зон.", c: "Математически точное выстраивание сетки знака, идеальная геометрия." },
+            { id: 11, category: "Брендинг", subcategory: "Элементы Логотипа", name: "Экспорт и подготовка файлов к сдаче во всех форматах", hours: 0.5, rate: 1500, desc: "Формирование финального рабочего пакета файлов логотипа для клиента.", s: "Экспорт в форматы AI, PNG, PDF.", m: "Разбивка по папкам: RGB, CMYK, вектор, растр без фона, фавикон.", c: "Архивация со шрифтами, векторными исходниками и инструкцией по печати." },
+            { id: 12, category: "Брендинг", subcategory: "Элементы Логотипа", name: "Редизайн без смены концепта", hours: 1, rate: 1500, desc: "Осовременивание логотипа с жестким сохранением старой узнаваемости.", s: "Чистка старого вектора, замена устаревшего шрифта на новый схожий.", m: "Коррекция пропорций, толщины линий, обновление цветовой гаммы.", c: "Тотальный пересчет геометрии логотипа без изменения ключевой метафоры." },
+            { id: 13, category: "Брендинг", subcategory: "Элементы Логотипа", name: "Векторизация растра один в один", hours: 1, rate: 1500, desc: "Ручной перевод размытой картинки или отсканированного логотипа в идеальный вектор.", s: "Отрисовка простых прямолинейных геометрических знаков.", m: "Качественная ручная отрисовка плавных кривых, текстов и деталей.", c: "Работа со сложными гравюрными рисунками, гербами или микротекстами." },
+            
+            // БРЕНДИНГ - АЙДЕНТИКА И ДОП ГРАФИКА
+            { id: 14, category: "Брендинг", subcategory: "Айдентика и доп. графика", name: "Разработка бесшовного фирменного паттерна узора", hours: 3, rate: 1500, desc: "Создание повторяющегося узора для упаковки, брендирования бумаги и фонов.", s: "Простой паттерн из стандартных геометрических фигур или логотипа.", m: "Сложная бесшовная текстура, разработанная на основе метафоры бренда.", c: "Художественный паттерн с кастомными отрисованными деталями." },
+            { id: 15, category: "Брендинг", subcategory: "Айдентика и доп. графика", name: "Создание уникального ИИ фона или текстуры с ручной доработкой", hours: 3, rate: 1500, desc: "Применение генеративных сетей Midjourney/DALL-E для генерации текстур с ручной векторизацией/чисткой.", s: "Базовая генерация бесшовной абстрактной текстуры.", m: "Глубокий промпт-инжиниринг, цветокоррекция и встраивание в стиль.", c: "Дорисовка деталей ИИ-арта вручную, увеличение разрешения до 300 DPI." },
+            { id: 16, category: "Брендинг", subcategory: "Айдентика и доп. графика", name: "Разработка набора фирменных иконок (Пакет из 6 штук)", hours: 3, rate: 1500, desc: "Индивидуальный дизайн графических пиктограмм для сайта или каталогов.", s: "Адаптация готовых бесплатных векторных иконок под палитру бренда.", m: "Индивидуальная отрисовка 6 иконок по уникальной сетке и толщине линий.", c: "Сложные контурные или изометрические пиктограммы с высокой детализацией." },
+            { id: 17, category: "Брендинг", subcategory: "Айдентика и доп. графика", name: "Разработка фирменного персонажа (Вектор) или маскота", hours: 7, rate: 1500, desc: "Создание уникального бренд-персонажа для мерча, вывесок или соцсетей.", s: "Минималистичный 2D-персонаж без сложного объема и теней.", m: "Фирменный маскот с детальной проработкой характера в 3 базовых позах.", c: "Проработка сложного 3D-эффекта в векторе, эмоциональной карты и ракурсов." },
+            { id: 18, category: "Брендинг", subcategory: "Айдентика и доп. графика", name: "Генерация персонажа/маскота через ИИ + ручная обтравка", hours: 5, rate: 1500, desc: "Использование нейросетей для генерации персонажей с последующим профессиональным ретушированием.", s: "Удаление фона и легкий цветокор персонажа.", m: "Ручная прорисовка кривых краев, устранение багов ИИ-генерации.", c: "Интеграция ИИ-маскота в бренд-среду, ретушь шерсти/волос, отрисовка теней." },
+            { id: 19, category: "Брендинг", subcategory: "Айдентика и доп. графика", name: "Разработка системы корпоративной инфографики (Шаблоны схем)", hours: 2, rate: 1500, desc: "Разработка стиля таблиц, блок-схем, графиков и таймлайнов под презентации бренда.", s: "Классические векторные стрелки и плашки в фирменном стиле.", m: "Разработка оригинальных пиктограммных шкал и диаграмм.", c: "Сложная изометрическая трехмерная визуализация внутренних процессов." },
+            
+            // БРЕНДИНГ - ДОКУМЕНТАЦИЯ
+            { id: 20, category: "Брендинг", subcategory: "Документация и Оформление", name: "Верстка базового Логобука (Logobook)", hours: 6, rate: 1500, desc: "Паспорт стандартов логотипа и его технического применения.", s: "Файл до 6 страниц: сетка логотипа, охранные зоны, цвета и шрифты.", m: "Развернутый документ до 15 страниц с правилами и анти-примерами.", c: "Логобук со сложной сеткой верстки, описанием шрифтовых лицензий." },
+            { id: 21, category: "Брендинг", subcategory: "Документация и Оформление", name: "Расширение до Гайдлайна (Guideline)", hours: 10, rate: 1500, desc: "Свод правил по оформлению фирменных носителей бренда (канцелярия, сувениры, соцсети).", s: "Логобук + стандарты для визиток, бланка и базовой сувенирки.", m: "Документ до 35 страниц: правила для одежды, авто, выставочных стендов.", c: "Сквозной корпоративный стандарт (до 60 стр.) с pre-press шаблонами." },
+            { id: 22, category: "Брендинг", subcategory: "Документация и Оформление", name: "Разработка Платформы бренда (Маркетинговая стратегия)", hours: 14, rate: 1500, desc: "Маркетинговый и смысловой каркас компании (миссия, ценности, характер, голос).", s: "Определение миссии, слогана и базового тона общения (Tone of Voice).", m: "Глубокая маркетинговая распаковка, аватар клиента, метафора бренда.", c: "Смысловая платформа бренда со стратегией отстройки от конкурентов." },
+            { id: 23, category: "Брендинг", subcategory: "Документация и Оформление", name: "Презентация концепций на 3D-мокапах (Визуализация)", hours: 3, rate: 1500, desc: "Реалистичная визуализация стиля на физических объектах (коробки, стены, мерч).", s: "Наложение логотипа на стандартные фронтальные фото-мокапы.", m: "Посадка графики на 5-6 сложных текстурных носителей с тенями.", c: "Создание уникальной визуализации на кастомных мокапах с ИИ-рендерами." },
+
+            // ПОЛИГРАФИЯ - ДЕЛОВАЯ ДОКУМЕНТАЦИЯ
+            { id: 24, category: "Полиграфия, упаковка и мерч", subcategory: "Деловая документация", name: "Визитка", hours: 0.5, rate: 1500, desc: "Проектирование персональной или корпоративной визитной карточки.", s: "Простой текстовый макет по сетке на белом/однотонном фоне.", m: "Двусторонняя визитка с паттерном, графикой и подготовкой к УФ-лаку.", c: "Премиум-дизайн с тиснением, шелкографией или фигурной вырубкой." },
+            { id: 25, category: "Полиграфия, упаковка и мерч", subcategory: "Деловая документация", name: "Фирменный бланк", hours: 0.5, rate: 1500, desc: "Верстка бланка официальных документов А4.", s: "Верстка шапки и подвала с реквизитами и логотипом по сетке.", m: "Бланк с водяными знаками, декоративными полосами и стилями абзацев.", c: "Бланк со сложным фоновым узором, адаптированный под шаблон MS Word." },
+            { id: 26, category: "Полиграфия, упаковка и мерч", subcategory: "Деловая документация", name: "Папка для документов", hours: 1, rate: 1500, desc: "Проектирование папки формата А4 с карманами под документы.", s: "Однотонный фон папки, логотип по центру с одной стороны.", m: "Дизайн обеих сторон с использованием паттерна, инфографики и контактов.", c: "Кастомный крой папки с вырубным замком и держателем для визитки." },
+            { id: 27, category: "Полиграфия, упаковка и мерч", subcategory: "Деловая документация", name: "Конверт", hours: 1, rate: 1500, desc: "Дизайн почтового конверта стандартных форматов (Е65, С5, С4).", s: "Мини-логотип и реквизиты в углу белого конверта по стандартам Почты РФ.", m: "Конверт с полной заливкой фирменным цветом или паттерном.", c: "Конреативный дизайн конверта с прозрачным окном и запечатанным клапаном." },
+            { id: 28, category: "Полиграфия, упаковка и мерч", subcategory: "Деловая документация", name: "Блокнот / Ежедневник (обложка + шаблоны страниц)", hours: 3, rate: 1500, desc: "Дизайн обложки и внутренних разворотов ежедневника.", s: "Размещение логотипа на обложке, стандартная линейка/сетка страниц.", m: "Индивидуальный дизайн обложки, брендирование полей страниц логотипом.", c: "Сложное оформление обложки (тиснение, лак), уникальный дизайн листов." },
+            { id: 29, category: "Полиграфия, упаковка и мерч", subcategory: "Деловая документация", name: "Брендированная папка-регистратор (для бухгалтерии)", hours: 1, rate: 1500, desc: "Дизайн папки с арочным механизмом для архива документов.", s: "Размещение бренда и названия архива на корешке папки.", m: "Дизайн обложки и корешка с использованием фирменных плашек.", c: "Полноцветная запечатка папки с обеих сторон и изнутри." },
+            { id: 30, category: "Полиграфия, упаковка и мерч", subcategory: "Деловая документация", name: "Универсальный шаблон презентации (сетка под печать / КП)", hours: 4, rate: 1500, desc: "Создание мастер-шаблона для коммерческих предложений на бумаге.", s: "Титульный лист и одна базовая страница с текстовым фреймом.", m: "Разработка модульной сетки для 4 разных типов контента.", c: "Масштабный шаблон со стилями абзацев, иконками и сеткой под таблицы." },
+            { id: 31, category: "Полиграфия, упаковка и мерч", subcategory: "Деловая документация", name: "Фирменный кубарик (пачка листочков для заметок)", hours: 1.5, rate: 1500, desc: "Дизайн блока бумажных листов для быстрых записей.", s: "Размещение логотипа и сайта в углу белого листа.", m: "Дизайн боковой грани (торца) пачки с бесконечным паттерном.", c: "Креативный кубарик со ступенчатой формой листов и полноцветным торцом." },
+
+            // ПОЛИГРАФИЯ - МАРКЕТИНГОВАЯ ПОЛИГРАФИЯ
+            { id: 32, category: "Полиграфия, упаковка и мерч", subcategory: "Маркетинговая полиграфия", name: "Листовка / Флаер (1 сторона)", hours: 1.5, rate: 1500, desc: "Промо-листовка односторонняя формата А5/А6.", s: "Крупный заголовок, текст акции и контакты на простом фоне.", m: "Компоновка блоков, обрезка/цветокор фото, использование иконок.", c: "Сложный рекламный дизайн, коллажная графика или ИИ-иллюстрация." },
+            { id: 33, category: "Полиграфия, упаковка и мерч", subcategory: "Маркетинговая полиграфия", name: "Листовка / Флаер (2 стороны)", hours: 2.5, rate: 1500, desc: "Рекламный флаер с двухсторонней версткой.", s: "Лицо — предложение бренда, оборот — контакты и условия.", m: "Сквозной дизайн, инфографика преимуществ, прорисовка карты проезда.", c: "Художественная верстка со сложными геометрическими элементами." },
+            { id: 34, category: "Полиграфия, упаковка и мерч", subcategory: "Маркетинговая полиграфия", name: "Плакат / Афиша (А3+) (1 сторона)", hours: 2, rate: 1500, desc: "Афиша мероприятий или крупноформатный рекламный плакат.", s: "Крупная картинка от заказчика + текстовый блок даты и места по сетке.", m: "Журнальный дизайн, создание яркого заголовка, ретушь фото.", c: "Сложный фотоколлаж сверхвысокого разрешения под печать." },
+            { id: 35, category: "Полиграфия, упаковка и мерч", subcategory: "Маркетинговая полиграфия", name: "Сертификат / Грамота / Диплом (1 сторона)", hours: 1.5, rate: 1500, desc: "Подарочный или наградной документ формата А4.", s: "Классический текстовый макет с орнаментом-рамкой.", m: "Дизайн с использованием фирменных паттернов, подготовка к лаку.", c: "Премиальный сертификат с защитными гильоширными сетками." },
+            { id: 36, category: "Полиграфия, упаковка и мерч", subcategory: "Маркетинговая полиграфия", name: "Приглашение / Открытка", hours: 2, rate: 1500, desc: "Открытка для мероприятий с возможностью фальцовки.", s: "Классическая открытка А5 с праздничным текстом по сетке.", m: "Оригинальный узор, верстка каллиграфических поздравлений.", c: "Складная открытка с фигурным резом, выборочным лаком." },
+            { id: 37, category: "Полиграфия, упаковка и мерч", subcategory: "Маркетинговая полиграфия", name: "Билет / Купон", hours: 1.5, rate: 1500, desc: "Дизайн купона на скидку или входного билета.", s: "Текст оффера, дата проведения и логотип по сетке.", m: "Купон с отрывным корешком (верстка линии перфорации) и штрихкодом.", c: "Билет со сложной защитной нумерацией, водяными знаками." },
+
+            // ПОЛИГРАФИЯ - КОММЕРЧЕСКАЯ МНОГОСТРАНИЧНАЯ
+            { id: 38, category: "Полиграфия, упаковка и мерч", subcategory: "Коммерческая многостраничная полиграфия", name: "Буклет (книжка / 1 фальц / 4 полосы)", hours: 2.5, rate: 1500, desc: "Складная рекламная брошюра (один сгиб).", s: "Раскладка текста и картинок по 4 страницам по шаблону.", m: "Единый дизайн разворота, аккуратные рамки, иконки услуг.", c: "Сложная верстка текста с вписыванием картинок, pre-press." },
+            { id: 39, category: "Полиграфия, упаковка и мерч", subcategory: "Коммерческая многостраничная полиграфия", name: "Евробуклет / Лифлет (2 фальца / 6 полос)", hours: 3.5, rate: 1500, desc: "Буклет в три сложения для рассылки в евроконвертах.", s: "Классическое распределение информации по 6 вертикальным колонкам.", m: "Сквозной перетекающий дизайн, подбор цветовых плашек на сгибах.", c: "Точный инженерный препресс с расчетом сужения закрывающегося клапана." },
+            { id: 40, category: "Полиграфия, упаковка и мерч", subcategory: "Коммерческая многостраничная полиграфия", name: "Многостраничный буклет со сложной фальцовкой (от 8 полос)", hours: 4, rate: 1500, desc: "Буклет гармошкой, калиткой или оконной складкой (от 8 полос).", s: "Разметка стандартных складок и последовательная верстка.", m: "Дизайн с учетом нестандартного раскрытия страниц читателем.", c: "Проектирование сложного раскрывающегося макета под вырубной нож." },
+            { id: 41, category: "Полиграфия, упаковка и мерч", subcategory: "Коммерческая многостраничная полиграфия", name: "Каталог продукции (концепт стиля: Обложка + разворот)", hours: 5, rate: 1500, desc: "Разработка модульной сетки и стилистики каталога товаров компании. Лимиты товаров: Простой - до 12, Средний - до 8, Сложный - до 4.", s: "Простая ровная сетка (до 12 товаров на разворот), обложка.", m: "Динамический дизайн страниц (до 8 товаров), шрифтовая иерархия.", c: "Премиальный журнальный концепт с уникальной версткой каждого разворота (до 4 товаров)." },
+            { id: 42, category: "Полиграфия, упаковка и мерч", subcategory: "Коммерческая многостраничная полиграфия", name: "Каталог продукции (верстка 1 разворота по готовой сетке)", hours: 1.5, rate: 1500, desc: "Наполнение каталога контентом на основе утвержденного концепта. Лимиты товаров: Простой - до 16, Средний - до 10, Сложный - до 4.", s: "Конвейерный перенос текстов и фото в готовые фреймы (до 16 товаров).", m: "Верстка разворота (до 10 товаров) со сравнительными таблицами.", c: "Ручная сложная обтравка и журнальная ретушь бликов (до 4 товаров)." },
+            { id: 43, category: "Полиграфия, упаковка и мерч", subcategory: "Коммерческая многостраничная полиграфия", name: "Брошюра информационная / имиджевая (до 12 полос, концепт)", hours: 4.5, rate: 1500, desc: "Разработка концепта многостраничного рекламного буклета.", s: "Классическое размещение текстов и фото по полям шаблона.", m: "Имиджевый сквозной дизайн, верстка цитат, врезок, крупных цифр.", c: "Разработка сложной геометрии буклета, pre-press под КБС/скрепку." },
+            { id: 44, category: "Полиграфия, упаковка и мерч", subcategory: "Коммерческая многостраничная полиграфия", name: "Брошюра (верстка 1 страницы / полосы)", hours: 0.5, rate: 1500, desc: "Постраничная верстка по утвержденному мастер-шаблону.", s: "Заливка готового текста и фото на страницу по сетке.", m: "Верстка нестандартных страниц (страница-интервью, страница-галерея).", c: "Сложный графический разворот с коллажами и инфографикой." },
+            { id: 45, category: "Полиграфия, упаковка и мерч", subcategory: "Коммерческая многостраничная полиграфия", name: "Годовой отчет компании (Концепт: Обложка + 3 мастер-страницы)", hours: 6, rate: 1500, desc: "Разработка стиля главного корпоративного и финансового отчета.", s: "Строгий деловой стиль, сетка под стандартные таблицы данных.", m: "Имиджевый концепт с инфографикой, картой развития бизнеса.", c: "Премиальный концепт, подготовка слоев под дизайнерские лаки." },
+            { id: 46, category: "Полиграфия, упаковка и мерч", subcategory: "Коммерческая многостраничная полиграфия", name: "Годовой отчет компании (Верстка 1 дополнительной полосы)", hours: 1, rate: 1500, desc: "Постраничное наполнение годового отчета данными заказчика.", s: "Размещение текста в колонки по готовой модульной сетке.", m: "Верстка сложных финансовых таблиц, расчет ширины колонок.", c: "Создание кастомных графиков прибыли, схем развития на странице." },
+            { id: 47, category: "Полиграфия, упаковка и мерч", subcategory: "Коммерческая многостраничная полиграфия", name: "Презентация / Маркетинг-кит / КП (Концепт: 3 мастер-слайда)", hours: 4, rate: 1500, desc: "Разработка дизайна бизнес-презентации или маркетинг-кита.", s: "Титульный слайд и две мастер-страницы под текст по сетке.", m: "Стильные плашки, векторные иконки, оригинальная сетка блоков.", c: "Сложная визуальная метафора, подбор текстур, ИИ-иллюстрации." },
+            { id: 48, category: "Полиграфия, упаковка и мерч", subcategory: "Коммерческая многостраничная полиграфия", name: "Презентация / Маркетинг-кит / КП (Верстка 1 слайда по шаблону)", hours: 1, rate: 1500, desc: "Наполнение слайдов контентом по утвержденной дизайн-системе.", s: "Слайд «заголовок + текст + 1 фото» в готовом фрейме.", m: "Верстка слайда с инфографикой, таблицами или несложными схемами.", c: "Сложный слайд с объемными 3D-графиками или коллажным артом." },
+            { id: 49, category: "Полиграфия, упаковка и мерч", subcategory: "Коммерческая многостраничная полиграфия", name: "Технический паспорт / Инструкция (Концепт: Обложка + 1 разворот)", hours: 3.5, rate: 1500, desc: "Разработка дизайна руководства пользователя или техпаспорта.", s: "Классическая текстовая обложка и сетка для двух колонок.", m: "Оригинальная верстка предупреждающих знаков, таблиц параметров.", c: "Дизайн паспорта со сложными векторными схемами сборки." },
+            { id: 50, category: "Полиграфия, упаковка и мерч", subcategory: "Коммерческая многостраничная полиграфия", name: "Технический паспорт / Инструкция (Верстка 1 полосы)", hours: 0.5, rate: 1500, desc: "Постраничное наполнение инструкции.", s: "Чистый перенос текста и чертежей в готовый шаблон.", m: "Верстка таблиц технических данных и схем.", c: "Компоновка сложных чертежей с выносками и указателями деталей." },
+            { id: 51, category: "Полиграфия, упаковка и мерч", subcategory: "Коммерческая многостраничная полиграфия", name: "Подготовка макета к печати в 1 краску (1+1 / 1+0, монохром)", hours: 1, rate: 1500, desc: "Специфическая подготовка макетов для черно-белой печати (ризография, К-канал).", s: "Простой перевод всего макета в градации серого.", m: "Сведение макета строго в канал Black (K-100%) с ручной чисткой.", c: "Цветокоррекция растровых фото под печать в 1 краску, чтобы не было серых пятен." },
+
+            // ПОЛИГРАФИЯ - КАЛЕНДАРНАЯ ПРОДУКЦИЯ
+            { id: 52, category: "Полиграфия, упаковка и мерч", subcategory: "Календарная продукция", name: "Календарь / перекидной А3/А2 (до 14 страниц)", hours: 5, rate: 1500, desc: "Дизайн настенного календаря на пружине.", s: "Готовая сетка дат + по 1 фото заказчика на каждую страницу.", m: "Индивидуальная верстка календарных сеток с фирменными датами.", c: "Креативная концепция, сложная интеграция ИИ-графики на листы." },
+            { id: 53, category: "Полиграфия, упаковка и мерч", subcategory: "Календарная продукция", name: "Календарь / квартальный", hours: 2.5, rate: 1500, desc: "Дизайн трехблочного календаря с бегунком.", s: "Логотип на топе и рекламных полях под готовые блоки дат.", m: "Индивидуальный дизайн топа (коллаж) и брендирование всех подложек.", c: "Проектирование кастомного топа со сложными вырубками и лаком." },
+            { id: 54, category: "Полиграфия, упаковка и мерч", subcategory: "Календарная продукция", name: "Календарь / плакатный", hours: 1.5, rate: 1500, desc: "Календарь на одном листе А1/А2.", s: "Сетка года + логотип на однотонном фоне.", m: "Календарь с использованием фирменного паттерна, фото и слогана.", c: "Масштабный постер, где сетка дат вписана в сложную графику." },
+            { id: 55, category: "Полиграфия, упаковка и мерч", subcategory: "Календарная продукция", name: "Календарь / домик (шалаш)", hours: 1.5, rate: 1500, desc: "Настольный календарь в форме призмы без пружины.", s: "Сетка по 6 месяцев на каждой стороне поверх фирменного цвета.", m: "Индивидуальный дизайн сеток с иконками праздников.", c: "Календарь с вырубным замком или интерактивными элементами." },
+            { id: 56, category: "Полиграфия, упаковка и мерч", subcategory: "Календарная продукция", name: "Календарь / Перекидной домик", hours: 3.5, rate: 1500, desc: "Настольный домик на пружине с перекидными листами.", s: "Сетка года на перекидных листах, логотип на картонной ножке.", m: "Уникальный дизайн каждого из 12 листов, верстка мини-текстов.", c: "Дизайн листов со сложным фотоколлажем или ИИ-артом." },
+            { id: 57, category: "Полиграфия, упаковка и мерч", subcategory: "Календарная продукция", name: "Календарь / карманный (2 стороны)", hours: 1, rate: 1500, desc: "Компактиный карманный календарь.", s: "Лицо — логотип на фоне, оборот — стандартная сетка года.", m: "Интеграция фирменной инфографики, линейки на лицевой стороне.", c: "Подготовка макета под пластик со скруглением углов." },
+            { id: 58, category: "Полиграфия, упаковка и мерч", subcategory: "Календарная продукция", name: "Календарь / Вырубной (Фигурный)", hours: 3, rate: 1500, desc: "Календари нестандартной геометрической формы.", s: "Размещение сетки на стандартной форме (овал, звезда).", m: "Дизайн в виде силуэта товара компании (например, машины).", c: "Проектирование сложного штампа вырубки с объемной сборкой." },
+            { id: 59, category: "Полиграфия, упаковка и мерч", subcategory: "Календарная продукция", name: "Календарь / вечный", hours: 3.5, rate: 1500, desc: "Календарь со сдвижными элементами из дерева или пластика.", s: "Брендирование готовой заготовки логотипом.", m: "Разработка шкал дат и месяцев под лазерную гравировку.", c: "Проектирование конструкции вечного календаря с нуля." },
+
+            // ПОЛИГРАФИЯ - СЕГМЕНТ HORECA
+            { id: 60, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Тейбл-тент / Меню-холдер (в подставке)", hours: 1.5, rate: 1500, desc: "Рекламный вкладыш в подставку на столы.", s: "Текст акции крупно на красивом фирменном фоне.", m: "Верстка сложного предложения, легкая ретушь фото блюда.", c: "Создание сочного коллажа с ИИ-окружением блюда." },
+            { id: 61, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Костер / Бирдекель (подставка под бокалы)", hours: 1, rate: 1500, desc: "Дизайн подставки под напитки.", s: "Размещение логотипа строго по центру круга/квадрата.", m: "Креативный дизайн со слоганом, графическими элементами.", c: "Серия костеров в единой стилистики с уникальной графикой." },
+            { id: 62, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Фирменный сахар в стиках (дизайн упаковки)", hours: 1, rate: 1500, desc: "Дизайн бумажной упаковки порционного сахара.", s: "Логотип на белом или крафтовом фоне стика.", m: "Серия стиков с интересными фразами бренда и узорами.", c: "Разработка паттерна, pre-press под флексопечать." },
+            { id: 63, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Фирменный mini-шоколад/мыло (дизайн обертки)", hours: 1.5, rate: 1500, desc: "Этикетка обертки порционного шоколада.", s: "Логотип на лицевой стороне, контакты сзади по готовому шаблону.", m: "Верстка состава, штрихкодов, декоративных узоров.", c: "Комплексный дизайн подарочного набора mini-шоколадок." },
+            { id: 64, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Брендированный стаканчик (развертка под конус)", hours: 2.5, rate: 1500, desc: "Круговой макет запечатки одноразового стакана.", s: "Размещение логотипа в центре зоны видимости.", m: "Сложная круговая развертка с паттерном, иконками соцсетей.", c: "Креативная развертка с вырубным манжетом (капхолдером)." },
+            { id: 65, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Фирменный пергамент / подложка", hours: 1.5, rate: 1500, desc: "Подложка на подносы или упаковочная бумага.", s: "Размножение логотипа по сетке в 1 цвет (паттерн).", m: "Журнальный дизайн: кроссворды, факты о заведении на подложке.", c: "Креативный паттерн со сложной ИИ-графикой под печать в 3 цвета." },
+            { id: 66, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Коробка для фастфуда (по готовому крою)", hours: 2.5, rate: 1500, desc: "Дизайн упаковки стритфуда по готовому крою.", s: "Фирменный цвет и логотип на верхней грани.", m: "Запечатка всей поверхности коробки, добавление инфографики.", c: "Дизайн упаковки с ИИ-персонажем, pre-press под пищевой картон." },
+            { id: 67, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Коробка для пиццы (по готовому крою)", hours: 2, rate: 1500, desc: "Дизайн плоской картонной коробки по готовому крою.", s: "Печать в 1-2 цвета на крышке (логотип, слоган).", m: "Полноцветный дизайн всей площади коробки с паттернами.", c: "Интерактивная крышка с ребусом, комиксом или настольной игрой." },
+            { id: 68, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Дорхенгер (Doorhanger) — табличка на ручку", hours: 2, rate: 1500, desc: "Информационная вешалка на дверную ручку.", s: "Текст (например, 'Не беспокоить') + логотип на стандартной форме.", m: "Рекламный двухсторонний оффер с акционными плашками.", c: "Креативный вырубной дорхенгер сложной формы с иллюстрациями." },
+            { id: 69, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Меню-борд / Меню-плейсмат (одностраничное)", hours: 3, rate: 1500, desc: "Одностраничное меню-салфетка.", s: "Чистая верстка названий блюд и цен в колонки (без фото).", m: "Стильные разделители категорий, выделение топ-блюд.", c: "Сложный дизайн плейсмата со сложной сеткой и ИИ-графикой." },
+            { id: 70, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Меню многостраничное (Обложка + 1 разворот)", hours: 5, rate: 1500, desc: "Разработка стиля многостраничной книги меню.", s: "Простая текстовая обложка и шаблон сетки разворотов.", m: "Создание фуд-зон под фото, шрифтовая иерархия.", c: "Премиальный журнальный концепт с ИИ-коллажами блюд." },
+            { id: 71, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Меню многостраничное (верстка 1 разворота)", hours: 1.5, rate: 1500, desc: "Наполнение меню по утвержденной дизайн-системе.", s: "Верстка текстовых позиций в готовые фреймы (без фото).", m: "Верстка разворота со сложным составом блюд и иконками.", c: "Журнальная верстка, ручная обтравка и тени тарелок." },
+
+            // ПОЛИГРАФИЯ - ФИРМЕННАЯ УПАКОВКА И ЭТИКЕТКА
+            { id: 72, category: "Полиграфия, упаковка и мерч", subcategory: "Фирменная упаковка и этикетка", name: "Фирменный пакет (крафт, ПВД или бумажный)", hours: 1, rate: 1500, desc: "Дизайн пакета под шелкотрафаретную или флексопечать.", s: "Размещение логотипа по центру зоны запечатки.", m: "Двустороннее нанесение, верстка боковых складок (паттерн).", c: "Фирменный пакет сплошной дизайнерской запечатки." },
+            { id: 73, category: "Полиграфия, упаковка и мерч", subcategory: "Фирменная упаковка и этикетка", name: "Товарная коробка (разработка кроя и дизайна)", hours: 3, rate: 1500, desc: "Дизайн коробки товара по развертке типографии.", s: "Размещение бренда и текстового блока на гранях.", m: "Индивидуальный дизайн, верстка штрихкодов, инфографики.", c: "Разработка сложной премиальной коробки со спотовым лаком." },
+            { id: 74, category: "Полиграфия, упаковка и мерч", subcategory: "Фирменная упаковка и этикетка", name: "Брендированный скотч / Упаковочная лента", hours: 1.5, rate: 1500, desc: "Дизайн упаковочного скотча с учетом шага вала печатной машины.", s: "Размещение логотипа с фиксированным шагом повторения.", m: "Слоган + логотип, чередование цветов.", c: "Сложный графический узор с мелкими защитными деталями." },
+            { id: 75, category: "Полиграфия, упаковка и мерч", subcategory: "Фирменная упаковка и этикетка", name: "Стикерпак / Брендированные наклейки", hours: 2.5, rate: 1500, desc: "Набор декоративных или технических наклеек.", s: "Простые геометрические наклейки с логотипом бренда.", m: "Набор из 5-6 иллюстрированных стикеров в единой стилистики.", c: "Набор с контуром плоттерной резки и pre-press под винил." },
+            { id: 76, category: "Полиграфия, упаковка и мерч", subcategory: "Фирменная упаковка и этикетка", name: "Бирка / Ярлык для одежды (навесной + вшивной)", hours: 1, rate: 1500, desc: "Навесной и вшивной ярлык для текстиля.", s: "Минималистичный текстовый ярлык с логотипом.", m: "Двусторонняя бирка с паттерном, верстка знаков ухода по ГОСТ.", c: "Сложная фактурная бирка с люверсом, лаком, тиснением." },
+            { id: 77, category: "Полиграфия, упаковка и мерч", subcategory: "Фирменная упаковка и этикетка", name: "Разработка технического кроя коробки (чертеж)", hours: 3.5, rate: 1500, desc: "Чертеж развертки упаковки под вырубной штамп.", s: "Простой кубический короб без сложного ложемента.", m: "Чертеж с замками самосборной коробки и учетом плотности картона.", c: "Сложная конструкция со встроенным ложементом и фигурными замками." },
+
+            // ПОЛИГРАФИЯ - КОРПОРАТИВНАЯ СУВЕНИРКА
+            { id: 78, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Фирменная футболка / поло", hours: 1, rate: 1500, desc: "Дизайн нанесения на футболку.", s: "Размещение логотипа по центру груди или на рукаве.", m: "Создание коммерческого принта, надписи, подбор метода нанесения.", c: "Сложный иллюстрированный принт на всю площадь футболки." },
+            { id: 79, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Фирменное худи / свитшот", hours: 1, rate: 1500, desc: "Брендирование премиального теплого мерча.", s: "Минималистичный логотип в один цвет на груди.", m: "Кастомный принт, оформление внутренних бирок, шнурков.", c: "Полный дизайн худи: вышивка, объемные принты, нашивки." },
+            { id: 80, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Фирменная кепка / бейсболка", hours: 1, rate: 1500, desc: "Нанесение бренда на головной убор.", s: "Логотип на лобовой части в один цвет.", m: "Брендирование лба, бока и кастомного зажима сзади.", c: "Объемная 3D-вышивка, кастомный козырек с паттерном." },
+            { id: 81, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Тканевый шоппер / Эко-сумка", hours: 1, rate: 1500, desc: "Дизайн стильной промо-сумки.", s: "Фирменный знак по центру шоппера в один цвет.", m: "Коммерческий принт, превращающий шоппер в модный аксессуар.", c: "Сплошная запечатка шоппера паттерном с кастомным карманом." },
+            { id: 82, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Брендированная ручка/карандаш", hours: 0.5, rate: 1500, desc: "Промо-канцелярия для выставок.", s: "Логотип или сайт на клипе/корпусе в один цвет.", m: "Тампопечать в 2 цвета, гравировка на металле.", c: "Индивидуальный дизайн ручки по круговому макету запечатки." },
+            { id: 83, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Брендированный бейдж", hours: 1, rate: 1500, desc: "Дизайн карты идентификации сотрудника.", s: "Имя, должность и логотип по строгой сетке.", m: "Оригинальный бейдж с вырубными окнами или кастомной формой.", c: "Премиальный металлический бейдж с гравировкой." },
+            { id: 84, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Брендированный ланьярд (лента для бейджа)", hours: 1, rate: 1500, desc: "Лента для бейджа с шаговым нанесением.", s: "Шаблонное повторение логотипа на ленте в один цвет.", m: "Дизайн ленты с бесшовным паттерном, расчет шага печати.", c: "Двусторонняя печать с перекрестным узором." },
+            { id: 85, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Вобблер рекламный (стоппер на гибкой ножке)", hours: 1.5, rate: 1500, desc: "POS-материал на гибкой пластиковой ножке.", s: "Круглый вобблер с ценой и логотипом по центру.", m: "Фигурная вырубка (в форме продукта), сочный коллаж.", c: "Креативный 3D-вобблер со складывающимися деталями." },
+            { id: 86, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Шелфтокер (длинная рекламная полоса)", hours: 1.5, rate: 1500, desc: "Рекламный разделитель товаров на полках магазинов.", s: "Верстка бренда и слогана на длинной полосе по размерам.", m: "Проектирование конструкции с загибами и ценниками.", c: "Креативный шелфтокер с выносными вырубными элементами." },
+            { id: 87, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Фирменная флешка / USB-накопитель", hours: 1, rate: 1500, desc: "Дизайн нанесения на USB-накопитель.", s: "Логотип на защитном колпачке или корпусе.", m: "Флешка-визитка под полную УФ-печать (две стороны).", c: "Разработка макета кастомного резинового корпуса флешки." },
+            { id: 88, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Фирменный повербанк (Power Bank)", hours: 1, rate: 1500, desc: "Брендирование внешнего аккумулятора.", s: "Нанесение логотипа по центру плоской грани.", m: "Макет полной запечатки лицевой стороны паттерном.", c: "Совмещение УФ-печати и лазерной гравировки светодиодов." },
+            { id: 91, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Корпоративная кружка / Термокружка / Термос", hours: 1.5, rate: 1500, desc: "Дизайн круговой запечатки термокружек и кружек.", s: "Логотип с одной или двух сторон кружки.", m: "Разработка круговой развертки на всю поверхность кружки/термоса.", c: "Кастомный макет с лазерной гравировкой софт-тач покрытия." },
+            { id: 92, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Фирменный зонт", hours: 1.5, rate: 1500, desc: "Дизайн нанесения на купол зонта.", s: "Печать логотипа на одном или двух клиньях.", m: "Дизайн всех клиньев с чередованием цветов и паттернов.", c: "Сплошной сублимационный принт на всю внутреннюю часть купола." },
+            { id: 93, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Фирменная маска для сна / Подушка", hours: 1, rate: 1500, desc: "Дорожный мерч для сна по готовому лекалу.", s: "Логотип по центру маски в один цвет.", m: "Сплошное покрытие ткани фирменным паттерном.", c: "Оригинальный кастомный принт (например, закрытые глаза ИИ)." },
+            { id: 94, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Настольный кабинетный флажок", hours: 1, rate: 1500, desc: "Дизайн настольного тканевого флажка на подставке.", s: "Посадка логотипа по центру флага на однотонном фоне.", m: "Двусторонний флаг с паттерном и градиентами.", c: "Подготовка макета под золотую/серебряную вышивку." },
+            { id: 95, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Фирменная зажигалка", hours: 0.5, rate: 1500, desc: "Промо-зажигалки для промо-акций.", s: "Посадка логотипа на узорчатый пластиковый корпус.", m: "Двусторонний принт с паттерном или забавным слоганом.", c: "Макет лазерной гравировки на металлических зажигалках Zippo." },
+            { id: 96, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Брелок (пластик, металл, дерево, кожа)", hours: 1, rate: 1500, desc: "Дизайн сувенирного брелока.", s: "Размещение логотипа на стандартной круглой заготовке.", m: "Двусторонний брелок с тиснением на коже или гравировкой.", c: "Фигурный кастомный брелок из акрила, лазерная резка." },
+
+            // НАРУЖНАЯ РЕКЛАМА - БРЕНДИРОВАНИЕ ТРАНСПОРТА
+            { id: 97, category: "Наружная реклама", subcategory: "Брендирование транспорта", name: "Брендирование легкового автомобиля", hours: 3, rate: 1500, desc: "Разработка макета оклейки легкового автомобиля.", s: "Посадка логотипа и контактов на двери по вектору кузова.", m: "Динамическая графика (полосы, паттерны), перетекающая по кузову.", c: "Полная оклейка винилом с 3D-графикой и препрессом." },
+            { id: 98, category: "Наружная реклама", subcategory: "Брендирование транспорта", name: "Брендирование коммерческого транспорта / газелей", hours: 3.5, rate: 1500, desc: "Реклама на будках фургонов и Газелей.", s: "Логотип и оффер крупно на плоской грани фургона.", m: "Полноцветный макет, интеграция фото товаров, учет заклепок.", c: "Креативная реклама на всей площади тента/будки с ИИ-артом." },
+            { id: 99, category: "Наружная реклама", subcategory: "Брендирование транспорта", name: "Брендирование пассажирского транспорта (автобусы)", hours: 5, rate: 1500, desc: "Масштабная реклама на бортах городского транспорта.", s: "Размещение логотипа и слогана на боках автобуса.", m: "Интеграция графики с учетом остекления (перфопленка).", c: "Имиджевый макет полной оклейки с препрессом файлов 1:1." },
+            { id: 100, category: "Наружная реклама", subcategory: "Брендирование транспорта", name: "Отдельная тех. услуга: Адаптация готового макета", hours: 1.5, rate: 1500, desc: "Перенос готового макета брендирования на другой кузов.", s: "Масштабирование элементов под схожую форму кузова.", m: "Пересчет пропорций (например, с Газели на Ларгус).", c: "Полная перекомпоновка элементов с ручной подгонкой к ручкам." },
+            { id: 101, category: "Наружная реклама", subcategory: "Брендирование транспорта", name: "Отрисовка кастомной векторной развертки автомобиля", hours: 3, rate: 1500, desc: "Создание точной векторной схемы редкого автомобиля или спецтехники.", s: "Отрисовка плоского контура по фотографии заказчика.", m: "Чертеж в 2 ракурсах (бок, зад) с точными размерами.", c: "Чертеж спецтехники (бетономешалка, кран) в 3 ракурсах, масштаб 1:10." },
+
+            // НАРУЖНАЯ РЕКЛАМА - ВЫВЕСКИ И ФАСАДЫ
+            { id: 102, category: "Наружная реклама", subcategory: "Вывески и оформление фасадов", name: "Световой короб (лайтбокс)", hours: 2, rate: 1500, desc: "Дизайн рекламной вывески со световым коробом.", s: "Название бренда крупно на светорассеивающем фоне короба.", m: "Проектирование вывески из композита с фрезеровкой букв.", c: "Сложная фигурная вывеска с инкрустацией акрилом." },
+            { id: 103, category: "Наружная реклама", subcategory: "Вывески и оформление фасадов", name: "Объемные световые буквы / Логотип на фасад", hours: 2.5, rate: 1500, desc: "Светодиодные буквы и логотип на фасад здания.", s: "Контуры букв логотипа в векторе для резки пластика.", m: "Схема размещения букв на металлораме, разметка диодов.", c: "Сложная вывеска с контражурным свечением и точным препрессом." },
+            { id: 104, category: "Наружная реклама", subcategory: "Вывески и оформление фасадов", name: "Баннер фасадный / Брандмауэр (огромный формат)", hours: 2, rate: 1500, desc: "Гигантские настенные баннеры на фасады.", s: "Верстка контактов, логотипа и оффера крупным шрифтом.", m: "Рекламный макет, расчет отступов под подгиб и шага люверсов.", c: "Макет сверхвысокого разрешения, препресс тяжелых файлов." },
+            { id: 105, category: "Наружная реклама", subcategory: "Вывески и оформление фасадов", name: "Панель кронштейн (двусторонняя вывеска)", hours: 2, rate: 1500, desc: "Боковая вывеска, перпендикулярная стене.", s: "Размещение логотипа на круглой или квадратной форме.", m: "Проектирование фигурной панели с подсветкой и креплением.", c: "Креативная вывеска в виде силуэта продукта бренда." },
+            { id: 106, category: "Наружная реклама", subcategory: "Вывески и оформление фасадов", name: "Маркиза / Навес над окнами/входом", hours: 1.5, rate: 1500, desc: "Тканевые козырьки над витринами и окнами.", s: "Логотип на нижнем волане однотонной маркизы.", m: "Брендирование всей площади купола навеса (полосы, паттерны).", c: "Проектирование геометрии навеса с расчетом искажения ткани." },
+
+            // НАРУЖНАЯ РЕКЛАМА - ВИТРИНЫ
+            { id: 107, category: "Наружная реклама", subcategory: "Оформление витрин и точек продаж", name: "Дизайн текстовой аппликации (под плоттерную резку)", hours: 1.5, rate: 1500, desc: "Наклейки на стекла под плоттерную подрезку.", s: "Верстка часов работы или фразы «Скидка» в векторе.", m: "Креативная типографика, объединение букв в общие контуры.", c: "Сложный узор из тонких линий под двухцветную резку." },
+            { id: 108, category: "Наружная реклама", subcategory: "Оформление витрин и точек продаж", name: "Дизайн полноцветного оформления витрины", hours: 2.5, rate: 1500, desc: "Широкоформатная печать на виниловой пленке для стекол.", s: "Верстка прямоугольного рекламного плаката на перфопленке.", m: "Сложный фотоколлаж, совмещение печати и плоттерного реза.", c: "Интеграция ИИ-артов, создание эффекта объема в витрине." },
+
+            // НАРУЖНАЯ РЕКЛАМА - МОБИЛЬНЫЕ
+            { id: 109, category: "Наружная реклама", subcategory: "Мобильные и выносные конструкции", name: "Штендер классический (двусторонний «домик»)", hours: 1.5, rate: 1500, desc: "Выносная металлическая реклама-домик у входа.", s: "Крупный логотип, стрелка, список услуг и телефон.", m: "Дизайн с использованием паттернов, интеграция QR-кода на прайс.", c: "Фигурный кастомный штендер с вырубной шапкой." },
+            { id: 110, category: "Наружная реклама", subcategory: "Мобильные и выносные конструкции", name: "Роллап (Roll-up) мобильный раздвижной стенд", hours: 2, rate: 1500, desc: "Выставочный раздвижной стенд 85х200 см.", s: "Логотип сверху, УТП по центру, контакты снизу.", m: "Оформитель с инфографикой, обработка фото спикера/товара.", c: "Сложный рекламный дизайн под серию из нескольких роллапов." },
+            { id: 111, category: "Наружная реклама", subcategory: "Мобильные и выносные конструкции", name: "Пресс-волл (Press-wall) / Фотозона", hours: 2, rate: 1500, desc: "Большой баннерный стенд для фотосессий на праздниках.", s: "Шахматная сетка логотипов спонсоров на белом фоне.", m: "Яркая тематическая фотозона с градиентами и графикой.", c: "Создание фотозоны с интеграцией ИИ-артов и 3D-бутафорией." },
+            { id: 112, category: "Наружная реклама", subcategory: "Мобильные и выносные конструкции", name: "Флаг-виндер (флаг-парус / флаг-перо)", hours: 1.5, rate: 1500, desc: "Тканевые флаги на уличные промо-акции.", s: "Крупное вертикальное нанесение логотипа на фирменном цвете.", m: "Верстка по лекалу, интеграция бесшовного паттерна.", c: "Сложный дизайн купола с двусторонней печатью." },
+            { id: 113, category: "Наружная реклама", subcategory: "Мобильные и выносные конструкции", name: "Тротуарная / уличная навигация", hours: 1, rate: 1500, desc: "Навигация в виде износостойких наклеек на асфальт.", s: "Векторный след ноги или простая стрелка с текстом.", m: "Яркая наклейка с 3D-эффектом объема стрелки.", c: "Сложная иллюстрированная навигация-квест на асфальте." },
+
+            // НАРУЖНАЯ РЕКЛАМА - ИНТЕРЬЕРНАЯ НАВИГАЦИЯ
+            { id: 114, category: "Наружная реклама", subcategory: "Интерьерное брендирование (Indoor)", name: "Логотип на зону ресепшн / Интерьерная вывеска", hours: 2, rate: 1500, desc: "Знак компании на стену в офис.", s: "Контуры букв для резки из одного материала (акрил/дерево).", m: "Проектирование многослойной вывески со скрытым крепежом.", c: "Светодиодная контражурная вывеска, комбинирование фактур." },
+            { id: 115, category: "Наружная реклама", subcategory: "Интерьерное брендирование (Indoor)", name: "Навигационный указатель / Табличка на дверь", hours: 1.5, rate: 1500, desc: "Кабинетные таблички в единой стилистике.", s: "Создание шаблона «Номер + Должность» по модульной сетке.", m: "Таблички с иконками отделов и цветовой кодировкой этажей.", c: "Премиум-таблички нестандартной формы с рельефной УФ-печатью." },
+            { id: 116, category: "Наружная реклама", subcategory: "Интерьерное брендирование (Indoor)", name: "Этажный указатель / Интерьерный пилон", hours: 2.5, rate: 1500, desc: "Главный информационный навигационный щит в БЦ/ТЦ.", s: "Верстка списка компаний по этажам в колонки (до 20 строк).", m: "Пилон с векторными мини-картами этажей и логотипами.", c: "Проектирование объемной отдельно стоящей стеллы навигации." },
+            { id: 117, category: "Наружная реклама", subcategory: "Интерьерное брендирование (Indoor)", name: "Схема эвакуации / Пожарный стенд", hours: 3, rate: 1500, desc: "Планы безопасности и эвакуации по ГОСТам.", s: "Отрисовка 1 этажа по БТИ, расстановка значков огнетушителей.", m: "Отрисовка путей эвакуации, верстка инструкций по регламентам.", c: "Масштабный многоэтажный пожарный стенд, препресс под фотолюм." },
+
+            // НАРУЖНАЯ РЕКЛАМА - ГОРОДСКОЙ ФОРМАТ
+            { id: 118, category: "Наружная реклама", subcategory: "Городской формат (Сити и билборды)", name: "Билборд / Рекламный щит 3х6 метров", hours: 2.5, rate: 1500, desc: "Стандартные городские рекламные щиты у дорог.", s: "Один заголовок, контакты и логотип на чистом контрастном фоне.", m: "Интеграция фото товара, визуальный указатель расстояния.", c: "Креативный щит с экстендерами (выносными деталями за контур)." },
+            { id: 119, category: "Наружная реклама", subcategory: "Городской формат (Сити и билборды)", name: "Сити-формат (остановки, пилоны) (1.2 х 1.85 м)", hours: 2, rate: 1500, desc: "Световые короба 1.2х1.85 м на тротуарах и остановках.", s: "Простая вертикальная верстка: лого, оффер, контакты снизу.", m: "Дизайн с инфографикой, обработка фото, расчет прижимных рам.", c: "Постерный дизайн премиум-класса с ИИ-артом, препресс." },
+            { id: 120, category: "Наружная реклама", subcategory: "Городской формат (Сити и билборды)", name: "Суперсайт (огромные щиты на шоссе)", hours: 3.5, rate: 1500, desc: "Рекламные конструкции 5х15 м на загородных трассах.", s: "Крупный логотип и слоган из 3 слов под высокую скорость.", m: "Адаптация стиля под огромный масштаб с контрастными цветами.", c: "Имиджевый спецпроект, коллажирование ИИ-графики 4К, препресс." },
+            { id: 121, category: "Наружная реклама", subcategory: "Городской формат (Сити и билборды)", name: "Реклама в лифтах / на досках объявлений", hours: 1.5, rate: 1500, desc: "Дизайн небольших рекламных модулей формата А5/А4.", s: "Аккуратная верстка заголовка акции, контактов и преимуществ.", m: "Зонирование плашками, интеграция QR-кода на соцсети.", c: "Креативный рекламный модуль с загадкой или ИИ-персонажем." },
+
+            // ПРЕЗЕНТАЦИИ И БИЗНЕС-ГРАФИКА
+            { id: 122, category: "Презентации и бизнес-графика", subcategory: "Презентации и бизнес-графика", name: "Разработка концепции стиля презентации (Обложка + 1-2 пилотных слайда)", hours: 4, rate: 1500, desc: "Проектирование дизайн-системы презентации (Обложка + 2 пилотных слайда).", s: "Настройка шрифтов, полей и сетки для текстовых слайдов.", m: "Создание кастомных плашек, подбор векторных иконок бренда.", c: "Сложная визуальная метафора, уникальные ИИ-иллюстрации фонов." },
+            { id: 123, category: "Презентации и бизнес-графика", subcategory: "Презентации и бизнес-графика", name: "Верстка и дизайн 1 слайда презентации (по готовой концепции)", hours: 1, rate: 1500, desc: "Постраничное наполнение презентации контентом по мастер-шаблону.", s: "Слайд «заголовок + текст + 1 фото» в готовом фрейме.", m: "Слайд с инфографикой, красивыми таблицами или несложными схемами.", c: "Сложная верстка аналитических данных, трехмерные графики." },
+            { id: 124, category: "Презентации и бизнес-графика", subcategory: "Презентации и бизнес-графика", name: "Дизайн рекламной/аналитической инфографики (Дата-арт)", hours: 4, rate: 1500, desc: "Создание комплексного графического лонгрида или аналитического плаката.", s: "Верстка до 7 цифр-показателей с подписями по готовой структуре.", m: "Оригинальная дорожная карта компании (таймлайн), схемы процессов.", c: "Сложный дата-арт с центральным ИИ-объектом и десятками графиков." },
+
+            // ДОПОЛНИТЕЛЬНЫЕ УСЛУГИ
+            { id: 125, category: "Дополнительные графические услуги", subcategory: "Обработка и Подготовка", name: "Обтравка изображений (Вырезание объекта из фона)", hours: 0.2, rate: 1500, desc: "Удаление фона с картинок товаров заказчика.", s: "Вырезание простых геометрических предметов.", m: "Обтравка мягких контуров (кресла, обувь) с чисткой краев.", c: "Ювелирное вырезание стекол, брызг воды, волос и шерсти." },
+            { id: 126, category: "Дополнительные графические услуги", subcategory: "Обработка и Подготовка", name: "Ретушь и цветокоррекция изображений", hours: 0.25, rate: 1500, desc: "Коммерческая обработка фотографий товаров.", s: "Базовая экспозиция, контраст, удаление пылинок.", m: "Устранение бликов на металле/стекле, выравнивание тона кожи.", c: "Сложная художественная ретушь, Dodge&Burn, прорисовка фактур." },
+            { id: 127, category: "Дополнительные графические услуги", subcategory: "Обработка и Подготовка", name: "Нейросетевая генерация изображений (ИИ-арт)", hours: 1, rate: 1500, desc: "Создание коммерческих иллюстраций с помощью ИИ.", s: "Простая генерация по текстовому описанию заказчика.", m: "Промпт-инжиниринг, апскейл разрешения без потери качества.", c: "Генерация серии картинок в едином стиле с ручной доработкой." },
+            { id: 128, category: "Дополнительные графические услуги", subcategory: "Обработка и Подготовка", name: "Нейросетевой продакт-плейсмент", hours: 1.5, rate: 1500, desc: "Использование нейросетей для интеграции товаров в ИИ окружение.", s: "Совмещение вырезанного товара с готовым ИИ-фоном.", m: "Ручная прорисовка теней, рефлексов света на стенках товара.", c: "Выстраивание глубины резкости планов, идеальная перспектива." },
+            { id: 129, category: "Дополнительные графические услуги", subcategory: "Обработка и Подготовка", name: "Pre-press готового макета", hours: 1, rate: 1500, desc: "Техническая доработка чужого исходника под требования типографии.", s: "Перевод в CMYK, создание вылетов под обрез по 3 мм.", m: "Проверка Total Ink Limit, настройка Overprint для текстов.", c: "Подготовка векторных контуров лака, вырубки на отдельные слои." },
+
+            // РАЗРАБОТКА НАСТОЛЬНЫХ ИГР
+            { id: 130, category: "Разработка корпоративных настольных игр", subcategory: "Полиграфия и Геймдизайн", name: "Карточная настольная игра — Концепт + Шаблон", hours: 4, rate: 1500, desc: "Создание стиля карточной игры (рубашка, лицо, дизайн коробки).", s: "Простая рубашка с логотипом, текстовый шаблон лица карт.", m: "Стильный узор рубашки, векторные рамки и иконки на картах.", c: "Сложная ИИ-иллюстрация рубашки, премиум-дизайн коробки с лаком." },
+            { id: 131, category: "Разработка корпоративных настольных игр", subcategory: "Полиграфия и Геймдизайн", name: "Разработка метафорических ассоциативных карт (МАК) — Шаблон + Концепт", hours: 3, rate: 1500, desc: "Дизайн концепции коучинговых МАК-карт.", s: "Успокаивающая рубашка, минималистичная рамка для текста.", m: "Красивый эзотерический узор рубашки, дизайн мешочка/коробки.", c: "Проработка стиля ИИ-иллюстраций под матовую ламинацию." },
+            { id: 132, category: "Разработка корпоративных настольных игр", subcategory: "Полиграфия и Геймдизайн", name: "Верстка колоды карт (за каждые 10 карточек)", hours: 1.5, rate: 1500, desc: "Наполнение карт контентом по готовому шаблону.", s: "Быстрая вставка текстов вопросов и ответов (без картинок).", m: "Верстка карт с добавлением иконок и делением по категориям.", c: "Художественная верстка каждой карты с ИИ-персонажами." },
+            { id: 133, category: "Разработка корпоративных настольных игр", subcategory: "Полиграфия и Геймдизайн", name: "Настольная игра с игровым полем", hours: 6, rate: 1500, desc: "Проектирование игрового поля А3-А2.", s: "Классическая трасса-ходилка из кружков с цифрами.", m: "Сетка полей типа «Монополии» с брендами и инфографикой.", c: "Отрисовка карты завода/города с высоты птичьего полета с ИИ." },
+            { id: 134, category: "Разработка корпоративных настольных игр", subcategory: "Полиграфия и Геймдизайн", name: "Игровые деньги / Корпоративная валюта", hours: 2, rate: 1500, desc: "Дизайн набора фирменных купюр разного номинала.", s: "Логотип по центру и номинал по углам (1 дизайн, разные цвета).", m: "Банкноты с силуэтами продукции компании, защитные сетки.", c: "Ювелирные купюры, стилизация портретов руководства под гравюру." },
+            { id: 135, category: "Разработка корпоративных настольных игр", subcategory: "Полиграфия и Геймдизайн", name: "Разработка игровой механики, правил и сценария (Геймдизайн)", hours: 6, rate: 1500, desc: "Интеллектуальная разработка правил и баланса игры без графики.", s: "Простые правила квиза или ходилки на 1 страницу А4.", m: "Проектирование игровых циклов баланса «Монополии», буклет правил.", c: "Обучающая бизнес-игра с нуля со стресс-тестированием механики." },
+
+            // ВЕБ-ДИЗАЙН И РАЗРАБОТКА НА TILDA
+            { id: 136, category: "Веб-дизайн и разработка на Tilda", subcategory: "Дизайн в Figma (БЕЗ верстки)", name: "Дизайн Landing Page в Figma (до 8 блоков)", hours: 8, rate: 1500, desc: "UI/UX проектирование одностраничного сайта в Figma.", s: "Дизайн под ПК строго по сетке Bootstrap (без мобильной версии).", m: "Проектирование Десктоп + Мобильной версии, отрисовка иконок.", c: "Премиальный макет с адаптивной линейкой, UI-китом и прототипом." },
+            { id: 137, category: "Веб-дизайн и разработка на Tilda", subcategory: "Дизайн в Figma (БЕЗ верстки)", name: "Дизайн Многостраничного сайта в Figma (Главная + 1 внутренняя)", hours: 14, rate: 1500, desc: "Проектирование стиля крупного сайта в Figma.", s: "Сетка Главной и 1 внутренней страницы под ПК по шаблону.", m: "Удобная логика переходов, Десктоп + Мобильный, базовый UI-кит.", c: "Масштабный интерактивный прототип с полной дизайн-системой." },
+            { id: 138, category: "Веб-дизайн и разработка на Tilda", subcategory: "Разработка на Tilda", name: "Landing Page на Tilda «под ключ» (до 8 блоков)", hours: 12, rate: 1500, desc: "Сборка, наполнение и верстка одностраничного сайта на Tilda.", s: "Сборка строго на стандартных блоках платформы, адаптация шрифтов.", m: "Комбинированная верстка: до 4 Zero-блоков + стандартные блоки.", c: "100% уникальный сайт на Zero-блоках со сложной пошаговой анимацией." },
+            { id: 139, category: "Веб-дизайн и разработка на Tilda", subcategory: "Разработка на Tilda", name: "Многостраничный корпоративный сайт (Главная + до 3 внутренних)", hours: 20, rate: 1500, desc: "Создание представительского сайта компании.", s: "Верстка Главной и 3 внутренних страниц на стандартных блоках.", m: "Использование Zero-блоков на Главной и шапках внутренних страниц.", c: "Полная верстка всех страниц в Zero-блоках со сложной навигацией." },
+            { id: 140, category: "Веб-дизайн и разработка на Tilda", subcategory: "Разработка на Tilda", name: "Интернет-магазин на Tilda (Каталог до 20 товаров)", hours: 24, rate: 1500, desc: "Разработка торговой площадки с корзиной и фильтрами.", s: "Витрина на стандартных блоках, ручная загрузка до 20 простых товаров.", m: "Дизайн витрины в Zero-блоках, сложная система фильтров, поп-апы.", c: "Полностью кастомный магазин, интерактивные карточки, дизайн писем." },
+            { id: 141, category: "Веб-дизайн и разработка на Tilda", subcategory: "Разработка на Tilda", name: "Техническая настройка и запуск сайта (Финальный блок)", hours: 4, rate: 1500, desc: "Финальные работы по выводу сайта в сеть.", s: "Подключение домена, SSL-сертификата, настройки форм отправки заявок.", m: "Базовые SEO-теги, редиректы, фавикон, Яндекс.Метрика.", c: "Интеграция CRM-систем (amoCRM/Битрикс24) с передачей UTM-меток." },
+            { id: 142, category: "Веб-дизайн и разработка на Tilda", subcategory: "Разработка на Tilda", name: "Техническая поддержка и обслуживание (Месячный абонемент)", hours: 4, rate: 1500, desc: "Абонентское обслуживание сайта в месяц (лимит до 4 часов работы).", s: "Мелкие правки текстов, добавление новости, замена картинок.", m: "Верстка новых простых блоков, обновление цен каталога.", c: "Верстка новых Zero-блоков, устранение багов интеграций." },
+
+            // ВЕБ - ТЕХНИЧЕСКИЕ И ДОПОЛНИТЕЛЬНЫЕ
+            { id: 143, category: "Веб-дизайн и разработка на Tilda", subcategory: "Дополнительные веб-услуги", name: "Верстка дополнительной внутренней страницы", hours: 2, rate: 1500, desc: "Добавление страницы на готовый сайт.", s: "Размещение текста договора на стандартных блоках по сетке.", m: "Страница новой услуги со слайдерами и формами по готовому стилю.", c: "Промо-лендинг нового товара в Zero-блоках с анимацией." },
+            { id: 144, category: "Веб-дизайн и разработка на Tilda", subcategory: "Дополнительные веб-услуги", name: "Наполнение каталога интернет-магазина (за 1 товар)", hours: 0.2, rate: 1500, desc: "Ручное добавление товара в базу Tilda.", s: "Перенос названия, цены, 3 готовых фото без обработки.", m: "Добавление модификаций (цвет/размер), влияющих на цену.", c: "Верстка сложных таблиц параметров, перекрестные ссылки рекомендаций." },
+            { id: 145, category: "Веб-дизайн и разработка на Tilda", subcategory: "Дополнительные веб-услуги", name: "Подключение веб-приложений и модулей (Интеграции)", hours: 3, rate: 1500, desc: "Интеграция внешних модулей по API или через HTML-код.", s: "Подключение стандартного виджета онлайн-чата или мессенджеров.", m: "Синхронизация квиза (Marquiz) со сложной подгонкой под дизайн сайта.", c: "Интеграция личного кабинета GetCourse или сложных калькуляторов." },
+            { id: 146, category: "Веб-дизайн и разработка на Tilda", subcategory: "Дополнительные веб-услуги", name: "Базовая техническая настройка и SEO-оптимизация", hours: 4, rate: 1500, desc: "Комплекс работ по базовой поисковой оптимизации страниц.", s: "Проставление иерархии заголовков H1-H3, оптимизация веса картинок.", m: "Заполнение тегов Title и Description для всех страниц, sitemap.xml.", c: "Настройка 301-редиректов, аналитика ключевых запросов ниши." },
+            { id: 147, category: "Веб-дизайн и разработка на Tilda", subcategory: "Дополнительные веб-услуги", name: "Настройка платежных систем и онлайн-касс", hours: 2.5, rate: 1500, desc: "Связка сайта с эквайрингом и фискализацией по ФЗ-54.", s: "Подключение эквайринга Сбера/Т-Банка к корзине.", m: "Синхронизация платежного шлюза с облачной кассой (Атол), тесты чеков.", c: "Сложные кастомизация чеков, интеграция сплит-платежей." }
+        ];
+
+        let selectedCategory = 'all';
+        let smeta = {}; // Format: { serviceId: { complexity: 'simple'|'medium'|'complex', qty: 1 } }
+
+        // Theme Toggle Manager
+        function initTheme() {
+            const savedTheme = localStorage.getItem('bento-theme-v2') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+                document.getElementById('theme-icon').className = "fa-solid fa-sun text-lg text-accent-pink";
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.getElementById('theme-icon').className = "fa-solid fa-moon text-lg text-primary-blue";
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.contains('dark');
+            if (isDark) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('bento-theme-v2', 'light');
+                document.getElementById('theme-icon').className = "fa-solid fa-moon text-lg text-primary-blue";
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('bento-theme-v2', 'dark');
+                document.getElementById('theme-icon').className = "fa-solid fa-sun text-lg text-accent-pink";
+            }
+        }
+
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            renderCategoryFilters();
+            renderTable();
+            updateSmetaSummary();
+        });
+
+        function getCategories() {
+            const categories = {};
+            servicesData.forEach(item => {
+                if (!categories[item.category]) {
+                    categories[item.category] = new Set();
+                }
+                categories[item.category].add(item.subcategory);
+            });
+            return categories;
+        }
+
+        // Render beautiful category filters inside the Bento sidebar
+        function renderCategoryFilters() {
+            const categories = getCategories();
+            const container = document.getElementById('category-filters');
+            const mobileSelect = document.getElementById('category-select-mobile');
+            
+            container.innerHTML = `
+                <button onclick="selectCategory('all')" class="w-full text-left px-4 py-3 rounded-xl text-sm transition-all flex items-center justify-between font-bold font-tech ${selectedCategory === 'all' ? 'bg-primary-blue/15 border border-primary-blue/30 text-primary-blue' : 'text-text-muted hover:bg-bg-sidebar'}" id="btn-cat-all">
+                    <span>Все разделы</span>
+                    <span class="bg-primary-blue/10 border border-primary-blue/20 px-2 py-0.5 rounded-lg text-xs font-semibold text-primary-blue" id="count-all">${servicesData.length}</span>
+                </button>
+            `;
+
+            Object.keys(categories).forEach(cat => {
+                const count = servicesData.filter(s => s.category === cat).length;
+                const isSelected = selectedCategory === cat;
+                
+                const btn = document.createElement('button');
+                btn.id = `btn-cat-${cat.replace(/\s+/g, '-')}`;
+                btn.className = `w-full text-left px-4 py-3 rounded-xl text-sm transition-all flex items-center justify-between font-medium ${isSelected ? 'bg-primary-blue/15 border border-primary-blue/30 text-primary-blue font-bold' : 'text-text-muted hover:text-text-main hover:bg-bg-sidebar border border-transparent'}`;
+                btn.onclick = () => selectCategory(cat);
+                btn.innerHTML = `
+                    <span class="font-display truncate">${cat}</span>
+                    <span class="bg-bg-sidebar border border-border-color px-2 py-0.5 rounded-lg text-xs font-semibold text-text-muted font-tech">${count}</span>
+                `;
+                container.appendChild(btn);
+
+                const opt = document.createElement('option');
+                opt.value = cat;
+                opt.textContent = cat;
+                mobileSelect.appendChild(opt);
+            });
+        }
+
+        function selectCategory(cat) {
+            selectedCategory = cat;
+            renderCategoryFilters();
+            renderTable();
+        }
+
+        function selectCategoryMobile(cat) {
+            selectedCategory = cat;
+            renderTable();
+        }
+
+        // TOOLTIP ENGINE: Limited exactly to hovering over service name link
+        const tooltipEl = document.getElementById('service-tooltip');
+
+        function showTooltip(e, id) {
+            const item = servicesData.find(s => s.id === id);
+            if (!item) return;
+
+            tooltipEl.innerHTML = `
+                <div class="font-tech text-primary-blue uppercase tracking-wider text-[10px] mb-1">${item.category} &bull; ${item.subcategory}</div>
+                <div class="font-bold text-text-main text-sm mb-1 leading-snug font-display">${item.name}</div>
+                <div class="text-text-muted text-xs leading-relaxed mb-3">${item.desc}</div>
+                <div class="grid grid-cols-3 gap-2 pt-2 border-t border-border-color/60 text-[10px] text-text-muted font-tech">
+                    <div>Простой: ${item.hours} ч</div>
+                    <div>Средний: ${(item.hours * 2.5).toFixed(1)} ч</div>
+                    <div>Сложный: ${(item.hours * 5.0).toFixed(1)} ч</div>
+                </div>
+            `;
+            tooltipEl.classList.remove('hidden');
+            tooltipEl.style.opacity = '1';
+            moveTooltip(e);
+        }
+
+        function moveTooltip(e) {
+            const x = e.clientX + 15;
+            const y = e.clientY + 15;
+            
+            const tooltipWidth = tooltipEl.offsetWidth;
+            const tooltipHeight = tooltipEl.offsetHeight;
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            
+            let finalX = x;
+            let finalY = y;
+            
+            if (x + tooltipWidth > windowWidth) {
+                finalX = e.clientX - tooltipWidth - 15;
+            }
+            if (y + tooltipHeight > windowHeight) {
+                finalY = e.clientY - tooltipHeight - 15;
+            }
+            
+            tooltipEl.style.left = finalX + 'px';
+            tooltipEl.style.top = finalY + 'px';
+        }
+
+        function hideTooltip() {
+            tooltipEl.classList.add('hidden');
+            tooltipEl.style.opacity = '0';
+        }
+
+        // Render rows in the elegant grid
+        function renderTable() {
+            const tbody = document.getElementById('services-tbody');
+            tbody.innerHTML = '';
+
+            const searchQuery = document.getElementById('search-input').value.toLowerCase();
+            const searchQueryMobile = document.getElementById('search-input-mobile').value.toLowerCase();
+            const activeSearch = searchQuery || searchQueryMobile;
+
+            let filtered = servicesData;
+            if (selectedCategory !== 'all') {
+                filtered = filtered.filter(item => item.category === selectedCategory);
+            }
+            if (activeSearch) {
+                filtered = filtered.filter(item => item.name.toLowerCase().includes(activeSearch));
+            }
+
+            let lastSubcategory = '';
+
+            filtered.forEach(item => {
+                if (item.subcategory !== lastSubcategory) {
+                    lastSubcategory = item.subcategory;
+                    const subHeader = document.createElement('tr');
+                    subHeader.className = "bg-bg-sidebar/40 text-xs text-text-muted font-tech border-y border-border-color/50";
+                    subHeader.innerHTML = `
+                        <td colspan="8" class="py-3 px-5 text-text-main font-bold tracking-wide">
+                            <span class="bg-primary-blue/10 border border-primary-blue/20 px-2.5 py-1 rounded-lg">
+                                ↗ ${item.subcategory}
+                            </span>
+                        </td>
+                    `;
+                    tbody.appendChild(subHeader);
+                }
+
+                const priceSimple = Math.round(item.hours * item.rate);
+                const priceMedium = Math.round(item.hours * item.rate * 2.5);
+                const priceComplex = Math.round(item.hours * item.rate * 5);
+
+                const isChecked = smeta[item.id] !== undefined;
+
+                const tr = document.createElement('tr');
+                tr.id = `row-${item.id}`;
+                // Added baseline transparent border to completely mitigate font size jumping layout shifts
+                tr.className = `hover:bg-table-row-hover text-sm border-b border-border-color/40 border-l-4 transition-all ${isChecked ? 'bg-primary-blue/[0.04] border-l-primary-blue' : 'border-l-transparent'}`;
+                
+                tr.innerHTML = `
+                    <td class="py-3.5 px-5 text-center">
+                        <input type="checkbox" onchange="toggleItemSmeta(${item.id}, this.checked)" ${isChecked ? 'checked' : ''} class="w-4 h-4 rounded text-slate-950 bg-input-bg border-border-color focus:ring-1 focus:ring-primary-blue cursor-pointer">
+                    </td>
+                    <td class="py-3.5 px-5 text-text-main">
+                        <div class="font-bold cursor-pointer hover:text-primary-blue transition-all inline-block" 
+                             onclick="openDetailsDrawer(${item.id})"
+                             onmouseenter="showTooltip(event, ${item.id})" 
+                             onmousemove="moveTooltip(event)" 
+                             onmouseleave="hideTooltip()">
+                            ${item.name} <span class="text-xs text-text-muted font-normal">↗</span>
+                        </div>
+                        <span class="text-[11px] font-tech text-text-muted block mt-1">${item.category} &bull; ${item.subcategory}</span>
+                    </td>
+                    <td class="py-3.5 px-5 text-center font-tech font-bold text-text-main hover:bg-bg-sidebar/50 cursor-pointer" onclick="makeEditable(this, ${item.id}, 'hours')">
+                        ${item.hours}
+                    </td>
+                    <td class="py-3.5 px-5 text-right font-tech font-semibold text-text-main hover:bg-bg-sidebar/50 cursor-pointer" onclick="makeEditable(this, ${item.id}, 'rate')">
+                        ${item.rate.toLocaleString('ru-RU')}
+                    </td>
+                    <td class="py-3.5 px-5 text-right font-tech font-bold text-emerald-500 bg-emerald-500/5">
+                        ${priceSimple.toLocaleString('ru-RU')} ₽
+                    </td>
+                    <td class="py-3.5 px-5 text-right font-tech font-bold text-amber-500 bg-amber-500/5">
+                        ${priceMedium.toLocaleString('ru-RU')} ₽
+                    </td>
+                    <td class="py-3.5 px-5 text-right font-tech font-bold text-rose-500 bg-rose-500/5">
+                        ${priceComplex.toLocaleString('ru-RU')} ₽
+                    </td>
+                    <td class="py-3.5 px-5 text-center">
+                        <button onclick="openDetailsDrawer(${item.id})" class="p-1 text-text-muted hover:text-primary-blue transition-all">
+                            <i class="fa-solid fa-circle-info text-lg"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Live Spreadsheet inline edit
+        function makeEditable(element, id, field) {
+            if (element.querySelector('input')) return;
+            
+            const currentValue = parseFloat(element.textContent.replace(/[^0-9.]/g, ''));
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.step = field === 'hours' ? '0.1' : '100';
+            input.value = currentValue;
+            input.className = "w-full bg-input-bg text-text-main border border-primary-blue rounded-xl px-2 py-1 text-center focus:outline-none font-tech";
+            
+            element.innerHTML = '';
+            element.appendChild(input);
+            input.focus();
+            input.select();
+
+            const saveChange = () => {
+                const newValue = parseFloat(input.value) || 0;
+                const index = servicesData.findIndex(s => s.id === id);
+                if (index !== -1) {
+                    servicesData[index][field] = newValue;
+                }
+                
+                renderTable();
+                updateSmetaSummary();
+            };
+
+            input.addEventListener('blur', saveChange);
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') saveChange();
+            });
+        }
+
+        function filterServices() {
+            renderTable();
+        }
+
+        function filterServicesMobile() {
+            renderTable();
+        }
+
+        // Details Drawer Info Binder
+        function openDetailsDrawer(id) {
+            const item = servicesData.find(s => s.id === id);
+            if (!item) return;
+
+            document.getElementById('drawer-title').textContent = item.name;
+            document.getElementById('drawer-category').textContent = `${item.category} / ${item.subcategory}`;
+            document.getElementById('drawer-hours').textContent = `${item.hours} ${getHourPlural(item.hours)}`;
+            document.getElementById('drawer-rate').textContent = `${item.rate.toLocaleString('ru-RU')} ₽ / час`;
+            document.getElementById('drawer-desc').textContent = item.desc;
+            document.getElementById('drawer-simple-desc').textContent = item.s;
+            document.getElementById('drawer-medium-desc').textContent = item.m;
+            document.getElementById('drawer-complex-desc').textContent = item.c;
+
+            // Generate placeholders with text matching the complexity
+            document.getElementById('img-simple-placeholder').src = `https://placehold.co/600x350/182aeb/ffffff?text=${encodeURIComponent(item.name + ' - Простой')}`;
+            document.getElementById('img-medium-placeholder').src = `https://placehold.co/600x350/feafce/111115?text=${encodeURIComponent(item.name + ' - Средний')}`;
+            document.getElementById('img-complex-placeholder').src = `https://placehold.co/600x350/111115/ffffff?text=${encodeURIComponent(item.name + ' - Сложный')}`;
+
+            const drawer = document.getElementById('details-drawer');
+            drawer.classList.remove('translate-x-full');
+        }
+
+        function closeDetailsDrawer() {
+            const drawer = document.getElementById('details-drawer');
+            drawer.classList.add('translate-x-full');
+        }
+
+        function getHourPlural(h) {
+            const rem = h % 10;
+            const rem100 = h % 100;
+            if (rem100 >= 11 && rem100 <= 19) return 'часов';
+            if (rem === 1) return 'час';
+            if (rem >= 2 && rem <= 4) return 'часа';
+            return 'часов';
+        }
+
+        function toggleCalculatorDrawer() {
+            const drawer = document.getElementById('calculator-drawer');
+            drawer.classList.toggle('translate-x-full');
+            renderSmetaItems();
+        }
+
+        function toggleItemSmeta(id, checked) {
+            const row = document.getElementById(`row-${id}`);
+            if (checked) {
+                smeta[id] = { complexity: 'simple', qty: 1 };
+                if (row) {
+                    row.className = row.className.replace('border-l-transparent', 'bg-primary-blue/[0.04] border-l-primary-blue');
+                }
+            } else {
+                delete smeta[id];
+                if (row) {
+                    row.className = row.className.replace('bg-primary-blue/[0.04] border-l-primary-blue', 'border-l-transparent');
+                }
+            }
+            updateSmetaSummary();
+            renderSmetaItems();
+        }
+
+        function updateSmetaSummary() {
+            const count = Object.keys(smeta).length;
+            document.getElementById('cart-count').textContent = count;
+            document.getElementById('selected-badge-count').textContent = count;
+            
+            let totalHours = 0;
+            let totalPrice = 0;
+
+            Object.keys(smeta).forEach(id => {
+                const service = servicesData.find(s => s.id === parseInt(id));
+                if (!service) return;
+
+                const data = smeta[id];
+                let multiplier = 1;
+                if (data.complexity === 'medium') multiplier = 2.5;
+                if (data.complexity === 'complex') multiplier = 5.0;
+
+                // Часы теперь соразмерно масштабируются по коэффициенту сложности
+                totalHours += (service.hours * multiplier) * data.qty;
+                totalPrice += service.hours * service.rate * multiplier * data.qty;
+            });
+
+            document.getElementById('total-hours').textContent = `${totalHours.toFixed(1)} ч`;
+            document.getElementById('total-price').textContent = `${Math.round(totalPrice).toLocaleString('ru-RU')} ₽`;
+        }
+
+        // Render beautiful bento-styled config rows for chosen services
+        function renderSmetaItems() {
+            const container = document.getElementById('selected-items-container');
+            container.innerHTML = '';
+
+            const keys = Object.keys(smeta);
+            if (keys.length === 0) {
+                container.innerHTML = `<p class="text-sm text-text-muted text-center py-10 font-tech">Смета пуста. Выберите нужные услуги в таблице слева!</p>`;
+                return;
+            }
+
+            keys.forEach(id => {
+                const service = servicesData.find(s => s.id === parseInt(id));
+                if (!service) return;
+
+                const item = smeta[id];
+                const basePrice = service.hours * service.rate;
+                const multiplier = item.complexity === 'simple' ? 1 : item.complexity === 'medium' ? 2.5 : 5.0;
+                
+                // Пропорциональное пересчитывание часов по коэффициенту сложности
+                const itemTime = (service.hours * multiplier) * item.qty;
+                const currentPrice = basePrice * multiplier * item.qty;
+
+                let complexityDesc = '';
+                let borderLabel = '';
+                if (item.complexity === 'simple') {
+                    complexityDesc = service.s;
+                    borderLabel = 'border-emerald-500/20 text-emerald-600 bg-emerald-500/5';
+                } else if (item.complexity === 'medium') {
+                    complexityDesc = service.m;
+                    borderLabel = 'border-primary-blue/20 text-primary-blue bg-primary-blue/5';
+                } else {
+                    complexityDesc = service.c;
+                    borderLabel = 'border-rose-500/20 text-rose-500 bg-rose-500/5';
+                }
+
+                const div = document.createElement('div');
+                div.className = "bento-card p-4 bg-bg-card border border-border-color space-y-3";
+                div.innerHTML = `
+                    <div class="flex justify-between items-start gap-4">
+                        <div>
+                            <h4 class="font-bold text-text-main text-sm font-display leading-tight">${service.name}</h4>
+                            <span class="text-[9px] font-tech text-text-muted uppercase tracking-wider block mt-1">${service.category} &bull; ${service.subcategory}</span>
+                        </div>
+                        <button onclick="toggleItemSmeta(${service.id}, false); renderSmetaItems();" class="text-text-muted hover:text-rose-500 transition-all text-sm p-1"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                    
+                    <!-- Segmented Toggle - Custom Bento Switch Button -->
+                    <div class="grid grid-cols-3 gap-3 items-center">
+                        <div class="col-span-2">
+                            <label class="text-[9px] font-tech text-text-muted uppercase tracking-wider block mb-1">Сложность проекта</label>
+                            <div class="flex rounded-xl bg-bg-sidebar p-1 border border-border-color">
+                                <button onclick="updateItemComplexity(${service.id}, 'simple')" class="flex-1 text-center py-1 rounded-lg text-xs font-tech segmented-btn ${item.complexity === 'simple' ? 'active' : 'text-text-muted'}">Простой</button>
+                                <button onclick="updateItemComplexity(${service.id}, 'medium')" class="flex-1 text-center py-1 rounded-lg text-xs font-tech segmented-btn ${item.complexity === 'medium' ? 'active' : 'text-text-muted'}">Средний</button>
+                                <button onclick="updateItemComplexity(${service.id}, 'complex')" class="flex-1 text-center py-1 rounded-lg text-xs font-tech segmented-btn ${item.complexity === 'complex' ? 'active' : 'text-text-muted'}">Сложный</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-tech text-text-muted uppercase tracking-wider block mb-1">Количество</label>
+                            <input type="number" min="1" value="${item.qty}" onchange="updateItemQty(${service.id}, this.value)" class="w-full bg-bg-sidebar border border-border-color rounded-xl py-1.5 text-center text-xs text-text-main focus:outline-none font-tech">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 pt-2 border-t border-border-color/60 items-center">
+                        <div class="p-2.5 rounded-xl border text-[11px] leading-relaxed transition-all duration-300 font-tech ${borderLabel}">
+                            <div class="font-bold uppercase text-[9px] tracking-wider mb-0.5">Регламент тарифа:</div>
+                            ${complexityDesc}
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[9px] font-tech text-text-muted uppercase tracking-wider block mb-0.5">Время и стоимость</span>
+                            <span class="text-xs font-tech font-bold text-text-main block">${itemTime.toFixed(1)} ч</span>
+                            <span class="text-base font-tech font-extrabold text-text-main">${Math.round(currentPrice).toLocaleString('ru-RU')} ₽</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function updateItemComplexity(id, complexity) {
+            smeta[id].complexity = complexity;
+            updateSmetaSummary();
+            renderSmetaItems();
+        }
+
+        function updateItemQty(id, qty) {
+            smeta[id].qty = parseInt(qty) || 1;
+            updateSmetaSummary();
+            renderSmetaItems();
+        }
+
+        function clearSmeta() {
+            smeta = {};
+            const checkboxes = document.querySelectorAll('#services-tbody input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = false);
+            
+            const rows = document.querySelectorAll('#services-tbody tr');
+            rows.forEach(r => {
+                r.className = r.className.replace('bg-primary-blue/[0.04] border-l-primary-blue', 'border-l-transparent');
+            });
+
+            updateSmetaSummary();
+            renderSmetaItems();
+        }
+
+        // CSV Exporter
+        function exportToCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; 
+            csvContent += "Раздел;Подраздел;Услуга;Часы;Базовая Ставка (₽);Простой Дизайн (₽);Средний Дизайн (₽);Сложный Дизайн (₽);Описание\r\n";
+
+            servicesData.forEach(item => {
+                const row = [
+                    item.category,
+                    item.subcategory,
+                    item.name,
+                    item.hours,
+                    item.rate,
+                    Math.round(item.hours * item.rate),
+                    Math.round(item.hours * item.rate * 2.5),
+                    Math.round(item.hours * item.rate * 5),
+                    item.desc.replace(/;/g, ',') 
+                ];
+                csvContent += row.join(";") + "\r\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "Прайс-лист_CHATKINA_Bento.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Generate printable professional Proposal
+        function printProposal() {
+            const clientName = document.getElementById('client-name').value || "Уважаемый клиент";
+            const projectTitle = document.getElementById('project-title').value || "Разработка проекта";
+            const clientComments = document.getElementById('client-comments').value || "";
+            const date = new Date().toLocaleDateString('ru-RU');
+
+            let proposalHTML = `
+                <html>
+                <head>
+                    <title>Коммерческое предложение</title>
+                    <style>
+                        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #111115; padding: 40px; }
+                        .header { display: flex; justify-content: space-between; border-b: 2px solid #111115; padding-bottom: 20px; margin-bottom: 30px; }
+                        .title { font-size: 24px; font-weight: bold; }
+                        .client-info { margin-bottom: 30px; background-color: #f9f9fb; padding: 20px; border-radius: 12px; border: 1px solid #e5e7eb; }
+                        .comments-block { margin-top: 12px; padding-top: 12px; border-top: 1px dashed #cbd5e1; font-style: italic; color: #475569; font-size: 14px; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                        th, td { border-bottom: 1px solid #e2e8f0; padding: 12px; text-align: left; vertical-align: top; }
+                        th { background-color: #f9f9fb; font-weight: bold; }
+                        .item-desc { font-size: 11px; color: #64748b; margin-top: 4px; line-height: 1.4; }
+                        .total { font-size: 18px; font-weight: bold; text-align: right; margin-top: 30px; }
+                        .highlight-text { color: #111115; font-weight: bold; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div>
+                            <div class="title" style="text-transform: uppercase; font-family: 'Space Grotesk', sans-serif;">Коммерческое предложение</div>
+                            <div style="color: #6b7280; font-size: 14px; margin-top: 5px;">Разработчик / Дизайнер — CHATKINA.DESIGN</div>
+                        </div>
+                        <div style="text-align: right; font-size: 14px; color: #6b7280;">Дата: ${date}</div>
+                    </div>
+                    
+                    <div class="client-info">
+                        <strong>Получатель:</strong> ${clientName}<br>
+                        <strong>Проект:</strong> ${projectTitle}
+                        ${clientComments ? `<div class="comments-block"><strong>Комментарии к сметным задачам:</strong><br>${clientComments.replace(/\n/g, '<br>')}</div>` : ''}
+                    </div>
+
+                    <h3>Смета проекта:</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Услуга / Задача</th>
+                                <th>Уровень сложности</th>
+                                <th style="text-align: center;">Часы работы</th>
+                                <th style="text-align: center;">Кол-во</th>
+                                <th style="text-align: right;">Стоимость</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            let totalHours = 0;
+            let totalPrice = 0;
+
+            Object.keys(smeta).forEach(id => {
+                const service = servicesData.find(s => s.id === parseInt(id));
+                if (!service) return;
+
+                const item = smeta[id];
+                const multiplier = item.complexity === 'simple' ? 1 : item.complexity === 'medium' ? 2.5 : 5.0;
+                
+                const itemTime = (service.hours * multiplier) * item.qty;
+                const cost = service.hours * service.rate * multiplier * item.qty;
+                
+                totalHours += itemTime;
+                totalPrice += cost;
+
+                let complexityName = '';
+                let complexityDetail = '';
+                if (item.complexity === 'simple') {
+                    complexityName = 'Простой макет';
+                    complexityDetail = service.s;
+                } else if (item.complexity === 'medium') {
+                    complexityName = 'Средняя сложность';
+                    complexityDetail = service.m;
+                } else {
+                    complexityName = 'Сложный / Премиум';
+                    complexityDetail = service.c;
+                }
+
+                proposalHTML += `
+                    <tr>
+                        <td>
+                            <strong>${service.name}</strong>
+                            <div class="item-desc"><strong>Техрегламент:</strong> ${complexityDetail}</div>
+                        </td>
+                        <td>${complexityName}</td>
+                        <td style="text-align: center;">${itemTime.toFixed(1)} ч</td>
+                        <td style="text-align: center;">${item.qty} шт</td>
+                        <td style="text-align: right;">${Math.round(cost).toLocaleString('ru-RU')} ₽</td>
+                    </tr>
+                `;
+            });
+
+            proposalHTML += `
+                        </tbody>
+                    </table>
+
+                    <div class="total">
+                        Общее время реализации: <span class="highlight-text">${totalHours.toFixed(1)} ч</span><br>
+                        <span style="font-size: 22px; color: #111115; display: block; margin-top: 10px;">Итоговая стоимость: ${Math.round(totalPrice).toLocaleString('ru-RU')} ₽</span>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(proposalHTML);
+            printWindow.document.close();
+            printWindow.focus();
+            setTimeout(() => {
+                printWindow.print();
+            }, 500);
+        }
+    </script>
+</body>
+</html>
+```
+eof
