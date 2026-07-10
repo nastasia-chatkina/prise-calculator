@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>CHATKINA.DESIGN — Bento Proposal System v2.6</title>
+    <title>CHATKINA.DESIGN — Bento Proposal System v2.7</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Space Grotesk, Urbanist, Manrope и пиксельный Silkscreen -->
@@ -15,10 +15,10 @@
     
     <style>
         :root {
-            /* Светлая Stark White & Brand Blue-Pink тема (Осветлена в два раза) */
-            --bg-main: #f4f4f6; 
+            /* Светлая Stark White & Brand Blue-Pink тема */
+            --bg-main: #e4e4e4; 
             --bg-card: #ffffff; 
-            --bg-sidebar: #fcfcfd; 
+            --bg-sidebar: #fafafa; 
             --text-main: #111115; 
             --text-muted: #64748b; 
             --border-color: #cbd5e1; 
@@ -41,19 +41,19 @@
         
         .dark {
             /* Темная матовая Obsidian & Brand тема */
-            --bg-main: #1d2238; 
-            --bg-card: #28304d; 
-            --bg-sidebar: #20273f; 
+            --bg-main: #28304d; 
+            --bg-card: #181c2b; 
+            --bg-sidebar: #121521; 
             --text-main: #f9f9fb; 
             --text-muted: #94a3b8; 
             --border-color: #3b4566; 
-            --primary-blue: #3b4bfb; 
+            --primary-blue: #182aeb; 
             --accent-pink: #feafce; 
-            --input-bg: #20273f;
-            --table-header-bg: #20273f;
+            --input-bg: #121521;
+            --table-header-bg: #121521;
             --table-row-hover: rgba(254, 175, 206, 0.06);
             
-            --tooltip-bg: #28304d;
+            --tooltip-bg: #121521;
             --tooltip-text: #f9f9fb;
             --tooltip-border: #3b4566;
             --tooltip-shadow: rgba(0, 0, 0, 0.5);
@@ -138,6 +138,18 @@
         .pb-safe {
             padding-bottom: env(safe-area-inset-bottom, 16px);
         }
+
+        /* Default Order (Standard laptops <= 1920px, iPad, Mobile) */
+        .drawer-client-info { order: 1; }
+        .drawer-selected-services { order: 2; }
+        .drawer-client-comments { order: 3; }
+
+        /* Order for Screens > 1920px (2K, 4K Monitors) */
+        @media (min-width: 1921px) {
+            .drawer-client-info { order: 1; }
+            .drawer-client-comments { order: 2; }
+            .drawer-selected-services { order: 3; }
+        }
     </style>
     
     <script>
@@ -165,18 +177,18 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased bg-bg-main text-text-main transition-colors duration-300">
 
-    <!-- HEADER (Sticky & Unified Alignment, Optimized Tablet Widths) -->
+    <!-- HEADER (Sticky & Unified Alignment, Optimized iPad & Tablet Widths) -->
     <header class="sticky top-0 z-40 w-full px-4 md:px-6 pt-4 md:pt-6 pb-2 bg-bg-main/90 backdrop-blur-md">
         <div class="max-w-[1600px] mx-auto bento-card p-3 md:p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-bg-card">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 md:w-11 md:h-11 rounded-xl bg-primary-blue flex items-center justify-center text-white font-bold text-xl md:text-2xl shadow-sm flex-shrink-0">
+                <div class="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-primary-blue flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-sm flex-shrink-0">
                     <span class="font-tech text-accent-pink">↗</span>
                 </div>
                 <div>
-                    <h1 class="text-xl md:text-2xl lg:text-3xl font-pixel tracking-tight whitespace-nowrap">
+                    <h1 class="text-lg md:text-xl lg:text-2xl font-pixel tracking-tight whitespace-nowrap">
                         <span class="text-primary-blue">CHATKINA</span><span class="text-accent-pink">.DESIGN</span>
                     </h1>
-                    <p class="text-[9px] md:text-[10px] text-text-muted font-tech tracking-widest uppercase mt-0.5">Bento Proposal System v2.6</p>
+                    <p class="text-[9px] md:text-[10px] text-text-muted font-tech tracking-widest uppercase mt-0.5">Bento Proposal System v2.7</p>
                 </div>
             </div>
             
@@ -239,17 +251,17 @@
 
             <!-- Bento Spreadsheet Grid (DESKTOP & TABLET: Absolutely fluid responsive table, no scrollbar on iPad) -->
             <div class="hidden md:block flex-1 overflow-auto relative">
-                <table class="w-full text-left border-collapse min-w-full lg:min-w-[950px]">
+                <table class="w-full text-left border-collapse min-w-full">
                     <thead>
                         <tr class="bg-table-header-bg border-b border-border-color text-text-muted text-[10px] md:text-xs uppercase font-bold tracking-wider sticky top-0 z-10">
                             <th class="py-4 px-3 w-[5%] text-center">Выбрать</th>
-                            <th class="py-4 px-3 w-[35%]">Раздел / Услуга</th>
+                            <th class="py-4 px-3 w-[32%]">Раздел / Услуга</th>
                             <th class="py-4 px-3 w-[8%] text-center">Часы</th>
-                            <th class="py-4 px-3 w-[12%] text-right">Ставка (₽)</th>
-                            <th class="py-4 px-3 w-[12%] text-right text-[#00c5af] bg-[#00c5af]/5">Простой (1х)</th>
-                            <th class="py-4 px-3 w-[12%] text-right text-[#ff9355] bg-[#ff9355]/5">Средний (2.5х)</th>
-                            <th class="py-4 px-3 w-[11%] text-right text-[#ff3b70] bg-[#ff3b70]/5">Сложный (5х)</th>
-                            <th class="py-4 px-3 w-[5%] text-center">Инфо</th>
+                            <th class="py-4 px-3 w-[11%] text-right">Ставка (₽)</th>
+                            <th class="py-4 px-3 w-[11%] text-right text-[#00c5af] bg-[#00c5af]/5">Простой (1х)</th>
+                            <th class="py-4 px-3 w-[11%] text-right text-[#ff9355] bg-[#ff9355]/5">Средний (2.5х)</th>
+                            <th class="py-4 px-3 w-[12%] text-right text-[#ff3b70] bg-[#ff3b70]/5">Сложный (5х)</th>
+                            <th class="py-4 px-3 w-[10%] text-center">Инфо</th>
                         </tr>
                     </thead>
                     <tbody id="services-tbody" class="divide-y divide-border-color/60">
@@ -265,6 +277,9 @@
         </section>
 
     </main>
+
+    <!-- BACKDROP OVERLAY FOR ALL DRAWERS -->
+    <div id="drawer-backdrop" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 hidden transition-opacity duration-300 opacity-0" onclick="closeAllDrawers()"></div>
 
     <!-- RIGHT DRAWER: DETAILED VIEW OF SELECTED SERVICE -->
     <div id="details-drawer" class="fixed right-0 top-0 bottom-0 w-full sm:w-[500px] bg-bg-card border-l border-border-color shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col h-[100dvh] overflow-hidden">
@@ -306,11 +321,11 @@
                 <div class="p-4 rounded-xl bg-[#00c5af]/5 border border-[#00c5af]/15 space-y-3">
                     <div class="flex items-center gap-2 text-[#00c5af] font-bold text-sm">
                         <i class="fa-solid fa-circle-check"></i>
-                        <span>Простой дизайн (Базовые часы)</span>
+                        <span id="label-simple">Простой дизайн (Базовые часы)</span>
                     </div>
                     <p class="text-xs text-text-muted leading-relaxed" id="drawer-simple-desc">Что входит в простой...</p>
                     
-                    <div class="relative w-full aspect-video rounded-xl bg-[#00c5af]/10 overflow-hidden border border-[#00c5af]/20 group">
+                    <div class="drawer-img-container relative w-full aspect-video rounded-xl bg-[#00c5af]/10 overflow-hidden border border-[#00c5af]/20 group">
                         <div class="absolute inset-0 flex flex-col items-center justify-center text-[#00c5af] p-4 text-center">
                             <i class="fa-regular fa-image text-2xl mb-1.5 transition-transform group-hover:scale-110 duration-300"></i>
                             <span class="text-[10px] font-tech uppercase tracking-wider">Пример простого макета</span>
@@ -323,11 +338,11 @@
                 <div class="p-4 rounded-xl bg-[#ff9355]/5 border border-[#ff9355]/15 space-y-3">
                     <div class="flex items-center gap-2 text-[#ff9355] font-bold text-sm">
                         <i class="fa-solid fa-circle-half-stroke"></i>
-                        <span>Средний дизайн (Коэффициент 2.5х)</span>
+                        <span id="label-medium">Средний дизайн (Коэффициент 2.5х)</span>
                     </div>
                     <p class="text-xs text-text-muted leading-relaxed" id="drawer-medium-desc">Что входит в средний...</p>
                     
-                    <div class="relative w-full aspect-video rounded-xl bg-[#ff9355]/10 overflow-hidden border border-[#ff9355]/20 group">
+                    <div class="drawer-img-container relative w-full aspect-video rounded-xl bg-[#ff9355]/10 overflow-hidden border border-[#ff9355]/20 group">
                         <div class="absolute inset-0 flex flex-col items-center justify-center text-[#ff9355] p-4 text-center">
                             <i class="fa-regular fa-image text-2xl mb-1.5 transition-transform group-hover:scale-110 duration-300"></i>
                             <span class="text-[10px] font-tech uppercase tracking-wider">Пример среднего макета</span>
@@ -340,11 +355,11 @@
                 <div class="p-4 rounded-xl bg-[#ff3b70]/5 border border-[#ff3b70]/15 space-y-3">
                     <div class="flex items-center gap-2 text-[#ff3b70] font-bold text-sm">
                         <i class="fa-solid fa-circle-exclamation"></i>
-                        <span>Сложный дизайн (Коэффициент 5.0х)</span>
+                        <span id="label-complex">Сложный дизайн (Коэффициент 5.0х)</span>
                     </div>
                     <p class="text-xs text-text-muted leading-relaxed" id="drawer-complex-desc">Что входит в сложный...</p>
                     
-                    <div class="relative w-full aspect-video rounded-xl bg-[#ff3b70]/10 overflow-hidden border border-[#ff3b70]/20 group">
+                    <div class="drawer-img-container relative w-full aspect-video rounded-xl bg-[#ff3b70]/10 overflow-hidden border border-[#ff3b70]/20 group">
                         <div class="absolute inset-0 flex flex-col items-center justify-center text-[#ff3b70] p-4 text-center">
                             <i class="fa-regular fa-image text-2xl mb-1.5 transition-transform group-hover:scale-110 duration-300"></i>
                             <span class="text-[10px] font-tech uppercase tracking-wider">Пример сложного макета</span>
@@ -357,7 +372,7 @@
     </div>
 
     <!-- RIGHT DRAWER: CALCULATOR PROPOSAL BUILDER (Compact Mobile safe sizing) -->
-    <div id="calculator-drawer" class="fixed right-0 top-0 bottom-0 w-full sm:w-[600px] bg-bg-card border-l border-border-color shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col h-[100vh] h-[100dvh] max-h-[100vh] max-h-[100dvh] overflow-hidden" style="box-sizing: border-box;">
+    <div id="calculator-drawer" class="fixed right-0 top-0 bottom-0 w-full sm:w-[600px] bg-bg-card border-l border-border-color shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col h-[100dvh] max-h-[100dvh] overflow-hidden" style="box-sizing: border-box;">
         
         <!-- Fixed Header -->
         <div class="p-4 sm:p-6 border-b border-border-color flex items-center justify-between bg-bg-sidebar flex-shrink-0">
@@ -371,8 +386,8 @@
         <!-- Scrollable Middle Section with responsive ordering -->
         <div class="flex-1 overflow-y-auto p-4 sm:p-6 flex flex-col gap-5 sm:gap-6 min-h-0">
             
-            <!-- CLIENT INPUTS BLOCK (Top on Desktop/Tablet, bottom on Mobile) -->
-            <div class="space-y-4 pb-4 border-b border-border-color/60 order-2 md:order-1">
+            <!-- CLIENT INPUTS BLOCK (Responsive order-1 on Desktop & Tablet, bottom-most on Laptop <=1920) -->
+            <div class="drawer-client-info space-y-4 pb-4 border-b border-border-color/60">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="text-[10px] font-bold uppercase text-text-muted block mb-1">Имя / Компания клиента:</label>
@@ -383,16 +398,10 @@
                         <input type="text" id="project-title" placeholder="Редизайн бренда" class="w-full bg-input-bg border border-border-color rounded-xl py-2 px-3 text-sm text-text-main focus:outline-none focus:border-primary-blue">
                     </div>
                 </div>
-
-                <!-- Responsive 3-line Comment Textarea -->
-                <div>
-                    <label class="text-[10px] font-bold uppercase text-text-muted block mb-1">Комментарии к предложению:</label>
-                    <textarea id="client-comments" rows="3" placeholder="Особые условия, дедлайны или технические нюансы..." class="w-full bg-input-bg border border-border-color rounded-xl py-2 px-3 text-sm text-text-main focus:outline-none focus:border-primary-blue resize-none"></textarea>
-                </div>
             </div>
 
             <!-- CHATKINA SELECTED SERVICES BLOCK -->
-            <div class="space-y-4 order-1 md:order-2">
+            <div class="drawer-selected-services space-y-4">
                 <div class="flex items-center justify-between border-b border-border-color pb-2">
                     <h4 class="text-xs font-bold text-text-muted uppercase tracking-wider">Выбранные услуги</h4>
                     <span class="text-xs bg-primary-blue/15 text-primary-blue border border-primary-blue/20 px-2 py-0.5 rounded-full font-tech font-bold" id="selected-badge-count">0</span>
@@ -400,6 +409,12 @@
                 <div id="selected-items-container" class="space-y-4 pb-4">
                     <!-- Смета пуста по умолчанию -->
                 </div>
+            </div>
+
+            <!-- CLIENT COMMENTS BLOCK -->
+            <div class="drawer-client-comments pb-4 border-t border-border-color/60 pt-4">
+                <label class="text-[10px] font-bold uppercase text-text-muted block mb-1">Комментарии к предложению:</label>
+                <textarea id="client-comments" rows="3" placeholder="Особые условия, дедлайны или технические нюансы..." class="w-full bg-input-bg border border-border-color rounded-xl py-2 px-3 text-sm text-text-main focus:outline-none focus:border-primary-blue resize-none"></textarea>
             </div>
 
         </div>
@@ -541,12 +556,12 @@
             { id: 82, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Брендированная ручка/карандаш", hours: 0.5, rate: 1500, desc: "Промо-канцелярия для выставок.", s: "Логотип или сайт на клипе/корпусе в один цвет.", m: "Тампопечать в 2 цвета, гравировка на металле.", c: "Индивидуальный дизайн ручки по круговому макету запечатки." },
             { id: 83, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Брендированный бейдж", hours: 1, rate: 1500, desc: "Дизайн карты идентификации сотрудника.", s: "Имя, должность and логотип по строгой сетке.", m: "Оригинальный бейдж с вырубными окнами или кастомной формой.", c: "Премиальный металлический бейдж с гравировкой." },
             { id: 84, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Брендированный ланьярд (лента для бейджа)", hours: 1, rate: 1500, desc: "Лента для бейджа с шаговым нанесением.", s: "Шаблонное повторение логотипа на ленте в один цвет.", m: "Дизайн ленты с бесшовным паттерном, расчет шага печати.", c: "Двусторонняя печать с перекрестным узором." },
-            { id: 85, category: "Полиграфия, упаковка and мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Вобблер рекламный (стоппер на гибкой ножке)", hours: 1.5, rate: 1500, desc: "POS-материал на гибкой пластиковой ножке.", s: "Круклый вобблер с ценой и логотипом по центру.", m: "Фигурная вырубка (в форме продукта), сочный коллаж.", c: "Креативный 3D-вобблер со складывающимися деталями." },
+            { id: 85, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Вобблер рекламный (стоппер на гибкой ножке)", hours: 1.5, rate: 1500, desc: "POS-материал на гибкой пластиковой ножке.", s: "Круклый вобблер с ценой и логотипом по центру.", m: "Фигурная вырубка (в форме продукта), сочный коллаж.", c: "Креативный 3D-вобблер со складывающимися деталями." },
             { id: 86, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Шелфтокер (длинная рекламная полоса)", hours: 1.5, rate: 1500, desc: "Рекламный разделитель товаров на полках магазинов.", s: "Верстка бренда и слогана на длинной полосе по размерам.", m: "Проектирование конструкции с загибами и ценниками.", c: "Креативный шелфтокер с выносными вырубными элементами." },
             { id: 87, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Фирменная флешка / USB-накопитель", hours: 1, rate: 1500, desc: "Дизайн нанесения на USB-накопитель.", s: "Логотип на защитном колпачке или корпусе.", m: "Флешка-визитка под полную УФ-печать (две стороны).", c: "Разработка макета кастомного резинового корпуса флешки." },
             { id: 88, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Фирменный повербанк (Power Bank)", hours: 1, rate: 1500, desc: "Брендирование внешнего аккумулятора.", s: "Нанесение логотипа по центру плоской грани.", m: "Макет полной запечатки лицевой стороны паттерном.", c: "Совмещение УФ-печати и лазерной гравировки светодиодов." },
             { id: 91, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Корпоративная кружка / Термокружка / Термос", hours: 1.5, rate: 1500, desc: "Дизайн круговой запечатки термокружек и кружек.", s: "Логотип с одной или двух сторон кружки.", m: "Разработка круговой развертки на всю поверхность кружки/термоса.", c: "Кастомный макет с лазерной гравировкой софт-тач покрытия." },
-            { id: 92, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Фирменный зонт", hours: 1.5, rate: 1500, desc: "Дизайн нанесения на купол зонта.", s: "Печать логотипа на одном или двух клиньях.", m: "Дизайн всех клиньев с чередованием цветов и паттернов.", c: "Сплошной сублимационный принт на всю внутреннюю часть купола." },
+            { id: 92, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Фирменный зонт", hours: 1.5, rate: 1500, desc: "Дизайн нанесения на купол зонта.", s: "Печать логотипа на одном или двух клиньях.", m: "Дизайн всех клиньев с чрезводными цветами и паттернами.", c: "Сплошной сублимационный принт на всю внутреннюю часть купола." },
             { id: 93, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Фирменная маска для сна / Подушка", hours: 1, rate: 1500, desc: "Дорожный мерч для сна по готовому лекалу.", s: "Логотип по центру маски в один цвет.", m: "Сплошное покрытие ткани фирменным паттерном.", c: "Оригинальный кастомный принт (например, закрытые глаза ИИ)." },
             { id: 94, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Настольный кабинетный флажок", hours: 1, rate: 1500, desc: "Дизайн настольного тканевого флажка на подставке.", s: "Посадка логотипа по центру флага на однотонном фоне.", m: "Двусторонний флаг с паттерном и градиентами.", c: "Подготовка макета под золотую/серебряную вышивку." },
             { id: 95, category: "Полиграфия, упаковка и мерч", subcategory: "Корпоративная сувенирка и POS-материалы", name: "Фирменная зажигалка", hours: 0.5, rate: 1500, desc: "Промо-зажигалки для промо-акций.", s: "Посадка логотипа на узорчатый пластиковый корпус.", m: "Двусторонний принт с паттерном или забавным слоганом.", c: "Макет лазерной гравировки на металлических зажигалках Zippo." },
@@ -592,7 +607,7 @@
             // ПРЕЗЕНТАЦИИ И БИЗНЕС-ГРАФИКА
             { id: 122, category: "Презентации и бизнес-графика", subcategory: "Презентации и бизнес-графика", name: "Разработка концепции стиля презентации (Обложка + 1-2 пилотных слайда)", hours: 4, rate: 1500, desc: "Проектирование дизайн-системы презентации (Обложка + 2 пилотных слайда).", s: "Настройка шрифтов, полей и сетки для текстовых слайдов.", m: "Создание кастомных плашек, подбор векторных иконок бренда.", c: "Сложная визуальная метафора, уникальные ИИ-иллюстрации фонов." },
             { id: 123, category: "Презентации и бизнес-графика", subcategory: "Презентации и бизнес-графика", name: "Верстка и дизайн 1 слайда презентации (по готовой концепции)", hours: 1, rate: 1500, desc: "Постраничное наполнение презентации контентом по мастер-шаблону.", s: "Слайд «заголовок + текст + 1 фото» в готовом фрейме.", m: "Слайд с инфографикой, красивыми таблицами или несложными схемами.", c: "Сложная верстка аналитических данных, трехмерные графики." },
-            { id: 124, category: "Презентации и бизнес-графика", subcategory: "Презентации и бизнес-графика", name: "Дизайн рекламной/аналитической инфографики (Дата-арт)", hours: 4, rate: 1500, desc: "Создание комплексного графического лонгрида или аналитического плаката.", s: "Верстка до 7 цифр-показателей с подписями по готовой структуре.", m: "Оригинальная дорожная карта компании (таймлайн), схемы процессов.", c: "Сложный дата-арт с главной ИИ-фигурой и графиками." },
+            { id: 124, category: "Презентации и бизнес-графика", subcategory: "Презентации и бизнес-графика", name: "Дизайн рекламной/аналитической инфографики (Сложный постер / Дата-арт)", hours: 4, rate: 1500, desc: "Создание комплексного графического лонгрида или аналитического плаката.", s: "Верстка до 7 цифр-показателей с подписями по готовой структуре.", m: "Оригинальная дорожная карта компании (таймлайн), схемы процессов.", c: "Сложный дата-арт с главной ИИ-фигурой и графиками." },
 
             // ДОПОЛНИТЕЛЬНЫЕ УСЛУГИ
             { id: 125, category: "Дополнительные графические услуги", subcategory: "Обработка и Подготовка", name: "Обтравка изображений (Вырезание объекта из фона)", hours: 0.2, rate: 1500, desc: "Удаление фона с картинок товаров заказчика.", s: "Вырезание простых геометрических предметов.", m: "Обтравка мягких контуров (кресла, обувь) с чисткой краев.", c: "Ювелирное вырезание стекол, брызг воды, волос и шерсти." },
@@ -824,7 +839,7 @@
                 const tr = document.createElement('tr');
                 tr.id = `row-${item.id}`;
                 // Highlight active row with nice semi-transparent pink accent_pink
-                tr.className = `hover:bg-table-row-hover text-sm border-b border-border-color/40 border-l-4 transition-all ${isChecked ? 'bg-[#feafce]/15 dark:bg-[#feafce]/5 border-l-accent-pink' : 'border-l-transparent'}`;
+                tr.className = `hover:bg-table-row-hover text-sm border-b border-border-color/40 border-l-4 transition-all ${isChecked ? 'bg-[#feafce]/15 dark:bg-[#feafce]/5 border-l-[#feafce]' : 'border-l-transparent'}`;
                 
                 tr.innerHTML = `
                     <td class="py-3.5 px-3 text-center">
@@ -866,7 +881,7 @@
                 // --- 2. MOBILE CARD (Restructured layout without horizontal scroll) ---
                 const card = document.createElement('div');
                 card.id = `mobile-card-${item.id}`;
-                card.className = `bento-card p-4 space-y-3 bg-bg-card border transition-all ${isChecked ? 'bg-[#feafce]/15 dark:bg-[#feafce]/5 border-accent-pink' : 'border-border-color'}`;
+                card.className = `bento-card p-4 space-y-3 bg-bg-card border transition-all ${isChecked ? 'bg-[#feafce]/15 dark:bg-[#feafce]/5 border-[#feafce]' : 'border-border-color'}`;
                 card.innerHTML = `
                     <div class="flex items-start gap-3 justify-between">
                         <div class="flex items-center gap-3">
@@ -958,12 +973,30 @@
             document.getElementById('drawer-medium-desc').textContent = item.m;
             document.getElementById('drawer-complex-desc').textContent = item.c;
 
-            document.getElementById('img-simple-placeholder').src = `https://placehold.co/600x350/00c5af/ffffff?text=${encodeURIComponent(item.name + ' - Простой')}`;
-            document.getElementById('img-medium-placeholder').src = `https://placehold.co/600x350/ff9355/111115?text=${encodeURIComponent(item.name + ' - Средний')}`;
-            document.getElementById('img-complex-placeholder').src = `https://placehold.co/600x350/ff3b70/ffffff?text=${encodeURIComponent(item.name + ' - Сложный')}`;
+            // STRIP "DESIGN" WORD FOR ANALYTICS AND HIDE IMAGES
+            const isAnalytics = item.subcategory === "Аналитика и концепция";
+            document.getElementById('label-simple').textContent = isAnalytics ? "Простой (Базовые часы)" : "Простой дизайн (Базовые часы)";
+            document.getElementById('label-medium').textContent = isAnalytics ? "Средний (Коэффициент 2.5х)" : "Средний дизайн (Коэффициент 2.5х)";
+            document.getElementById('label-complex').textContent = isAnalytics ? "Сложный (Коэффициент 5.0х)" : "Сложный дизайн (Коэффициент 5.0х)";
+
+            const imgContainers = document.querySelectorAll('.drawer-img-container');
+            imgContainers.forEach(container => {
+                container.style.display = isAnalytics ? 'none' : 'block';
+            });
+
+            if (!isAnalytics) {
+                document.getElementById('img-simple-placeholder').src = `https://placehold.co/600x350/00c5af/ffffff?text=${encodeURIComponent(item.name + ' - Простой')}`;
+                document.getElementById('img-medium-placeholder').src = `https://placehold.co/600x350/ff9355/111115?text=${encodeURIComponent(item.name + ' - Средний')}`;
+                document.getElementById('img-complex-placeholder').src = `https://placehold.co/600x350/ff3b70/ffffff?text=${encodeURIComponent(item.name + ' - Сложный')}`;
+            }
 
             const drawer = document.getElementById('details-drawer');
             drawer.classList.remove('translate-x-full');
+            
+            // SHOW BACKDROP & FREEZE SCROLL
+            const backdrop = document.getElementById('drawer-backdrop');
+            backdrop.classList.remove('hidden');
+            setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
             document.body.classList.add('overflow-hidden');
         }
 
@@ -973,7 +1006,19 @@
             
             const calcDrawer = document.getElementById('calculator-drawer');
             if (calcDrawer.classList.contains('translate-x-full')) {
+                const backdrop = document.getElementById('drawer-backdrop');
+                backdrop.classList.add('opacity-0');
+                setTimeout(() => backdrop.classList.add('hidden'), 300);
                 document.body.classList.remove('overflow-hidden');
+            }
+        }
+
+        // CLOSE ALL DRAWERS UTILITY (CLICKING ON BLURRED BACKDROP)
+        function closeAllDrawers() {
+            closeDetailsDrawer();
+            const calcDrawer = document.getElementById('calculator-drawer');
+            if (!calcDrawer.classList.contains('translate-x-full')) {
+                toggleCalculatorDrawer();
             }
         }
 
@@ -990,13 +1035,22 @@
         function toggleCalculatorDrawer() {
             const drawer = document.getElementById('calculator-drawer');
             const isClosed = drawer.classList.contains('translate-x-full');
+            const backdrop = document.getElementById('drawer-backdrop');
+
             if (isClosed) {
                 drawer.classList.remove('translate-x-full');
                 document.body.classList.add('overflow-hidden');
+                
+                backdrop.classList.remove('hidden');
+                setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+                
                 renderSmetaItems();
             } else {
                 drawer.classList.add('translate-x-full');
                 document.body.classList.remove('overflow-hidden');
+                
+                backdrop.classList.add('opacity-0');
+                setTimeout(() => backdrop.classList.add('hidden'), 300);
             }
         }
 
@@ -1008,18 +1062,18 @@
             if (checked) {
                 smeta[id] = { complexity: 'simple', qty: 1 };
                 if (row) {
-                    row.className = row.className.replace('border-l-transparent', 'bg-[#feafce]/15 dark:bg-[#feafce]/5 border-l-accent-pink');
+                    row.className = row.className.replace('border-l-transparent', 'bg-[#feafce]/15 dark:bg-[#feafce]/5 border-l-[#feafce]');
                 }
                 if (mobileCard) {
-                    mobileCard.className = mobileCard.className.replace('border-border-color', 'border-accent-pink bg-[#feafce]/15 dark:bg-[#feafce]/5');
+                    mobileCard.className = mobileCard.className.replace('border-border-color', 'border-[#feafce] bg-[#feafce]/15 dark:bg-[#feafce]/5');
                 }
             } else {
                 delete smeta[id];
                 if (row) {
-                    row.className = row.className.replace('bg-[#feafce]/15 dark:bg-[#feafce]/5 border-l-accent-pink', 'border-l-transparent');
+                    row.className = row.className.replace('bg-[#feafce]/15 dark:bg-[#feafce]/5 border-l-[#feafce]', 'border-l-transparent');
                 }
                 if (mobileCard) {
-                    mobileCard.className = mobileCard.className.replace('border-accent-pink bg-[#feafce]/15 dark:bg-[#feafce]/5', 'border-border-color');
+                    mobileCard.className = mobileCard.className.replace('border-[#feafce] bg-[#feafce]/15 dark:bg-[#feafce]/5', 'border-border-color');
                 }
             }
 
@@ -1081,6 +1135,8 @@
                 const itemTime = (service.hours * multiplier) * item.qty;
                 const currentPrice = basePrice * multiplier * item.qty;
 
+                const isAnalytics = service.subcategory === "Аналитика и концепция";
+
                 let complexityDesc = '';
                 let borderLabel = '';
                 if (item.complexity === 'simple') {
@@ -1122,7 +1178,7 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-border-color/60 items-center">
                         <div class="p-2.5 rounded-xl border text-[11px] leading-relaxed transition-all duration-300 font-tech ${borderLabel}">
-                            <div class="font-bold uppercase text-[9px] tracking-wider mb-0.5">Регламент тарифа:</div>
+                            <div class="font-bold uppercase text-[9px] tracking-wider mb-0.5">${isAnalytics ? 'Регламент тарифа:' : 'Включено в данный дизайн:'}</div>
                             ${complexityDesc}
                         </div>
                         <div class="text-left sm:text-right">
@@ -1155,12 +1211,12 @@
             
             const rows = document.querySelectorAll('#services-tbody tr');
             rows.forEach(r => {
-                r.className = r.className.replace('bg-[#feafce]/15 dark:bg-[#feafce]/5 border-l-accent-pink', 'border-l-transparent');
+                r.className = r.className.replace('bg-[#feafce]/15 dark:bg-[#feafce]/5 border-l-[#feafce]', 'border-l-transparent');
             });
 
             const cards = document.querySelectorAll('#services-mobile-list > div');
             cards.forEach(c => {
-                c.className = c.className.replace('border-accent-pink bg-[#feafce]/15 dark:bg-[#feafce]/5', 'border-border-color');
+                c.className = c.className.replace('border-[#feafce] bg-[#feafce]/15 dark:bg-[#feafce]/5', 'border-border-color');
             });
 
             updateSmetaSummary();
@@ -1190,7 +1246,7 @@
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "Прайс-лист_CHATKINA_Bento_v2.6.csv");
+            link.setAttribute("download", "Прайс-лист_CHATKINA_Bento_v2.7.csv");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
