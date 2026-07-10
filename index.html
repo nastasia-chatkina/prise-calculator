@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CHATKINA.DESIGN — Bento Price Workspace v2.4</title>
+    <title>CHATKINA.DESIGN — Bento Proposal System v2.5</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Space Grotesk для кода/тех-стиля и Urbanist для элегантных интерфейсов -->
+    <!-- Google Fonts: Space Grotesk, Urbanist, Manrope и пиксельный Silkscreen -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Urbanist:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Urbanist:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
         :root {
             /* Светлая Stark White & Brand Blue-Pink тема */
-            --bg-main: #e4e4e4; /* Очищенный ровный светло-серый */
-            --bg-card: #ffffff; /* Абсолютно белый */
-            --bg-sidebar: #f8fafc; /* Светлая подложка */
-            --text-main: #111115; /* Глубокий черный */
-            --text-muted: #64748b; /* Серый */
-            --border-color: #cbd5e1; /* Нежная рамка */
-            --primary-blue: #182aeb; /* Ярко-синий электрик */
-            --accent-pink: #feafce; /* Нежно-розовый */
+            --bg-main: #e4e4e4; 
+            --bg-card: #ffffff; 
+            --bg-sidebar: #f8fafc; 
+            --text-main: #111115; 
+            --text-muted: #64748b; 
+            --border-color: #cbd5e1; 
+            --primary-blue: #182aeb; 
+            --accent-pink: #feafce; 
             --input-bg: #ffffff;
             --table-header-bg: #f1f5f9;
             --table-row-hover: rgba(254, 175, 206, 0.04);
@@ -33,29 +33,29 @@
             --tooltip-border: #cbd5e1;
             --tooltip-shadow: rgba(0, 0, 0, 0.08);
 
-            /* Цвета уровней сложности */
-            --color-simple: #00c5af; /* Бирюзово-зеленый */
-            --color-medium: #ff9355; /* Желто-розовый / Персиковый */
-            --color-complex: #ff3b70; /* Розово-красный */
+            /* Цвета уровней сложности по ТЗ заказчика */
+            --color-simple: #00c5af; 
+            --color-medium: #ff9355; 
+            --color-complex: #ff3b70; 
         }
         
         .dark {
             /* Темная матовая Obsidian & Brand тема */
-            --bg-main: #28304d; /* Глубокий благородный темно-синий */
-            --bg-card: #1d243c; /* Темно-графитовые карточки */
-            --bg-sidebar: #151a2d; /* Темная bento-подложка */
-            --text-main: #f9f9fb; /* Белый */
-            --text-muted: #94a3b8; /* Серый */
-            --border-color: #384260; /* Контрастная темная рамка */
-            --primary-blue: #3b4bfb; /* Ярко-синий */
-            --accent-pink: #feafce; /* Нежно-розовый */
-            --input-bg: #151a2d;
-            --table-header-bg: #151a2d;
+            --bg-main: #0a0a0f; 
+            --bg-card: #15151f; 
+            --bg-sidebar: #0f0f16; 
+            --text-main: #f9f9fb; 
+            --text-muted: #94a3b8; 
+            --border-color: #272733; 
+            --primary-blue: #3b4bfb; 
+            --accent-pink: #feafce; 
+            --input-bg: #0f0f16;
+            --table-header-bg: #0f0f16;
             --table-row-hover: rgba(254, 175, 206, 0.04);
             
-            --tooltip-bg: #151a2d;
+            --tooltip-bg: #0f0f16;
             --tooltip-text: #f9f9fb;
-            --tooltip-border: #384260;
+            --tooltip-border: #272733;
             --tooltip-shadow: rgba(0, 0, 0, 0.5);
         }
 
@@ -72,6 +72,10 @@
 
         .font-display {
             font-family: 'Urbanist', sans-serif;
+        }
+
+        .font-pixel {
+            font-family: 'Silkscreen', cursive;
         }
 
         /* Bento Card Custom Styling */
@@ -124,7 +128,6 @@
             background: var(--primary-blue);
         }
 
-        /* Препятствуем дерганию интерфейса при изменении полей */
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
@@ -157,32 +160,30 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased bg-bg-main text-text-main transition-colors duration-300">
 
-    <!-- HEADER (Aligned to exactly max-w-[1600px] and made sticky) -->
+    <!-- HEADER (Sticky & Unified Alignment) -->
     <header class="sticky top-0 z-40 w-full px-4 md:px-6 pt-4 md:pt-6 pb-2 bg-bg-main/90 backdrop-blur-md">
         <div class="max-w-[1600px] mx-auto bento-card p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-bg-card">
             <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-xl bg-primary-blue flex items-center justify-center text-white font-bold text-2xl shadow-sm">
+                <div class="w-12 h-12 rounded-xl bg-primary-blue flex items-center justify-center text-white font-bold text-2xl shadow-sm flex-shrink-0">
                     <span class="font-tech text-accent-pink">↗</span>
                 </div>
                 <div>
-                    <h1 class="text-2xl md:text-3xl font-display font-extrabold tracking-tight">
-                        <span class="text-primary-blue">CHATKINA</span><span class="text-accent-pink bg-slate-900 px-2.5 py-0.5 rounded-lg ml-1 font-tech text-base md:text-lg">.DESIGN</span>
+                    <h1 class="text-2xl md:text-3xl font-pixel tracking-tight whitespace-nowrap">
+                        <span class="text-primary-blue">CHATKINA</span><span class="text-accent-pink">.DESIGN</span>
                     </h1>
-                    <p class="text-[10px] text-text-muted font-tech tracking-widest uppercase mt-1">Bento Proposal System v2.4</p>
+                    <p class="text-[10px] text-text-muted font-tech tracking-widest uppercase mt-1">Bento Proposal System v2.5</p>
                 </div>
             </div>
             
-            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                <!-- Theme Toggle -->
-                <div class="flex items-center gap-2">
-                    <button onclick="toggleTheme()" class="flex-1 sm:flex-initial w-10 h-10 rounded-xl border border-border-color bg-bg-card hover:bg-bg-sidebar text-text-main transition-all flex items-center justify-center" title="Переключить тему">
-                        <i id="theme-icon" class="fa-solid fa-moon text-lg text-primary-blue"></i>
-                    </button>
-                    <button onclick="exportToCSV()" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl border border-border-color hover:border-primary-blue text-text-main font-tech text-sm transition-all flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-file-excel text-emerald-500"></i> Экспорт .CSV
-                    </button>
-                </div>
-                <button onclick="toggleCalculatorDrawer()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-primary-blue hover:opacity-90 text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-sm font-tech">
+            <div class="flex flex-row items-center gap-3 justify-between md:justify-end flex-wrap sm:flex-nowrap">
+                <!-- Theme and Action Controllers -->
+                <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl border border-border-color bg-bg-card hover:bg-bg-sidebar text-text-main transition-all flex items-center justify-center flex-shrink-0" title="Переключить тему">
+                    <i id="theme-icon" class="fa-solid fa-moon text-lg text-primary-blue"></i>
+                </button>
+                <button onclick="exportToCSV()" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl border border-border-color hover:border-primary-blue text-text-main font-tech text-sm transition-all flex items-center justify-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-file-excel text-emerald-500"></i> Экспорт .CSV
+                </button>
+                <button onclick="toggleCalculatorDrawer()" class="flex-1 sm:w-auto px-5 py-2.5 rounded-xl bg-primary-blue hover:opacity-90 text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-sm font-tech whitespace-nowrap">
                     <i class="fa-solid fa-receipt text-accent-pink"></i> Посмотреть смету (<span id="cart-count">0</span>) ↗
                 </button>
             </div>
@@ -196,16 +197,16 @@
         <aside class="w-full lg:w-80 flex flex-col gap-4 overflow-y-auto lg:flex-shrink-0">
             <!-- Search Module -->
             <div class="bento-card p-5 bg-bg-card">
-                <h3 class="text-xs font-tech uppercase tracking-wider text-text-muted mb-3">Поиск по базе</h3>
+                <h3 class="text-xs font-pixel uppercase tracking-wider text-text-muted mb-3">Поиск по базе</h3>
                 <div class="relative">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-text-muted"></i>
                     <input type="text" id="search-input" onkeyup="filterServices()" placeholder="Услуга..." class="w-full bg-input-bg border border-border-color rounded-xl py-2.5 pl-10 pr-4 text-sm text-text-main focus:outline-none focus:border-primary-blue transition-all">
                 </div>
             </div>
 
-            <!-- Category Filters Module -->
-            <div class="bento-card p-5 bg-bg-card flex-1 flex flex-col overflow-hidden hidden lg:flex">
-                <h3 class="text-xs font-tech uppercase tracking-wider text-text-muted mb-3">Разделы первого уровня</h3>
+            <!-- Category Filters Module (Desktop & Tablet) -->
+            <div class="bento-card p-5 bg-bg-card flex-1 flex flex-col overflow-hidden hidden md:flex">
+                <h3 class="text-xs font-pixel uppercase tracking-wider text-text-muted mb-3">Разделы первого уровня</h3>
                 <nav class="flex-1 overflow-y-auto space-y-1.5 pr-1" id="category-filters">
                     <!-- Будет сгенерировано JS -->
                 </nav>
@@ -213,37 +214,37 @@
 
             <!-- Fast info guide module -->
             <div class="bento-card p-5 bg-bg-card bg-gradient-to-br from-primary-blue/5 to-transparent hidden lg:block">
-                <h4 class="text-xs font-tech text-text-main mb-2"><i class="fa-solid fa-bolt text-primary-blue mr-1"></i> Конфигуратор</h4>
+                <h4 class="text-xs font-pixel text-text-main mb-2"><i class="fa-solid fa-bolt text-primary-blue mr-1"></i> Конфигуратор</h4>
                 <p class="text-xs text-text-muted leading-relaxed">Дважды кликните на ячейку с <strong>Часами</strong> или <strong>Ставкой</strong> в таблице, чтобы пересчитать ее базовые тарифы в реальном времени.</p>
             </div>
         </aside>
 
         <!-- DATA VIEWER CONTAINER -->
         <section class="flex-1 bento-card bg-bg-card flex flex-col overflow-hidden">
-            <!-- Mobile Filters (Top bar - Optimized to prevent squishing) -->
-            <div class="p-4 border-b border-border-color bg-bg-sidebar/50 flex flex-col sm:flex-row lg:hidden gap-3 items-stretch sm:items-center justify-between">
+            <!-- Mobile Filters (Top bar) -->
+            <div class="p-4 border-b border-border-color bg-bg-sidebar/50 flex flex-col sm:flex-row md:hidden gap-3 items-stretch sm:items-center justify-between">
                 <div class="relative flex-1">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-text-muted"></i>
                     <input type="text" id="search-input-mobile" onkeyup="filterServicesMobile()" placeholder="Поиск услуги..." class="w-full bg-input-bg border border-border-color rounded-xl py-2 pl-9 pr-3 text-sm text-text-main focus:outline-none focus:border-primary-blue">
                 </div>
-                <select id="category-select-mobile" onchange="selectCategoryMobile(this.value)" class="bg-input-bg border border-border-color rounded-xl py-2 px-3 text-sm text-text-main focus:outline-none focus:border-primary-blue">
+                <select id="category-select-mobile" onchange="selectCategoryMobile(this.value)" class="h-11 bg-input-bg border border-border-color rounded-xl py-2 px-3.5 text-sm text-text-main focus:outline-none focus:border-primary-blue transition-all">
                     <option value="all">Все разделы</option>
                 </select>
             </div>
 
-            <!-- Bento Spreadsheet Grid -->
-            <div class="flex-1 overflow-auto relative">
-                <table class="w-full text-left border-collapse min-w-[1000px]">
+            <!-- Bento Spreadsheet Grid (DESKTOP & TABLET: Absolutely fluid responsive table) -->
+            <div class="hidden md:block flex-1 overflow-auto relative">
+                <table class="w-full text-left border-collapse min-w-full lg:min-w-[1000px]">
                     <thead>
-                        <tr class="bg-table-header-bg border-b border-border-color text-text-muted text-xs font-tech uppercase tracking-wider sticky top-0 z-10">
-                            <th class="py-4 px-5 w-14 text-center">Выбрать</th>
-                            <th class="py-4 px-5">Раздел / Услуга</th>
-                            <th class="py-4 px-5 w-24 text-center">Часы</th>
-                            <th class="py-4 px-5 w-32 text-right">Ставка (₽)</th>
-                            <th class="py-4 px-5 w-32 text-right text-[#00c5af] bg-[#00c5af]/5">Простой (1х)</th>
-                            <th class="py-4 px-5 w-32 text-right text-[#ff9355] bg-[#ff9355]/5">Средний (2.5х)</th>
-                            <th class="py-4 px-5 w-32 text-right text-[#ff3b70] bg-[#ff3b70]/5">Сложный (5х)</th>
-                            <th class="py-4 px-5 w-20 text-center">Инфо</th>
+                        <tr class="bg-table-header-bg border-b border-border-color text-text-muted text-[10px] md:text-xs font-pixel uppercase tracking-wider sticky top-0 z-10">
+                            <th class="py-4 px-3 w-[5%] text-center">Выбрать</th>
+                            <th class="py-4 px-3 w-[35%]">Раздел / Услуга</th>
+                            <th class="py-4 px-3 w-[8%] text-center">Часы</th>
+                            <th class="py-4 px-3 w-[12%] text-right">Ставка (₽)</th>
+                            <th class="py-4 px-3 w-[12%] text-right text-[#00c5af] bg-[#00c5af]/5">Простой (1х)</th>
+                            <th class="py-4 px-3 w-[12%] text-right text-[#ff9355] bg-[#ff9355]/5">Средний (2.5х)</th>
+                            <th class="py-4 px-3 w-[11%] text-right text-[#ff3b70] bg-[#ff3b70]/5">Сложный (5х)</th>
+                            <th class="py-4 px-3 w-[5%] text-center">Инфо</th>
                         </tr>
                     </thead>
                     <tbody id="services-tbody" class="divide-y divide-border-color/60">
@@ -251,16 +252,21 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Bento Card Grid (MOBILE: Restructured layout without horizontal scroll) -->
+            <div class="block md:hidden flex-1 overflow-y-auto p-4 space-y-4" id="services-mobile-list">
+                <!-- Будет генерироваться через JS -->
+            </div>
         </section>
 
     </main>
 
     <!-- RIGHT DRAWER: DETAILED VIEW OF SELECTED SERVICE -->
-    <div id="details-drawer" class="fixed right-0 top-0 bottom-0 w-full sm:w-[500px] bg-bg-card border-l border-border-color shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
-        <div class="p-6 border-b border-border-color flex items-center justify-between bg-bg-sidebar">
+    <div id="details-drawer" class="fixed right-0 top-0 bottom-0 w-full sm:w-[500px] bg-bg-card border-l border-border-color shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col h-[100dvh] overflow-hidden">
+        <div class="p-6 border-b border-border-color flex items-center justify-between bg-bg-sidebar flex-shrink-0">
             <div class="flex items-center gap-2">
                 <span class="w-3 h-3 rounded-full bg-accent-pink animate-pulse"></span>
-                <h3 class="font-tech text-text-main tracking-wider text-xs">Регламенты и ТЗ услуги</h3>
+                <h3 class="font-pixel text-text-main tracking-wider text-[10px] md:text-xs">Регламенты и ТЗ услуги</h3>
             </div>
             <button onclick="closeDetailsDrawer()" class="text-text-muted hover:text-text-main transition-all text-xl"><i class="fa-solid fa-xmark"></i></button>
         </div>
@@ -282,14 +288,14 @@
             </div>
 
             <div class="space-y-1">
-                <h4 class="text-sm font-bold text-text-main font-tech">Описание услуги:</h4>
+                <h4 class="text-sm font-bold text-text-main font-pixel">Описание услуги:</h4>
                 <p class="text-sm text-text-muted leading-relaxed" id="drawer-desc">Описание будет подгружено сюда.</p>
             </div>
 
             <hr class="border-border-color">
 
             <div class="space-y-6">
-                <h4 class="text-sm font-bold text-text-main font-tech"><i class="fa-solid fa-layer-group text-primary-blue mr-1.5"></i> Регламент по уровням сложности:</h4>
+                <h4 class="text-sm font-bold text-text-main font-pixel"><i class="fa-solid fa-layer-group text-primary-blue mr-1.5"></i> Регламент по уровням сложности:</h4>
                 
                 <!-- Простой -->
                 <div class="p-4 rounded-xl bg-[#00c5af]/5 border border-[#00c5af]/15 space-y-3">
@@ -345,25 +351,45 @@
         </div>
     </div>
 
-    <!-- RIGHT DRAWER: CALCULATOR PROPOSAL BUILDER (Completely restructured to scroll items with inputs, while locking sum to bottom) -->
+    <!-- RIGHT DRAWER: CALCULATOR PROPOSAL BUILDER -->
     <div id="calculator-drawer" class="fixed right-0 top-0 bottom-0 w-full sm:w-[600px] bg-bg-card border-l border-border-color shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col h-[100dvh] overflow-hidden">
         
         <!-- Fixed Header -->
         <div class="p-6 border-b border-border-color flex items-center justify-between bg-bg-sidebar flex-shrink-0">
             <div class="flex items-center gap-2">
                 <i class="fa-solid fa-receipt text-primary-blue text-lg"></i>
-                <h3 class="font-tech text-text-main tracking-wider text-xs">Конструктор коммерческого предложения</h3>
+                <h3 class="font-pixel text-text-main tracking-wider text-[10px] md:text-xs">Конструктор коммерческого предложения</h3>
             </div>
             <button onclick="toggleCalculatorDrawer()" class="text-text-muted hover:text-text-main transition-all text-xl"><i class="fa-solid fa-xmark"></i></button>
         </div>
 
-        <!-- Scrollable Middle Section: holding Dynamic Items first, and Client Inputs second -->
-        <div class="flex-1 overflow-y-auto p-6 space-y-6">
+        <!-- Scrollable Middle Section with responsive flex ordering -->
+        <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
             
-            <!-- Dynamic Selected List Container (Occupies the top, stretches freely) -->
-            <div class="space-y-4">
+            <!-- CLIENT INPUTS BLOCK (Order 1 on Desktop, Order 2 on Mobile/Tablet) -->
+            <div class="order-2 lg:order-1 space-y-4 pt-6 lg:pt-0 border-t lg:border-t-0 lg:border-b border-border-color/60 pb-0 lg:pb-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-[10px] font-pixel uppercase text-text-muted block mb-1">Имя / Компания клиента:</label>
+                        <input type="text" id="client-name" placeholder="ООО Вектор" class="w-full bg-input-bg border border-border-color rounded-xl py-2.5 px-3.5 text-sm text-text-main focus:outline-none focus:border-primary-blue">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-pixel uppercase text-text-muted block mb-1">Название проекта:</label>
+                        <input type="text" id="project-title" placeholder="Редизайн бренда" class="w-full bg-input-bg border border-border-color rounded-xl py-2.5 px-3.5 text-sm text-text-main focus:outline-none focus:border-primary-blue">
+                    </div>
+                </div>
+
+                <!-- Responsive 3-line Comment Textarea -->
+                <div>
+                    <label class="text-[10px] font-pixel uppercase text-text-muted block mb-1">Комментарии к предложению:</label>
+                    <textarea id="client-comments" rows="3" placeholder="Особые условия, дедлайны или технические нюансы..." class="w-full bg-input-bg border border-border-color rounded-xl py-2.5 px-3.5 text-sm text-text-main focus:outline-none focus:border-primary-blue resize-none"></textarea>
+                </div>
+            </div>
+
+            <!-- CHATKINA SELECTED SERVICES BLOCK (Order 1 on Mobile, Order 2 on Desktop) -->
+            <div class="order-1 lg:order-2 space-y-4 flex-1">
                 <div class="flex items-center justify-between border-b border-border-color pb-2">
-                    <h4 class="text-xs font-tech text-text-muted uppercase tracking-wider">Выбранные услуги</h4>
+                    <h4 class="text-xs font-pixel text-text-muted uppercase tracking-wider">Выбранные услуги</h4>
                     <span class="text-xs bg-primary-blue/15 text-primary-blue border border-primary-blue/20 px-2 py-0.5 rounded-full font-tech font-bold" id="selected-badge-count">0</span>
                 </div>
                 <div id="selected-items-container" class="space-y-4">
@@ -371,30 +397,10 @@
                 </div>
             </div>
 
-            <!-- Client & Project Inputs block (Relocated here underneath the services) -->
-            <div class="space-y-4 pt-6 border-t border-border-color/60">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="text-[10px] font-tech uppercase text-text-muted block mb-1">Имя / Компания клиента:</label>
-                        <input type="text" id="client-name" placeholder="ООО Вектор" class="w-full bg-input-bg border border-border-color rounded-xl py-2 px-3.5 text-sm text-text-main focus:outline-none focus:border-primary-blue">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-tech uppercase text-text-muted block mb-1">Название проекта:</label>
-                        <input type="text" id="project-title" placeholder="Редизайн бренда" class="w-full bg-input-bg border border-border-color rounded-xl py-2 px-3.5 text-sm text-text-main focus:outline-none focus:border-primary-blue">
-                    </div>
-                </div>
-
-                <!-- Responsive 3-line Comment Textarea -->
-                <div>
-                    <label class="text-[10px] font-tech uppercase text-text-muted block mb-1">Комментарии к предложению:</label>
-                    <textarea id="client-comments" rows="3" placeholder="Особые условия, дедлайны или технические нюансы..." class="w-full bg-input-bg border border-border-color rounded-xl py-2.5 px-3.5 text-sm text-text-main focus:outline-none focus:border-primary-blue resize-none"></textarea>
-                </div>
-            </div>
-
         </div>
 
         <!-- Sticky Bottom Section: locked to screen boundary so totals and prints are always instantly visible -->
-        <div class="border-t border-border-color/60 p-6 bg-bg-card space-y-4 flex-shrink-0">
+        <div class="border-t border-border-color/60 p-6 bg-bg-card space-y-4 flex-shrink-0 z-20 pb-8">
             <div class="bg-bg-sidebar p-4 rounded-2xl border border-border-color space-y-3">
                 <div class="flex justify-between items-center text-sm font-tech">
                     <span class="text-text-muted">Общее расчетное время:</span>
@@ -406,11 +412,11 @@
                 </div>
             </div>
 
-            <div class="flex flex-col gap-3">
-                <button onclick="printProposal()" class="w-full py-3.5 bg-primary-blue hover:opacity-90 text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 font-tech shadow-md">
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button onclick="printProposal()" class="flex-1 py-3.5 bg-primary-blue hover:opacity-90 text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 font-tech shadow-md">
                     <i class="fa-solid fa-print text-accent-pink"></i> Печать КП / PDF ↗
                 </button>
-                <button onclick="clearSmeta()" class="w-full py-3 bg-bg-card border border-border-color text-text-main hover:bg-bg-sidebar font-tech font-semibold rounded-xl text-sm transition-all flex items-center justify-center">
+                <button onclick="clearSmeta()" class="w-full sm:w-auto px-5 py-3 bg-bg-card border border-border-color text-text-main hover:bg-bg-sidebar font-tech font-semibold rounded-xl text-sm transition-all flex items-center justify-center">
                     Очистить смету
                 </button>
             </div>
@@ -508,11 +514,10 @@
             { id: 63, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Фирменный mini-шоколад/мыло (дизайн обертки)", hours: 1.5, rate: 1500, desc: "Этикетка обертки порционного шоколада.", s: "Логотип на лицевой стороне, контакты сзади по готовому шаблону.", m: "Верстка состава, штрихкодов, декоративных узоров.", c: "Комплексный дизайн поарочного набора mini-шоколадок." },
             { id: 64, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Брендированный стаканчик (развертка под конус)", hours: 2.5, rate: 1500, desc: "Круговой макет запечатки одноразового стакана.", s: "Размещение логотипа в центре зоны видимости.", m: "Сложная круговая развертка с паттерном, иконками соцсетей.", c: "Креативная развертка с вырубным манжетом (капхолдером)." },
             { id: 65, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Фирменный пергамент / подложка", hours: 1.5, rate: 1500, desc: "Подложка на подносы или упаковочная бумага.", s: "Размножение логотипа по сетке в 1 цвет (паттерн).", m: "Журнальный дизайн: кроссворды, факты о заведении на подложке.", c: "Креативный паттерн со сложной ИИ-графикой под печать в 3 цвета." },
-            { id: 66, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Коробка для фастфуда (по готовому крою)", hours: 2.5, rate: 1500, desc: "Дизайн упаковки стритфуда по готовому крою.", s: "Фирменный цвет and логотип на верхней грани.", m: "Запечатка всей поверхности коробки, добавление инфографики.", c: "Дизайн упаковки с ИИ-персонажем, pre-press под пищевой картон." },
             { id: 67, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Коробка для пиццы (по готовому крою)", hours: 2, rate: 1500, desc: "Дизайн плоской картонной коробки по готовому крою.", s: "Печать в 1-2 цвета на крышке (логотип, слоган).", m: "Полноцветный дизайн всей площади коробки с паттернами.", c: "Интерактивная крышка с ребусом, комиксом или настольной игрой." },
             { id: 68, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Дорхенгер (Doorhanger) — табличка на ручку", hours: 2, rate: 1500, desc: "Информационная вешалка на дверную ручку.", s: "Текст (например, 'Не беспокоить') + логотип на стандартной форме.", m: "Рекламный двухсторонний оффер с акционными плашками.", c: "Креативный вырубной дорхенгер сложной формы с иллюстрациями." },
             { id: 69, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Меню-борд / Меню-плейсмат (одностраничное)", hours: 3, rate: 1500, desc: "Одностраничное меню-салфетка.", s: "Чистая верстка названий блюд и цен в колонки (без фото).", m: "Стильные разделители категорий, выделение топ-блюд.", c: "Сложный дизайн плейсмата со сложной сеткой и ИИ-графикой." },
-            { id: 70, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Меню многостраничное (Обложка + 1 разворот)", hours: 5, rate: 1500, desc: "Разработка стиля многостраничной книги меню.", s: "Простая текстовая обложка и шаблон сетки разворотов.", m: "Создание фуд-зон под фото, шрифтовая иерархия.", c: "Премиальный журнальный концепт с ИИ-коллажами блюд." },
+            { id: 70, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Меню многостраничное (Обложка + 1 разворот)", hours: 5, rate: 1500, desc: "Разработка стиля многостраничной книги меню.", s: "Простая текстовая обложка и шаблон сетки разворотов.", m: "Создание фуд-зон под фото, шрифтовая иерархия.", c: "Премиональный журнальный концепт с ИИ-коллажами блюд." },
             { id: 71, category: "Полиграфия, упаковка и мерч", subcategory: "Сегмент HoReCa", name: "Меню многостраничное (верстка 1 разворота)", hours: 1.5, rate: 1500, desc: "Наполнение меню по утвержденной дизайн-системе.", s: "Верстка текстовых позиций в готовые фреймы (без фото).", m: "Верстка разворота со сложным составом блюд и иконками.", c: "Журнальная верстка, ручная обтравка и тени тарелок." },
 
             // ПОЛИГРАФИЯ - ФИРМЕННАЯ УПАКОВКА И ЭТИКЕТКА
@@ -663,7 +668,7 @@
             return categories;
         }
 
-        // Render beautiful category filters inside the Bento sidebar with active pink highlights
+        // Render category filters
         function renderCategoryFilters() {
             const categories = getCategories();
             const container = document.getElementById('category-filters');
@@ -713,7 +718,7 @@
             renderTable();
         }
 
-        // CUSTOM HOVER TOOLTIP ENGINE (Limited exactly to hovering over service name link)
+        // Hover Tooltip logic
         const tooltipEl = document.getElementById('service-tooltip');
 
         function showTooltip(e, id) {
@@ -763,10 +768,13 @@
             tooltipEl.style.opacity = '0';
         }
 
-        // Render rows in the elegant grid
+        // Render Table & Mobile Cards seamlessly
         function renderTable() {
             const tbody = document.getElementById('services-tbody');
+            const mobileList = document.getElementById('services-mobile-list');
+            
             tbody.innerHTML = '';
+            mobileList.innerHTML = '';
 
             const searchQuery = document.getElementById('search-input').value.toLowerCase();
             const searchQueryMobile = document.getElementById('search-input-mobile').value.toLowerCase();
@@ -783,6 +791,12 @@
             let lastSubcategory = '';
 
             filtered.forEach(item => {
+                const priceSimple = Math.round(item.hours * item.rate);
+                const priceMedium = Math.round(item.hours * item.rate * 2.5);
+                const priceComplex = Math.round(item.hours * item.rate * 5);
+                const isChecked = smeta[item.id] !== undefined;
+
+                // --- 1. DESKTOP ROW ---
                 if (item.subcategory !== lastSubcategory) {
                     lastSubcategory = item.subcategory;
                     const subHeader = document.createElement('tr');
@@ -797,22 +811,15 @@
                     tbody.appendChild(subHeader);
                 }
 
-                const priceSimple = Math.round(item.hours * item.rate);
-                const priceMedium = Math.round(item.hours * item.rate * 2.5);
-                const priceComplex = Math.round(item.hours * item.rate * 5);
-
-                const isChecked = smeta[item.id] !== undefined;
-
                 const tr = document.createElement('tr');
                 tr.id = `row-${item.id}`;
-                // Highlight row in brighter pink when selected (#feafce/15)
                 tr.className = `hover:bg-table-row-hover text-sm border-b border-border-color/40 border-l-4 transition-all ${isChecked ? 'bg-[#feafce]/15 dark:bg-[#feafce]/5 border-l-accent-pink' : 'border-l-transparent'}`;
                 
                 tr.innerHTML = `
-                    <td class="py-3.5 px-5 text-center">
-                        <input type="checkbox" onchange="toggleItemSmeta(${item.id}, this.checked)" ${isChecked ? 'checked' : ''} class="w-4 h-4 rounded text-slate-950 bg-input-bg border-border-color focus:ring-1 focus:ring-accent-pink cursor-pointer">
+                    <td class="py-3.5 px-3 text-center">
+                        <input type="checkbox" id="desktop-cb-${item.id}" onchange="toggleItemSmeta(${item.id}, this.checked)" ${isChecked ? 'checked' : ''} class="w-4 h-4 rounded text-slate-950 bg-input-bg border-border-color focus:ring-1 focus:ring-accent-pink cursor-pointer">
                     </td>
-                    <td class="py-3.5 px-5 text-text-main">
+                    <td class="py-3.5 px-3 text-text-main">
                         <div class="font-bold cursor-pointer hover:text-primary-blue transition-all inline-block" 
                              onclick="openDetailsDrawer(${item.id})"
                              onmouseenter="showTooltip(event, ${item.id})" 
@@ -822,28 +829,66 @@
                         </div>
                         <span class="text-[11px] font-tech text-text-muted block mt-1">${item.category} &bull; ${item.subcategory}</span>
                     </td>
-                    <td class="py-3.5 px-5 text-center font-tech font-bold text-text-main hover:bg-bg-sidebar/50 cursor-pointer" onclick="makeEditable(this, ${item.id}, 'hours')">
+                    <td class="py-3.5 px-3 text-center font-tech font-bold text-text-main hover:bg-bg-sidebar/50 cursor-pointer" onclick="makeEditable(this, ${item.id}, 'hours')">
                         ${item.hours}
                     </td>
-                    <td class="py-3.5 px-5 text-right font-tech font-semibold text-text-main hover:bg-bg-sidebar/50 cursor-pointer" onclick="makeEditable(this, ${item.id}, 'rate')">
+                    <td class="py-3.5 px-3 text-right font-tech font-semibold text-text-main hover:bg-bg-sidebar/50 cursor-pointer" onclick="makeEditable(this, ${item.id}, 'rate')">
                         ${item.rate.toLocaleString('ru-RU')}
                     </td>
-                    <td class="py-3.5 px-5 text-right font-tech font-bold text-[#00c5af] bg-[#00c5af]/5">
+                    <td class="py-3.5 px-3 text-right font-tech font-bold text-[#00c5af] bg-[#00c5af]/5">
                         ${priceSimple.toLocaleString('ru-RU')} ₽
                     </td>
-                    <td class="py-3.5 px-5 text-right font-tech font-bold text-[#ff9355] bg-[#ff9355]/5">
+                    <td class="py-3.5 px-3 text-right font-tech font-bold text-[#ff9355] bg-[#ff9355]/5">
                         ${priceMedium.toLocaleString('ru-RU')} ₽
                     </td>
-                    <td class="py-3.5 px-5 text-right font-tech font-bold text-[#ff3b70] bg-[#ff3b70]/5">
+                    <td class="py-3.5 px-3 text-right font-tech font-bold text-[#ff3b70] bg-[#ff3b70]/5">
                         ${priceComplex.toLocaleString('ru-RU')} ₽
                     </td>
-                    <td class="py-3.5 px-5 text-center">
-                        <button onclick="openDetailsDrawer(${item.id})" class="p-1 text-accent-pink hover:text-primary-blue transition-all">
+                    <td class="py-3.5 px-3 text-center">
+                        <button onclick="openDetailsDrawer(${item.id})" class="p-1 text-[#feafce] hover:text-primary-blue transition-all">
                             <i class="fa-solid fa-circle-info text-lg"></i>
                         </button>
                     </td>
                 `;
                 tbody.appendChild(tr);
+
+                // --- 2. MOBILE CARD (Restructured with absolutely no horizontal scroll) ---
+                const card = document.createElement('div');
+                card.id = `mobile-card-${item.id}`;
+                card.className = `bento-card p-4 space-y-3 bg-bg-card border transition-all ${isChecked ? 'bg-[#feafce]/15 dark:bg-[#feafce]/5 border-accent-pink' : 'border-border-color'}`;
+                card.innerHTML = `
+                    <div class="flex items-start gap-3 justify-between">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="mobile-cb-${item.id}" onchange="toggleItemSmeta(${item.id}, this.checked)" ${isChecked ? 'checked' : ''} class="w-5 h-5 rounded text-slate-950 bg-input-bg border-border-color focus:ring-1 focus:ring-accent-pink cursor-pointer flex-shrink-0">
+                            <div>
+                                <h4 class="font-bold text-text-main text-sm leading-snug cursor-pointer" onclick="openDetailsDrawer(${item.id})">${item.name}</h4>
+                                <span class="text-[10px] font-tech text-text-muted uppercase tracking-wider block mt-1">${item.category} &bull; ${item.subcategory}</span>
+                            </div>
+                        </div>
+                        <button onclick="openDetailsDrawer(${item.id})" class="text-[#feafce] hover:text-primary-blue transition-all p-1 flex-shrink-0">
+                            <i class="fa-solid fa-circle-info text-lg"></i>
+                        </button>
+                    </div>
+                    <div class="flex justify-between items-center text-xs border-t border-border-color/40 pt-2 font-tech">
+                        <div><span class="text-text-muted">Часы:</span> <strong class="text-text-main">${item.hours} ч</strong></div>
+                        <div><span class="text-text-muted">Ставка:</span> <strong class="text-text-main">${item.rate.toLocaleString('ru-RU')} ₽/ч</strong></div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-1.5 pt-2 border-t border-border-color/40 text-[10px] text-center font-tech">
+                        <div class="bg-[#00c5af]/5 border border-[#00c5af]/10 rounded-lg p-1.5">
+                            <div class="text-[#00c5af] font-bold">Простой</div>
+                            <div class="text-text-main font-bold mt-0.5">${priceSimple.toLocaleString('ru-RU')} ₽</div>
+                        </div>
+                        <div class="bg-[#ff9355]/5 border border-[#ff9355]/10 rounded-lg p-1.5">
+                            <div class="text-[#ff9355] font-bold">Средний</div>
+                            <div class="text-text-main font-bold mt-0.5">${priceMedium.toLocaleString('ru-RU')} ₽</div>
+                        </div>
+                        <div class="bg-[#ff3b70]/5 border border-[#ff3b70]/10 rounded-lg p-1.5">
+                            <div class="text-[#ff3b70] font-bold">Сложный</div>
+                            <div class="text-text-main font-bold mt-0.5">${priceComplex.toLocaleString('ru-RU')} ₽</div>
+                        </div>
+                    </div>
+                `;
+                mobileList.appendChild(card);
             });
         }
 
@@ -888,7 +933,7 @@
             renderTable();
         }
 
-        // Details Drawer Info Binder (Freezes page scroll on active)
+        // Details Drawer
         function openDetailsDrawer(id) {
             const item = servicesData.find(s => s.id === id);
             if (!item) return;
@@ -902,21 +947,19 @@
             document.getElementById('drawer-medium-desc').textContent = item.m;
             document.getElementById('drawer-complex-desc').textContent = item.c;
 
-            // Generate placeholders with text matching the complexity
             document.getElementById('img-simple-placeholder').src = `https://placehold.co/600x350/00c5af/ffffff?text=${encodeURIComponent(item.name + ' - Простой')}`;
             document.getElementById('img-medium-placeholder').src = `https://placehold.co/600x350/ff9355/111115?text=${encodeURIComponent(item.name + ' - Средний')}`;
             document.getElementById('img-complex-placeholder').src = `https://placehold.co/600x350/ff3b70/ffffff?text=${encodeURIComponent(item.name + ' - Сложный')}`;
 
             const drawer = document.getElementById('details-drawer');
             drawer.classList.remove('translate-x-full');
-            document.body.classList.add('overflow-hidden'); // Freeze body
+            document.body.classList.add('overflow-hidden');
         }
 
         function closeDetailsDrawer() {
             const drawer = document.getElementById('details-drawer');
             drawer.classList.add('translate-x-full');
             
-            // Only unfreeze if the other drawer is also closed
             const calcDrawer = document.getElementById('calculator-drawer');
             if (calcDrawer.classList.contains('translate-x-full')) {
                 document.body.classList.remove('overflow-hidden');
@@ -932,33 +975,49 @@
             return 'часов';
         }
 
-        // Toggle Calculator and Freeze Page scroll to prevent scrolling the underlying services
+        // Toggle Calculator and Freeze Page scroll
         function toggleCalculatorDrawer() {
             const drawer = document.getElementById('calculator-drawer');
             const isClosed = drawer.classList.contains('translate-x-full');
             if (isClosed) {
                 drawer.classList.remove('translate-x-full');
-                document.body.classList.add('overflow-hidden'); // Lock background scroll
+                document.body.classList.add('overflow-hidden');
                 renderSmetaItems();
             } else {
                 drawer.classList.add('translate-x-full');
-                document.body.classList.remove('overflow-hidden'); // Unlock background scroll
+                document.body.classList.remove('overflow-hidden');
             }
         }
 
+        // Toggle Item Smeta with Dual Checkbox Sync
         function toggleItemSmeta(id, checked) {
             const row = document.getElementById(`row-${id}`);
+            const mobileCard = document.getElementById(`mobile-card-${id}`);
+
             if (checked) {
                 smeta[id] = { complexity: 'simple', qty: 1 };
                 if (row) {
                     row.className = row.className.replace('border-l-transparent', 'bg-[#feafce]/15 dark:bg-[#feafce]/5 border-l-accent-pink');
+                }
+                if (mobileCard) {
+                    mobileCard.className = mobileCard.className.replace('border-border-color', 'border-accent-pink bg-[#feafce]/15 dark:bg-[#feafce]/5');
                 }
             } else {
                 delete smeta[id];
                 if (row) {
                     row.className = row.className.replace('bg-[#feafce]/15 dark:bg-[#feafce]/5 border-l-accent-pink', 'border-l-transparent');
                 }
+                if (mobileCard) {
+                    mobileCard.className = mobileCard.className.replace('border-accent-pink bg-[#feafce]/15 dark:bg-[#feafce]/5', 'border-border-color');
+                }
             }
+
+            // Sync other checkbox view
+            const desktopCB = document.getElementById(`desktop-cb-${id}`);
+            const mobileCB = document.getElementById(`mobile-cb-${id}`);
+            if (desktopCB) desktopCB.checked = checked;
+            if (mobileCB) mobileCB.checked = checked;
+
             updateSmetaSummary();
             renderSmetaItems();
         }
@@ -981,7 +1040,6 @@
                 if (data.complexity === 'medium') multiplier = 2.5;
                 if (data.complexity === 'complex') multiplier = 5.0;
 
-                // Часы теперь соразмерно масштабируются по коэффициенту сложности
                 totalHours += (service.hours * multiplier) * data.qty;
                 totalPrice += service.hours * service.rate * multiplier * data.qty;
             });
@@ -990,7 +1048,7 @@
             document.getElementById('total-price').textContent = `${Math.round(totalPrice).toLocaleString('ru-RU')} ₽`;
         }
 
-        // Render beautiful bento-styled config rows with inline descriptions and proportional hours
+        // Render beautiful bento-styled config rows without list box restrictions
         function renderSmetaItems() {
             const container = document.getElementById('selected-items-container');
             container.innerHTML = '';
@@ -1009,7 +1067,6 @@
                 const basePrice = service.hours * service.rate;
                 const multiplier = item.complexity === 'simple' ? 1 : item.complexity === 'medium' ? 2.5 : 5.0;
                 
-                // Пропорциональное пересчитывание часов по коэффициенту сложности
                 const itemTime = (service.hours * multiplier) * item.qty;
                 const currentPrice = basePrice * multiplier * item.qty;
 
@@ -1037,9 +1094,8 @@
                         <button onclick="toggleItemSmeta(${service.id}, false); renderSmetaItems();" class="text-text-muted hover:text-rose-500 transition-all text-sm p-1"><i class="fa-solid fa-trash"></i></button>
                     </div>
                     
-                    <!-- Segmented Toggle - Custom Bento Switch Button -->
-                    <div class="grid grid-cols-3 gap-3 items-center">
-                        <div class="col-span-2">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
+                        <div class="col-span-1 sm:col-span-2">
                             <label class="text-[9px] font-tech text-text-muted uppercase tracking-wider block mb-1">Сложность проекта</label>
                             <div class="flex rounded-xl bg-bg-sidebar p-1 border border-border-color">
                                 <button onclick="updateItemComplexity(${service.id}, 'simple')" class="flex-1 text-center py-1 rounded-lg text-xs font-tech segmented-btn ${item.complexity === 'simple' ? 'active' : 'text-text-muted'}">Простой</button>
@@ -1083,12 +1139,17 @@
 
         function clearSmeta() {
             smeta = {};
-            const checkboxes = document.querySelectorAll('#services-tbody input[type="checkbox"]');
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
             checkboxes.forEach(cb => cb.checked = false);
             
             const rows = document.querySelectorAll('#services-tbody tr');
             rows.forEach(r => {
                 r.className = r.className.replace('bg-[#feafce]/15 dark:bg-[#feafce]/5 border-l-accent-pink', 'border-l-transparent');
+            });
+
+            const cards = document.querySelectorAll('#services-mobile-list > div');
+            cards.forEach(c => {
+                c.className = c.className.replace('border-accent-pink bg-[#feafce]/15 dark:bg-[#feafce]/5', 'border-border-color');
             });
 
             updateSmetaSummary();
@@ -1118,7 +1179,7 @@
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "Прайс-лист_CHATKINA_Bento.csv");
+            link.setAttribute("download", "Прайс-лист_CHATKINA_Bento_v2.5.csv");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
